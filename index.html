@@ -206,6 +206,22 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:52px 24px 22px;
 
 @media(max-width:960px){.hero-inner,.pay-inner{grid-template-columns:1fr;}nav{display:none;}nav.open{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:#fff;border-bottom:2px solid var(--border);padding:12px 0;box-shadow:var(--shadow);}nav.open a{padding:12px 24px;border-bottom:1px solid var(--border);border-radius:0;}header{position:relative;}.hamburger{display:block;}.contact-grid{grid-template-columns:1fr;}.ft{grid-template-columns:1fr 1fr;}}
 @media(max-width:600px){.kebele-grid{grid-template-columns:1fr 1fr;}.pay-methods{grid-template-columns:1fr;}.hero-stats{grid-template-columns:1fr 1fr;}.ft{grid-template-columns:1fr;}}
+.so { display:block !important; }
+.en { display:none !important; }
+.am { display:none !important; }
+span.so { display:inline !important; }
+span.en { display:none !important; }
+span.am { display:none !important; }
+body.lang-en .so { display:none !important; }
+body.lang-en .en { display:block !important; }
+body.lang-en span.so { display:none !important; }
+body.lang-en span.en { display:inline !important; }
+body.lang-en span.am { display:none !important; }
+body.lang-am .so { display:none !important; }
+body.lang-am .am { display:block !important; }
+body.lang-am span.so { display:none !important; }
+body.lang-am span.am { display:inline !important; }
+body.lang-am span.en { display:none !important; }
 </style>
 </head>
 <body>
