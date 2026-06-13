@@ -3,34 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jigjiga Digital Portal | Xarunta Jigjiga</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>Xarunta Jigjiga | Dawlad Deegaanka Soomaalida</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
   --blue:#1a4fa0;--blue-light:#2c6fda;--blue-dark:#0d2d6b;--blue-pale:#e8f0fb;
   --green:#1a7a3c;--green-pale:#eaf5ee;
   --red:#8b1a1a;--red-pale:#f9ecec;
   --sand:#c9963a;--sand-light:#e8b85a;--sand-pale:#fdf6e8;
+  --teal:#0d6b6e;--teal-pale:#e6f7f7;
+  --purple:#4a1a8b;--purple-pale:#f0e6ff;
   --white:#f7f9fd;--ink:#0d1b3e;--gray:#5a6880;--border:#c8d4e8;
   --shadow:0 4px 24px rgba(13,27,62,.10);--shadow-lg:0 12px 48px rgba(13,27,62,.16);
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'IBM Plex Sans',sans-serif;background:var(--white);color:var(--ink);overflow-x:hidden;}
 
-/* LANGUAGE SYSTEM */
-.so{display:block;}.en{display:none;}.am{display:none;}
-body.lang-en .so{display:none;}body.lang-en .en{display:block;}body.lang-en .am{display:none;}
-body.lang-am .so{display:none;}body.lang-am .en{display:none;}body.lang-am .am{display:block;}
-span.so,span.en,span.am{display:inline;}
-body.lang-en span.so,body.lang-en span.am{display:none;}body.lang-en span.en{display:inline;}
-body.lang-am span.so,body.lang-am span.en{display:none;}body.lang-am span.am{display:inline;}
+/* LANGUAGE */
+.so{display:block!important;}.en{display:none!important;}.am{display:none!important;}
+span.so{display:inline!important;}span.en{display:none!important;}span.am{display:none!important;}
+body.lang-en .so{display:none!important;}body.lang-en .en{display:block!important;}
+body.lang-en span.so{display:none!important;}body.lang-en span.en{display:inline!important;}body.lang-en span.am{display:none!important;}
+body.lang-am .so{display:none!important;}body.lang-am .am{display:block!important;}
+body.lang-am span.so{display:none!important;}body.lang-am span.am{display:inline!important;}body.lang-am span.en{display:none!important;}
 
 /* FLAG */
 .flag-sr{height:8px;display:flex;position:relative;}
 .fs-g{flex:1;background:#1a7a3c;}.fs-w{flex:1;background:#fff;}.fs-r{flex:1;background:#8b1a1a;}
 .fs-tri{position:absolute;top:0;left:0;width:0;height:0;border-style:solid;border-width:8px 0 0 20px;border-color:transparent transparent transparent var(--blue);}
 
-/* TOPBAR */
 .topbar{background:var(--blue-dark);color:rgba(255,255,255,.7);font-size:.76rem;padding:7px 0;}
 .tb{max-width:1200px;margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
 .tb a{color:var(--sand-light);text-decoration:none;}
@@ -38,7 +39,6 @@ body.lang-am span.so,body.lang-am span.en{display:none;}body.lang-am span.am{dis
 .lb{background:none;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.65);padding:3px 11px;border-radius:4px;cursor:pointer;font-size:.73rem;font-family:'IBM Plex Sans',sans-serif;transition:all .2s;font-weight:600;}
 .lb.on,.lb:hover{background:var(--sand);border-color:var(--sand);color:var(--blue-dark);}
 
-/* HEADER */
 header{background:#fff;border-bottom:3px solid var(--blue);position:sticky;top:0;z-index:100;box-shadow:var(--shadow);}
 .hd{max-width:1200px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:72px;gap:20px;}
 .logo{display:flex;align-items:center;gap:14px;text-decoration:none;}
@@ -62,7 +62,7 @@ nav a:hover{background:var(--blue-pale);color:var(--blue);}
 .hero{background:var(--blue-dark);padding:80px 24px 0;position:relative;overflow:hidden;min-height:540px;display:flex;align-items:stretch;}
 .hero-pat{position:absolute;inset:0;background-image:repeating-linear-gradient(60deg,rgba(255,255,255,.025) 0,rgba(255,255,255,.025) 1px,transparent 1px,transparent 44px),repeating-linear-gradient(-60deg,rgba(255,255,255,.025) 0,rgba(255,255,255,.025) 1px,transparent 1px,transparent 44px);}
 .hero-tri{position:absolute;bottom:0;right:0;width:0;height:0;border-style:solid;border-width:0 0 540px 380px;border-color:transparent transparent rgba(44,111,218,.1) transparent;}
-.hero-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 420px;gap:60px;align-items:end;position:relative;z-index:1;width:100%;}
+.hero-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 400px;gap:60px;align-items:end;position:relative;z-index:1;width:100%;}
 .hero-text{padding-bottom:70px;}
 .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(201,150,58,.15);border:1px solid rgba(201,150,58,.3);color:var(--sand-light);font-size:.71rem;font-weight:700;padding:5px 14px;border-radius:20px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:22px;}
 .badge-dot{width:6px;height:6px;border-radius:50%;background:var(--sand);animation:pulse 2s infinite;flex-shrink:0;}
@@ -88,67 +88,53 @@ nav a:hover{background:var(--blue-pale);color:var(--blue);}
 .hs .n{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:900;color:var(--sand-light);display:block;line-height:1;}
 .hs .l{font-size:.7rem;color:rgba(255,255,255,.5);margin-top:5px;display:block;text-transform:uppercase;letter-spacing:.08em;}
 
-/* CBAND */
 .cband{height:6px;display:flex;}
 .cb-g{flex:1;background:#1a7a3c;}.cb-w{flex:1;background:#e0e0e0;}.cb-r{flex:1;background:#8b1a1a;}
 
-/* SHARED SECTION STYLES */
-.sec-inner{max-width:1200px;margin:0 auto;}
-.sec-tag{font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--blue);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
-.sec-tag::before{content:'';width:22px;height:2px;background:var(--blue);}
-.sec-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3vw,2.4rem);color:var(--ink);margin-bottom:10px;font-weight:700;}
-.sec-sub{color:var(--gray);font-size:.97rem;margin-bottom:44px;font-weight:300;max-width:560px;}
+/* PORTAL CARDS */
+.portals-sec{padding:72px 24px;background:#fff;}
+.si{max-width:1200px;margin:0 auto;}
+.st{font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--blue);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.st::before{content:'';width:22px;height:2px;background:var(--blue);}
+.sh{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3vw,2.4rem);color:var(--ink);margin-bottom:10px;font-weight:700;}
+.ss{color:var(--gray);font-size:.97rem;margin-bottom:44px;font-weight:300;max-width:560px;}
+.portals-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;}
+.portal-card{background:#fff;border-radius:16px;border:1.5px solid var(--border);overflow:hidden;transition:all .3s;box-shadow:var(--shadow);text-decoration:none;color:var(--ink);display:block;}
+.portal-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg);}
+.pc-top{padding:28px 24px 20px;}
+.pc-ico{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.7rem;margin-bottom:16px;}
+.pc-top h3{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;margin-bottom:6px;}
+.pc-top p{font-size:.82rem;color:var(--gray);line-height:1.6;}
+.pc-features{padding:0 24px 16px;display:flex;flex-direction:column;gap:6px;}
+.pcf{font-size:.8rem;color:var(--ink);display:flex;align-items:center;gap:7px;}
+.pcf::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0;}
+.pc-btn{display:block;margin:0 16px 16px;padding:11px;border-radius:10px;text-align:center;font-size:.87rem;font-weight:700;transition:all .2s;}
 
-/* KEBELE SELECTOR */
-.kebele-sec{padding:72px 24px;background:#fff;}
-.search-wrap{position:relative;max-width:520px;margin-bottom:36px;}
-.search-wrap input{width:100%;background:var(--white);border:2px solid var(--border);color:var(--ink);padding:14px 20px 14px 48px;border-radius:10px;font-size:.95rem;font-family:'IBM Plex Sans',sans-serif;outline:none;transition:all .2s;}
-.search-wrap input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,79,160,.1);}
-.search-ico{position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:1.1rem;color:var(--gray);}
-.kebele-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;}
-.kc{background:var(--white);border:1.5px solid var(--border);border-radius:14px;padding:22px 20px;cursor:pointer;transition:all .25s;text-decoration:none;color:var(--ink);display:block;position:relative;overflow:hidden;}
-.kc::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--blue);transform:scaleY(0);transition:transform .3s;transform-origin:bottom;}
-.kc:hover::before{transform:scaleY(1);}
-.kc:hover{border-color:var(--blue);background:#fff;box-shadow:var(--shadow);transform:translateY(-3px);}
-.kc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
-.kc-num{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;color:var(--blue-dark);line-height:1;}
-.kc-status{font-size:.63rem;font-weight:700;padding:3px 8px;border-radius:3px;text-transform:uppercase;letter-spacing:.05em;background:var(--green-pale);color:var(--green);}
-.kc-status.new{background:var(--sand-pale);color:var(--sand);}
-.kc h3{font-size:.9rem;font-weight:700;color:var(--blue-dark);margin-bottom:4px;}
-.kc p{font-size:.76rem;color:var(--gray);line-height:1.5;margin-bottom:10px;}
-.kc-meta{display:flex;gap:8px;}
-.kc-tag{font-size:.65rem;background:var(--blue-pale);color:var(--blue);padding:2px 7px;border-radius:3px;font-weight:600;}
-
-/* SERVICES */
-.svc-sec{padding:72px 24px;background:var(--blue-pale);}
-.svc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2px;background:var(--border);border-radius:16px;overflow:hidden;margin-top:44px;}
-.sv{background:#fff;padding:28px 22px;cursor:pointer;transition:all .25s;text-decoration:none;color:var(--ink);display:block;position:relative;}
-.sv::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--blue);transform:scaleX(0);transition:transform .3s;transform-origin:left;}
-.sv:hover::after{transform:scaleX(1);}
-.sv:hover{background:var(--blue-pale);}
-.sv-ico{width:52px;height:52px;border-radius:12px;background:var(--blue-pale);display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:14px;}
-.sv:hover .sv-ico{background:var(--blue);}
-.sv h3{font-size:.92rem;font-weight:600;margin-bottom:6px;color:var(--blue-dark);}
-.sv p{font-size:.76rem;color:var(--gray);line-height:1.6;}
-.sv-badge{display:inline-block;margin-top:10px;font-size:.62rem;font-weight:700;padding:2px 8px;border-radius:3px;text-transform:uppercase;background:var(--sand-pale);color:var(--sand);}
-
-/* PAY SECTION */
+/* PAYMENT SECTION */
 .pay-sec{background:var(--blue-dark);padding:72px 24px;position:relative;overflow:hidden;}
 .pay-sec::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.02) 0,rgba(255,255,255,.02) 1px,transparent 1px,transparent 30px);}
-.pay-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 460px;gap:60px;align-items:start;position:relative;}
-.pay-left .sec-tag{color:var(--sand-light);} .pay-left .sec-tag::before{background:var(--sand);}
-.pay-left .sec-title{color:#fff;}
-.pay-left > p{color:rgba(255,255,255,.62);font-size:.96rem;line-height:1.8;margin-bottom:28px;font-weight:300;}
-.pay-methods{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:28px;}
-.pm{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:14px;display:flex;align-items:center;gap:10px;transition:background .2s;}
-.pm:hover{background:rgba(255,255,255,.12);}
-.pm-ico{font-size:1.4rem;flex-shrink:0;}
-.pm-name{font-weight:700;font-size:.85rem;color:#fff;}
-.pm-users{font-size:.67rem;color:rgba(255,255,255,.5);}
-.ac-list{display:flex;flex-direction:column;gap:10px;}
-.ac{display:flex;align-items:center;gap:10px;font-size:.82rem;color:rgba(255,255,255,.65);}
-.ac-ic{width:30px;height:30px;background:rgba(201,150,58,.15);border:1px solid rgba(201,150,58,.25);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0;}
-.pay-form{background:#fff;border-radius:18px;padding:32px 28px;box-shadow:var(--shadow-lg);}
+.pay-inner{max-width:1200px;margin:0 auto;position:relative;}
+.pay-inner .st{color:var(--sand-light);}.pay-inner .st::before{background:var(--sand);}
+.pay-inner .sh{color:#fff;}
+.pay-inner .ss{color:rgba(255,255,255,.55);}
+
+/* PAYMENT METHODS */
+.pay-methods-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:40px;}
+.pm{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:20px 16px;text-align:center;transition:all .25s;cursor:pointer;}
+.pm:hover,.pm.sel{background:rgba(255,255,255,.12);border-color:var(--sand);}
+.pm-ico{font-size:1.8rem;margin-bottom:8px;}
+.pm-name{font-size:.88rem;font-weight:600;color:#fff;margin-bottom:3px;}
+.pm-desc{font-size:.7rem;color:rgba(255,255,255,.45);}
+.pm-users{font-size:.68rem;color:var(--sand-light);margin-top:4px;font-weight:600;}
+
+/* PAYMENT FORM */
+.pay-form-wrap{display:grid;grid-template-columns:1fr 460px;gap:48px;align-items:start;}
+.pay-info{display:flex;flex-direction:column;gap:16px;}
+.pi-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:20px;}
+.pi-card h4{font-size:.88rem;font-weight:600;color:var(--sand-light);margin-bottom:10px;}
+.pi-item{display:flex;align-items:center;gap:10px;font-size:.82rem;color:rgba(255,255,255,.65);margin-bottom:8px;}
+.pi-item::before{content:'→';color:var(--sand);font-weight:700;flex-shrink:0;}
+.pay-form-card{background:#fff;border-radius:18px;padding:32px 28px;box-shadow:var(--shadow-lg);}
 .pf-title{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;margin-bottom:4px;color:var(--blue-dark);}
 .pf-sub{font-size:.82rem;color:var(--gray);margin-bottom:22px;}
 .fg{margin-bottom:14px;}
@@ -156,6 +142,10 @@ nav a:hover{background:var(--blue-pale);color:var(--blue);}
 .fg input,.fg select{width:100%;background:var(--white);border:1.5px solid var(--border);color:var(--ink);padding:12px 15px;border-radius:8px;font-size:.9rem;font-family:'IBM Plex Sans',sans-serif;outline:none;transition:all .2s;}
 .fg input:focus,.fg select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,79,160,.1);}
 .fg select option{background:#fff;}
+.source-badge{display:inline-flex;align-items:center;gap:6px;background:var(--blue-pale);border:1px solid var(--blue);border-radius:8px;padding:8px 14px;margin-bottom:16px;width:100%;}
+.source-badge .sb-ico{font-size:1rem;}
+.source-badge .sb-text{font-size:.8rem;font-weight:600;color:var(--blue-dark);}
+.source-badge .sb-ref{font-size:.7rem;color:var(--gray);font-family:'IBM Plex Mono',monospace;margin-left:auto;}
 .amt-box{background:var(--blue-pale);border:1.5px solid var(--blue);border-radius:10px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
 .amt-box .albl{font-size:.78rem;color:var(--blue-dark);font-weight:600;}
 .amt-box .aamt{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:900;color:var(--blue-dark);}
@@ -163,37 +153,37 @@ nav a:hover{background:var(--blue-pale);color:var(--blue);}
 .pay-btn:hover{background:var(--blue-light);transform:translateY(-2px);}
 .secure{display:flex;align-items:center;justify-content:center;gap:6px;font-size:.73rem;color:var(--gray);margin-top:10px;}
 
-/* CONTACT */
-.contact-sec{padding:72px 24px;background:#fff;}
-.contact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:44px;}
-.cc{background:#fff;border-radius:14px;padding:28px 24px;border:1.5px solid var(--border);transition:all .25s;}
-.cc:hover{border-color:var(--blue);box-shadow:var(--shadow);}
-.cc-ico{width:48px;height:48px;border-radius:12px;background:var(--blue-pale);display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:16px;}
-.cc h3{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--blue-dark);margin-bottom:10px;}
-.cc p{font-size:.82rem;color:var(--gray);line-height:1.7;}
-.cc a{color:var(--blue);text-decoration:none;font-weight:600;}
-.chr{display:flex;justify-content:space-between;font-size:.82rem;padding:7px 0;border-bottom:1px solid var(--border);}
-.chr:last-child{border-bottom:none;}
-.chr .hd{color:var(--gray);}
-.chr .ht{font-weight:600;color:var(--blue);}
-.chr .hc{font-weight:600;color:var(--red);}
+/* LIVE LEDGER */
+.ledger-sec{padding:72px 24px;background:var(--white);}
+.ledger-inner{max-width:1200px;margin:0 auto;}
+.ledger-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:32px;}
+.ls{background:#fff;border-radius:14px;padding:22px 20px;border:1px solid var(--border);text-align:center;box-shadow:var(--shadow);}
+.ls .n{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:900;display:block;line-height:1;margin-bottom:4px;}
+.ls .l{font-size:.7rem;color:var(--gray);text-transform:uppercase;letter-spacing:.08em;}
+.ledger-table-wrap{background:#fff;border-radius:16px;border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow);}
+.lt-header{display:grid;grid-template-columns:120px 1fr 140px 120px 100px;background:var(--blue-dark);padding:12px 20px;gap:12px;}
+.lt-header span{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.7);}
+.lt-row{display:grid;grid-template-columns:120px 1fr 140px 120px 100px;padding:14px 20px;gap:12px;border-bottom:1px solid var(--border);align-items:center;transition:background .2s;}
+.lt-row:last-child{border-bottom:none;}
+.lt-row:hover{background:var(--blue-pale);}
+.lt-time{font-family:'IBM Plex Mono',monospace;font-size:.75rem;color:var(--gray);}
+.lt-service{font-size:.83rem;color:var(--ink);}
+.source-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:.7rem;font-weight:700;}
+.lt-amount{font-family:'IBM Plex Mono',monospace;font-size:.88rem;font-weight:600;color:var(--green);}
+.lt-status{display:inline-flex;align-items:center;gap:4px;font-size:.7rem;font-weight:700;color:var(--green);}
 
 /* MODAL */
 .modal-ov{display:none;position:fixed;inset:0;background:rgba(13,27,62,.75);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
 .modal-ov.open{display:flex;}
 .modal{background:#fff;border-radius:18px;padding:38px 32px;max-width:440px;width:90%;box-shadow:var(--shadow-lg);text-align:center;animation:mIn .3s ease;}
 @keyframes mIn{from{opacity:0;transform:scale(.92) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
-.m-check{width:70px;height:70px;background:var(--blue-pale);border:3px solid var(--blue);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2rem;margin:0 auto 18px;}
+.m-check{width:70px;height:70px;background:var(--green-pale);border:3px solid var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2rem;margin:0 auto 18px;}
 .modal h2{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;margin-bottom:8px;color:var(--blue-dark);}
 .modal p{font-size:.85rem;color:var(--gray);line-height:1.6;margin-bottom:20px;}
-.r-detail{background:var(--white);border-radius:10px;padding:18px;margin-bottom:20px;text-align:left;border:1px solid var(--border);}
-.rdr{display:flex;justify-content:space-between;font-size:.82rem;padding:6px 0;border-bottom:1px solid var(--border);}
-.rdr:last-child{border-bottom:none;}
-.rdr .k{color:var(--gray);}.rdr .v{font-weight:700;}.rdr .v.g{color:var(--green);}
-.modal-btn{background:var(--blue-dark);color:#fff;border:none;padding:12px 30px;border-radius:8px;font-size:.92rem;font-weight:700;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;transition:all .2s;}
-.modal-btn:hover{background:var(--blue);}
+.ref-box{background:var(--blue-dark);border-radius:10px;padding:14px;font-family:'IBM Plex Mono',monospace;font-size:.85rem;color:var(--sand-light);letter-spacing:.08em;margin-bottom:8px;}
+.ref-source{font-size:.75rem;color:var(--gray);margin-bottom:18px;}
+.modal-btn{background:var(--blue-dark);color:#fff;border:none;padding:12px 28px;border-radius:8px;font-size:.92rem;font-weight:700;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;}
 
-/* FOOTER */
 footer{background:var(--ink);color:rgba(255,255,255,.55);padding:52px 24px 22px;}
 .ft{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:44px;padding-bottom:36px;border-bottom:1px solid rgba(255,255,255,.08);}
 .ft-brand .ftl{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
@@ -204,24 +194,8 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:52px 24px 22px;
 .ft-col a:hover{color:var(--sand-light);}
 .ft-bottom{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;padding-top:20px;font-size:.75rem;flex-wrap:wrap;gap:8px;}
 
-@media(max-width:960px){.hero-inner,.pay-inner{grid-template-columns:1fr;}nav{display:none;}nav.open{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:#fff;border-bottom:2px solid var(--border);padding:12px 0;box-shadow:var(--shadow);}nav.open a{padding:12px 24px;border-bottom:1px solid var(--border);border-radius:0;}header{position:relative;}.hamburger{display:block;}.contact-grid{grid-template-columns:1fr;}.ft{grid-template-columns:1fr 1fr;}}
-@media(max-width:600px){.kebele-grid{grid-template-columns:1fr 1fr;}.pay-methods{grid-template-columns:1fr;}.hero-stats{grid-template-columns:1fr 1fr;}.ft{grid-template-columns:1fr;}}
-.so { display:block !important; }
-.en { display:none !important; }
-.am { display:none !important; }
-span.so { display:inline !important; }
-span.en { display:none !important; }
-span.am { display:none !important; }
-body.lang-en .so { display:none !important; }
-body.lang-en .en { display:block !important; }
-body.lang-en span.so { display:none !important; }
-body.lang-en span.en { display:inline !important; }
-body.lang-en span.am { display:none !important; }
-body.lang-am .so { display:none !important; }
-body.lang-am .am { display:block !important; }
-body.lang-am span.so { display:none !important; }
-body.lang-am span.am { display:inline !important; }
-body.lang-am span.en { display:none !important; }
+@media(max-width:960px){.hero-inner,.pay-form-wrap{grid-template-columns:1fr;}nav{display:none;}nav.open{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:#fff;border-bottom:2px solid var(--border);padding:12px 0;box-shadow:var(--shadow);}nav.open a{padding:12px 24px;border-bottom:1px solid var(--border);border-radius:0;}header{position:relative;}.hamburger{display:block;}.ledger-stats{grid-template-columns:1fr 1fr;}.ft{grid-template-columns:1fr 1fr;}}
+@media(max-width:600px){.portals-grid{grid-template-columns:1fr;}.pay-methods-grid{grid-template-columns:1fr 1fr;}.ledger-stats{grid-template-columns:1fr 1fr;}.lt-header,.lt-row{grid-template-columns:80px 1fr 100px;}.lt-header span:nth-child(4),.lt-header span:nth-child(5),.lt-row .lt-amount,.lt-row .lt-status{display:none;}.ft{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
@@ -250,148 +224,280 @@ body.lang-am span.en { display:none !important; }
     </a>
     <button class="hamburger" onclick="document.getElementById('mainnav').classList.toggle('open')"><span></span><span></span><span></span></button>
     <nav id="mainnav">
-      <a href="#"><span class="so">🏠 Hoyga</span><span class="en">🏠 Home</span><span class="am">🏠 መነሻ</span></a>
-      <a href="#kebele"><span class="so">🏛️ Xaafadaha</span><span class="en">🏛️ Kebeles</span><span class="am">🏛️ ቀበሌዎች</span></a>
-      <a href="#adeegyada"><span class="so">📋 Adeegyada</span><span class="en">📋 Services</span><span class="am">📋 አገልግሎቶች</span></a>
-      <a href="#lacag" class="nav-cta"><span class="so">💳 Lacag Bixi</span><span class="en">💳 Pay Now</span><span class="am">💳 አሁን ይክፈሉ</span></a>
+      <a href="02-kebele-verwaltung.html"><span class="so">🏛️ Xaafadaha</span><span class="en">🏛️ Kebeles</span><span class="am">🏛️ ቀበሌዎች</span></a>
+      <a href="03-schule.html"><span class="so">🏫 Dugsiga</span><span class="en">🏫 School</span><span class="am">🏫 ት/ቤት</span></a>
+      <a href="04-gesundheit.html"><span class="so">🏥 Caafimaadka</span><span class="en">🏥 Health</span><span class="am">🏥 ጤና</span></a>
+      <a href="#lacag" class="nav-cta"><span class="so">💳 Lacag Bixi</span><span class="en">💳 Pay Now</span><span class="am">💳 ይክፈሉ</span></a>
     </nav>
   </div>
 </header>
 
+<!-- HERO -->
 <section class="hero">
   <div class="hero-pat"></div><div class="hero-tri"></div>
   <div class="hero-inner">
     <div class="hero-text">
       <div class="hero-badge"><div class="badge-dot"></div><span class="so">Portal Rasmiga ah · Jigjiga</span><span class="en">Official Portal · Jigjiga</span><span class="am">ይፋዊ ፖርታል · ጅጅጋ</span></div>
-      <h2><span class="so">Jigjiga –<br><em>Digital.</em><br>Cad. La gaadhi karo.</span><span class="en">Jigjiga –<br><em>Digital.</em><br>Transparent. Accessible.</span><span class="am">ጅጅጋ –<br><em>ዲጂታል።</em><br>ግልፅ። ለሁሉም።</span></h2>
-      <p><span class="so">Dhammaan 28 Xaafadood hal meel – codsiga, lacag bixinta, caafimaadka iyo waxbarashada. Toos, adoon sugi jirin.</span><span class="en">All 28 Kebeles in one place – requests, payments, health and education. Direct, no queues, no middlemen.</span><span class="am">ሁሉም 28 ቀበሌዎች በአንድ ቦታ – ማመልከቻ፣ ክፍያ፣ ጤና እና ትምህርት። ቀጥታ፣ ያለ ወረፋ።</span></p>
+      <h2><span class="so">Jigjiga –<br><em>Digital.</em><br>Cad. Hufan.</span><span class="en">Jigjiga –<br><em>Digital.</em><br>Transparent. Accessible.</span><span class="am">ጅጅጋ –<br><em>ዲጂታል።</em><br>ግልፅ። ለሁሉም።</span></h2>
+      <p><span class="so">Dhammaan adeegyada, codsiyada iyo lacag bixinta mid ka mid ah hal meel. Toos, ammaan, daahfuran.</span><span class="en">All services, requests and payments from one place. Direct, secure, transparent.</span><span class="am">ሁሉም አገልግሎቶች፣ ማመልከቻዎች እና ክፍያዎች ከአንድ ቦታ። ቀጥታ፣ ደህንነቱ የተጠበቀ፣ ግልፅ።</span></p>
       <div class="hero-btns">
-        <a href="#kebele" class="btn-sand"><span class="so">🏛️ Xaafaddaada Dooro</span><span class="en">🏛️ Find Your Kebele</span><span class="am">🏛️ ቀበሌዎን ያግኙ</span></a>
-        <a href="#lacag" class="btn-ghost"><span class="so">💳 Lacag Bixi →</span><span class="en">💳 Pay Now →</span><span class="am">💳 ይክፈሉ →</span></a>
+        <a href="#lacag" class="btn-sand"><span class="so">💳 Lacag Bixi</span><span class="en">💳 Pay Now</span><span class="am">💳 አሁን ይክፈሉ</span></a>
+        <a href="#portals" class="btn-ghost"><span class="so">📋 Adeegyada →</span><span class="en">📋 All Services →</span><span class="am">📋 ሁሉም →</span></a>
       </div>
       <div class="hero-trust">
-        <div class="ht"><span class="so">Rasmiga ah</span><span class="en">Official</span><span class="am">ይፋዊ</span></div>
-        <div class="ht">24/7 Online</div>
-        <div class="ht">Telebirr ✓</div>
-        <div class="ht"><span class="so">Dhexdhexaad la'aan</span><span class="en">No middlemen</span><span class="am">ያለ አማላጅ</span></div>
+        <div class="ht"><span class="so">6 Portal</span><span class="en">6 Portals</span><span class="am">6 ፖርታሎች</span></div>
+        <div class="ht"><span class="so">5 Hab Lacag</span><span class="en">5 Payment methods</span><span class="am">5 የክፍያ ዘዴዎች</span></div>
+        <div class="ht"><span class="so">Hal Khisaab</span><span class="en">One treasury</span><span class="am">አንድ ግምጃ ቤት</span></div>
+        <div class="ht">24/7</div>
       </div>
     </div>
     <div class="hero-stats">
       <div class="hs"><span class="n">28</span><span class="l"><span class="so">Xaafadood</span><span class="en">Kebeles</span><span class="am">ቀበሌዎች</span></span></div>
       <div class="hs"><span class="n">500K+</span><span class="l"><span class="so">Dadweyne</span><span class="en">Citizens</span><span class="am">ዜጎች</span></span></div>
-      <div class="hs"><span class="n">24/7</span><span class="l"><span class="so">Online</span><span class="en">Online</span><span class="am">ኦንላይን</span></span></div>
       <div class="hs"><span class="n">0</span><span class="l"><span class="so">Dhexdhexaad</span><span class="en">Middlemen</span><span class="am">አማላጆች</span></span></div>
+      <div class="hs"><span class="n">5</span><span class="l"><span class="so">Hab Lacag</span><span class="en">Pay Methods</span><span class="am">የክፍያ ዘዴ</span></span></div>
     </div>
   </div>
 </section>
 
 <div class="cband"><div class="cb-g"></div><div class="cb-w"></div><div class="cb-r"></div></div>
 
-<!-- KEBELE SELECTOR -->
-<section class="kebele-sec" id="kebele">
-  <div class="sec-inner">
-    <div class="sec-tag"><span class="so">Xaafadaha Jigjiga</span><span class="en">Jigjiga Kebeles</span><span class="am">የጅጅጋ ቀበሌዎች</span></div>
-    <h2 class="sec-title"><span class="so">Xaafaddaada Dooro</span><span class="en">Choose Your Kebele</span><span class="am">ቀበሌዎን ይምረጡ</span></h2>
-    <p class="sec-sub"><span class="so">Dhammaan 28 xaafadood isla nidaam, isla tayada adeegga.</span><span class="en">All 28 kebeles – same system, same service standard for everyone.</span><span class="am">ሁሉም 28 ቀበሌዎች ተመሳሳይ ስርዓት እና የአገልግሎት ደረጃ።</span></p>
-    <div class="search-wrap">
-      <span class="search-ico">🔍</span>
-      <input type="text" id="kSearch" placeholder="Xaafad raadi... / Search... / ቀበሌ ፈልጉ..." oninput="filterK(this.value)">
+<!-- PORTALS -->
+<section class="portals-sec" id="portals">
+  <div class="si">
+    <div class="st"><span class="so">Dhammaan Adeegyada</span><span class="en">All Services</span><span class="am">ሁሉም አገልግሎቶች</span></div>
+    <h2 class="sh"><span class="so">Doorso Adeegga</span><span class="en">Choose Your Service</span><span class="am">አገልግሎትዎን ይምረጡ</span></h2>
+    <p class="ss"><span class="so">Dhammaan lacag bixintu waxay toos u aadaan hal khisaab oo dowladda – la socod si fudud.</span><span class="en">All payments go directly to one government treasury – easily traceable by source.</span><span class="am">ሁሉም ክፍያዎች ወደ አንድ የመንግሥት ግምጃ ቤት ይሄዳሉ – ምንጩ ቀላሉ ይታወቃል።</span></p>
+    <div class="portals-grid">
+
+      <a href="02-kebele-verwaltung.html" class="portal-card" style="border-color:#1a4fa0;">
+        <div class="pc-top">
+          <div class="pc-ico" style="background:var(--blue-pale)">🏛️</div>
+          <h3><span class="so">Xaafadaha</span><span class="en">Kebele Administration</span><span class="am">ቀበሌ አስተዳደር</span></h3>
+          <p><span class="so">Dhammaan 28 xaafadood – codsiyada, diiwaangelinta, macluumaadka</span><span class="en">All 28 kebeles – requests, registration, information</span><span class="am">ሁሉም 28 ቀበሌዎች – ማመልከቻዎች፣ ምዝገባ</span></p>
+        </div>
+        <div class="pc-features">
+          <div class="pcf"><span class="so">ID-Karta, Deganaanshaha</span><span class="en">ID Card, Residence</span><span class="am">መታወቂያ፣ መኖሪያ</span></div>
+          <div class="pcf"><span class="so">Shahaadada Dhalashada & Guurka</span><span class="en">Birth & Marriage certificates</span><span class="am">የልደት እና ጋብቻ ምስክርነት</span></div>
+          <div class="pcf"><span class="so">Lacag Online ah</span><span class="en">Online payment</span><span class="am">ኦንላይን ክፍያ</span></div>
+        </div>
+        <div class="pc-btn" style="background:var(--blue);color:#fff;"><span class="so">Gal →</span><span class="en">Open →</span><span class="am">ክፈት →</span></div>
+      </a>
+
+      <a href="03-schule.html" class="portal-card" style="border-color:#1a7a3c;">
+        <div class="pc-top">
+          <div class="pc-ico" style="background:var(--green-pale)">🏫</div>
+          <h3><span class="so">Waxbarashada</span><span class="en">Education</span><span class="am">ትምህርት</span></h3>
+          <p><span class="so">Jigjiga Model Primary School – Fasalada 1-8, diiwaangelinta ardayda</span><span class="en">Jigjiga Model Primary School – Classes 1-8, student enrollment</span><span class="am">ጅጅጋ ሞዴል ት/ቤት – ክፍል 1-8፣ ምዝገባ</span></p>
+        </div>
+        <div class="pc-features">
+          <div class="pcf"><span class="so">Diiwaangelinta Online</span><span class="en">Online enrollment</span><span class="am">ኦንላይን ምዝገባ</span></div>
+          <div class="pcf"><span class="so">Jadwalka Casharka</span><span class="en">Class schedule</span><span class="am">የትምህርት ሰሌዳ</span></div>
+          <div class="pcf"><span class="so">Mushaharka Online</span><span class="en">School fees online</span><span class="am">ክፍያ ኦንላይን</span></div>
+        </div>
+        <div class="pc-btn" style="background:var(--green);color:#fff;"><span class="so">Gal →</span><span class="en">Open →</span><span class="am">ክፈት →</span></div>
+      </a>
+
+      <a href="04-gesundheit.html" class="portal-card" style="border-color:#0d6b6e;">
+        <div class="pc-top">
+          <div class="pc-ico" style="background:var(--teal-pale)">🏥</div>
+          <h3><span class="so">Caafimaadka</span><span class="en">Health Center</span><span class="am">የጤና ማዕከል</span></h3>
+          <p><span class="so">Xarunta Caafimaadka Jigjiga – ballansamida, adeegyada bilaashka ah</span><span class="en">Jigjiga Health Center – appointments, free services</span><span class="am">ጅጅጋ የጤና ማዕከል – ቀጠሮ፣ ነፃ አገልግሎቶች</span></p>
+        </div>
+        <div class="pc-features">
+          <div class="pcf"><span class="so">Ballansamida Online</span><span class="en">Online appointment</span><span class="am">ቀጠሮ ኦንላይን</span></div>
+          <div class="pcf"><span class="so">8 Waaxood bilaash ah</span><span class="en">8 free departments</span><span class="am">8 ነፃ ክፍሎች</span></div>
+          <div class="pcf"><span class="so">Degdeg 24/7</span><span class="en">Emergency 24/7</span><span class="am">አስቸኳይ 24/7</span></div>
+        </div>
+        <div class="pc-btn" style="background:var(--teal);color:#fff;"><span class="so">Gal →</span><span class="en">Open →</span><span class="am">ክፈት →</span></div>
+      </a>
+
+      <a href="#lacag" class="portal-card" style="border-color:var(--sand);">
+        <div class="pc-top">
+          <div class="pc-ico" style="background:var(--sand-pale)">💳</div>
+          <h3><span class="so">GovPay – Lacag Bixinta</span><span class="en">GovPay – Payments</span><span class="am">GovPay – ክፍያዎች</span></h3>
+          <p><span class="so">Toos u xukuumadda – Telebirr, CBE Birr, HelloCash, M-Pesa, Coopy Birr</span><span class="en">Direct to government – all Ethiopian payment methods</span><span class="am">ቀጥታ ለመንግሥት – ሁሉም የኢትዮጵያ ክፍያ ዘዴዎች</span></p>
+        </div>
+        <div class="pc-features">
+          <div class="pcf"><span class="so">5 Hab Lacag oo dhan</span><span class="en">All 5 payment methods</span><span class="am">ሁሉም 5 ዘዴዎች</span></div>
+          <div class="pcf"><span class="so">Rasiidh SMS ah – deg deg</span><span class="en">Instant SMS receipt</span><span class="am">ፈጣን SMS ደረሰኝ</span></div>
+          <div class="pcf"><span class="so">Hal Khisaab – la socod</span><span class="en">One treasury – traceable</span><span class="am">አንድ ግምጃ ቤት</span></div>
+        </div>
+        <div class="pc-btn" style="background:var(--sand);color:var(--blue-dark);"><span class="so">Lacag Bixi →</span><span class="en">Pay Now →</span><span class="am">ይክፈሉ →</span></div>
+      </a>
+
     </div>
-    <div class="kebele-grid" id="kGrid"></div>
   </div>
 </section>
 
-<!-- SERVICES -->
-<section class="svc-sec" id="adeegyada">
-  <div class="sec-inner">
-    <div class="sec-tag"><span class="so">Adeegyada</span><span class="en">Services</span><span class="am">አገልግሎቶች</span></div>
-    <h2 class="sec-title"><span class="so">Maxaad u baahan tahay?</span><span class="en">What do you need?</span><span class="am">ምን ያስፈልጋችኋል?</span></h2>
-    <p class="sec-sub"><span class="so">Dhammaan adeegyada online – adoon xafiis aadin.</span><span class="en">All services available online – no office visit needed.</span><span class="am">ሁሉም አገልግሎቶች ኦንላይን – ቢሮ ሳይሄዱ።</span></p>
-    <div class="svc-grid">
-      <a href="#lacag" class="sv"><div class="sv-ico">🪪</div><h3><span class="so">Aqoonsiga</span><span class="en">ID Card</span><span class="am">መታወቂያ</span></h3><p><span class="so">Codsiga hore, cusboonaysiin</span><span class="en">First issue, renewal, replacement</span><span class="am">መጀመሪያ፣ ታደሳ</span></p><span class="sv-badge">Online ✓</span></a>
-      <a href="#lacag" class="sv"><div class="sv-ico">🏠</div><h3><span class="so">Deganaanshaha</span><span class="en">Residence Reg.</span><span class="am">መኖሪያ ምዝገባ</span></h3><p><span class="so">Diiwaangelinta cinwaanka</span><span class="en">Register your address</span><span class="am">አድራሻ ማስመዝገብ</span></p><span class="sv-badge">Online ✓</span></a>
-      <a href="#lacag" class="sv"><div class="sv-ico">👶</div><h3><span class="so">Shahaadada Dhalashada</span><span class="en">Birth Certificate</span><span class="am">የልደት ምስክርነት</span></h3><p><span class="so">Codsiga & diiwaangelinta</span><span class="en">Application & registration</span><span class="am">ማመልከቻ እና ምዝገባ</span></p><span class="sv-badge">Online ✓</span></a>
-      <a href="#lacag" class="sv"><div class="sv-ico">💒</div><h3><span class="so">Shahaadada Guurka</span><span class="en">Marriage Cert.</span><span class="am">የጋብቻ ምስክርነት</span></h3><p><span class="so">Diiwaangelinta rasmiga ah</span><span class="en">Official registration</span><span class="am">ዳኝነት ምዝገባ</span></p><span class="sv-badge"><span class="so">Ballansasho</span><span class="en">Appointment</span><span class="am">ቀጠሮ</span></span></a>
-      <a href="#lacag" class="sv"><div class="sv-ico">🏗️</div><h3><span class="so">Ogolaanshaha Dhismaha</span><span class="en">Build Permit</span><span class="am">የግንባታ ፈቃድ</span></h3><p><span class="so">Dhismuhu cusub ama hagaajin</span><span class="en">New builds & renovation</span><span class="am">አዲስ ግንባታ እና ጥገና</span></p><span class="sv-badge">Online ✓</span></a>
-      <a href="#lacag" class="sv"><div class="sv-ico">💰</div><h3><span class="so">Canshuurta</span><span class="en">Taxes & Fees</span><span class="am">ግብር እና ክፍያዎች</span></h3><p><span class="so">Toos u bixi via Telebirr</span><span class="en">Pay directly via Telebirr</span><span class="am">በቴሌቢር ቀጥታ ይክፈሉ</span></p><span class="sv-badge">Telebirr ✓</span></a>
-      <a href="#lacag" class="sv"><div class="sv-ico">🌱</div><h3><span class="so">Dhulka</span><span class="en">Land Rights</span><span class="am">የመሬት መብቶች</span></h3><p><span class="so">Codsiga isticmaalka dhulka</span><span class="en">Land use application</span><span class="am">የመሬት አጠቃቀም</span></p><span class="sv-badge">Online ✓</span></a>
-      <a href="#lacag" class="sv"><div class="sv-ico">🏫</div><h3><span class="so">Waxbarashada</span><span class="en">School Enrollment</span><span class="am">ት/ቤት ምዝገባ</span></h3><p><span class="so">Diiwaangelinta dugsiyada</span><span class="en">Register children for school</span><span class="am">ልጆችን ለትምህርት መመዝገብ</span></p><span class="sv-badge">Online ✓</span></a>
-    </div>
-  </div>
-</section>
-
-<!-- PAYMENT PORTAL -->
+<!-- PAYMENT SECTION -->
 <section class="pay-sec" id="lacag">
   <div class="pay-inner">
-    <div class="pay-left">
-      <div class="sec-tag"><span class="so">Xarunta Lacag Bixinta</span><span class="en">Payment Portal</span><span class="am">የክፍያ ፖርታል</span></div>
-      <h2 class="sec-title"><span class="so">Toos u bixi.<br>Dhexdhexaad la'aan.</span><span class="en">Pay directly.<br>No middlemen.</span><span class="am">ቀጥታ ይክፈሉ።<br>ያለ አማላጅ።</span></h2>
-      <p><span class="so">Dhammaan lacag bixintu waxay si toos ah ugu tagaan xisaabta dowladda – leh lambarka tixraaca iyo xaqiijinta SMS.</span><span class="en">All payments go directly to the government account – with a unique reference number and instant SMS confirmation.</span><span class="am">ሁሉም ክፍያዎች ቀጥታ ወደ መንግሥት ሒሳብ – ከማጣቀሻ ቁጥር እና ፈጣን SMS ማረጋገጫ ጋር።</span></p>
-      <div class="pay-methods">
-        <div class="pm"><span class="pm-ico">📱</span><div><div class="pm-name">Telebirr</div><div class="pm-users">54M+ users</div></div></div>
-        <div class="pm"><span class="pm-ico">🏦</span><div><div class="pm-name">CBE Birr</div><div class="pm-users">Largest bank</div></div></div>
-        <div class="pm"><span class="pm-ico">💚</span><div><div class="pm-name">HelloCash</div><div class="pm-users">Rural areas</div></div></div>
-        <div class="pm"><span class="pm-ico">📲</span><div><div class="pm-name">M-Pesa</div><div class="pm-users">International</div></div></div>
+    <div class="st"><span class="so">Xarunta Lacag Bixinta</span><span class="en">Central Payment Gateway</span><span class="am">ማዕከላዊ የክፍያ መግቢያ</span></div>
+    <h2 class="sh"><span class="so">Hal Khisaab – Dhammaan Lacagaha</span><span class="en">One Treasury – All Payments</span><span class="am">አንድ ግምጃ ቤት – ሁሉም ክፍያዎች</span></h2>
+    <p class="ss"><span class="so">Lacag kasta – ha ka timaado Xaafadda, Dugsiga, Caafimaadka ama meelkale – waxay toos u aadaan hal khisaab oo dowladda, leh magac-goob cad.</span><span class="en">Every payment – whether from Kebele, School, Health or elsewhere – goes directly to one government treasury, with a clear source label.</span><span class="am">እያንዳንዱ ክፍያ – ከቀበሌ፣ ት/ቤት፣ ጤና ወይም ሌላ – ቀጥታ ወደ አንድ የመንግሥት ግምጃ ቤት ይሄዳል፣ ግልፅ ምንጭ ስያሜ ጋር።</span></p>
+
+    <!-- PAYMENT METHODS -->
+    <div class="pay-methods-grid">
+      <div class="pm sel" onclick="selPM(this,'📱','Telebirr','Ethio Telecom · 54M+')">
+        <div class="pm-ico">📱</div>
+        <div class="pm-name">Telebirr</div>
+        <div class="pm-desc">Ethio Telecom</div>
+        <div class="pm-users">54M+ <span class="so">isticmaale</span><span class="en">users</span><span class="am">ተጠቃሚዎች</span></div>
       </div>
-      <div class="ac-list">
-        <div class="ac"><div class="ac-ic">🔍</div><span class="so">Lacag walba leh lambarka tixraaca gaar ah</span><span class="en">Every payment has a unique traceable reference number</span><span class="am">እያንዳንዱ ክፍያ ልዩ ማጣቀሻ ቁጥር አለው</span></div>
-        <div class="ac"><div class="ac-ic">📊</div><span class="so">Xogta lacagta waa furan tahay dadweynaha</span><span class="en">All payment data is public & transparent</span><span class="am">የክፍያ ውሂብ ለሕዝብ ግልፅ ነው</span></div>
-        <div class="ac"><div class="ac-ic">🚨</div><span class="so">Musuqmaasuqa si qarsoodi ah u soo gudbi</span><span class="en">Report corruption anonymously online</span><span class="am">ሙስናን ሳይታወቁ ሪፖርት ያድርጉ</span></div>
+      <div class="pm" onclick="selPM(this,'🏦','CBE Birr','Commercial Bank · Ugu weyn')">
+        <div class="pm-ico">🏦</div>
+        <div class="pm-name">CBE Birr</div>
+        <div class="pm-desc">Commercial Bank</div>
+        <div class="pm-users"><span class="so">Bangiga ugu weyn</span><span class="en">Largest bank</span><span class="am">ትልቁ ባንክ</span></div>
+      </div>
+      <div class="pm" onclick="selPM(this,'💚','HelloCash','Somali Region favorite')">
+        <div class="pm-ico">💚</div>
+        <div class="pm-name">HelloCash</div>
+        <div class="pm-desc"><span class="so">Goobaha xoogga badan</span><span class="en">Rural areas</span><span class="am">ገጠር አካባቢዎች</span></div>
+        <div class="pm-users"><span class="so">Somali Region</span><span class="en">Somali Region</span><span class="am">የሶማሌ ክልል</span></div>
+      </div>
+      <div class="pm" onclick="selPM(this,'📲','M-Pesa','Safaricom · International')">
+        <div class="pm-ico">📲</div>
+        <div class="pm-name">M-Pesa</div>
+        <div class="pm-desc">Safaricom · Kacha</div>
+        <div class="pm-users"><span class="so">Caalami ah</span><span class="en">International</span><span class="am">ዓለም አቀፍ</span></div>
+      </div>
+      <div class="pm" onclick="selPM(this,'🟡','Coopy Birr','Cooperative Bank')">
+        <div class="pm-ico">🟡</div>
+        <div class="pm-name">Coopy Birr</div>
+        <div class="pm-desc">Cooperative Bank</div>
+        <div class="pm-users"><span class="so">Kooperatifka</span><span class="en">Co-op Bank</span><span class="am">ህብረት ባንክ</span></div>
       </div>
     </div>
-    <div class="pay-form">
-      <div class="pf-title"><span class="so">💳 Lacag Bixi</span><span class="en">💳 Make Payment</span><span class="am">💳 ክፍያ ያድርጉ</span></div>
-      <div class="pf-sub"><span class="so">Buuxi foomka – hal daqiiqo gudahood</span><span class="en">Fill the form – done in under 1 minute</span><span class="am">ቅጹን ይሙሉ – በ1 ደቂቃ</span></div>
-      <div class="fg">
-        <label><span class="so">Xaafadda *</span><span class="en">Your Kebele *</span><span class="am">ቀበሌዎ *</span></label>
-        <select id="kSel"><option value="">--</option></select>
+
+    <!-- FORM -->
+    <div class="pay-form-wrap">
+      <div class="pay-info">
+        <div class="pi-card">
+          <h4><span class="so">Sababta Hal Khisaab?</span><span class="en">Why One Treasury?</span><span class="am">ለምን አንድ ግምጃ ቤት?</span></h4>
+          <div class="pi-item"><span class="so">Lacag walba leh lambarka tixraaca gaar ah</span><span class="en">Every payment has a unique reference number</span><span class="am">እያንዳንዱ ክፍያ ልዩ ቁጥር አለው</span></div>
+          <div class="pi-item"><span class="so">Waxaad garanaysaa meesha lacagtu ka timid</span><span class="en">You always know which portal the payment came from</span><span class="am">ክፍያው ከየት እንደመጣ ሁልጊዜ ያውቃሉ</span></div>
+          <div class="pi-item"><span class="so">Musuqmaasuq la'aanta – dhexdhexaad la'aan</span><span class="en">Zero corruption – no middlemen, direct to state</span><span class="am">ምንም ሙስና – ቀጥታ ለመንግሥት</span></div>
+          <div class="pi-item"><span class="so">Xogta waa furan tahay dadweynaha</span><span class="en">All data is publicly transparent</span><span class="am">ሁሉም ውሂብ ለሕዝብ ግልፅ ነው</span></div>
+        </div>
+        <div class="pi-card">
+          <h4><span class="so">Lacagaha Maanta</span><span class="en">Today's Collections</span><span class="am">የዛሬ ክፍያዎች</span></h4>
+          <div class="pi-item"><span class="so">Xaafadaha:</span><span class="en">Kebeles:</span><span class="am">ቀበሌዎች:</span> &nbsp;<strong style="color:var(--sand-light)">47,850 ETB</strong></div>
+          <div class="pi-item"><span class="so">Waxbarashada:</span><span class="en">Education:</span><span class="am">ትምህርት:</span> &nbsp;<strong style="color:var(--sand-light)">12,400 ETB</strong></div>
+          <div class="pi-item"><span class="so">Caafimaadka:</span><span class="en">Health:</span><span class="am">ጤና:</span> &nbsp;<strong style="color:var(--sand-light)">8,200 ETB</strong></div>
+          <div class="pi-item"><span class="so">Canshuurta:</span><span class="en">Taxes:</span><span class="am">ግብር:</span> &nbsp;<strong style="color:var(--sand-light)">124,300 ETB</strong></div>
+          <div style="border-top:1px solid rgba(255,255,255,.1);margin-top:10px;padding-top:10px;">
+            <div class="pi-item"><strong><span class="so">Wadarta Maanta:</span><span class="en">Total Today:</span><span class="am">ዛሬ ጠቅላላ:</span></strong> &nbsp;<strong style="color:var(--sand-light);font-size:1.1rem">192,750 ETB</strong></div>
+          </div>
+        </div>
       </div>
-      <div class="fg">
-        <label><span class="so">Nooca Lacag Bixinta *</span><span class="en">Payment Type *</span><span class="am">የክፍያ አይነት *</span></label>
-        <select id="svcSel" onchange="updateAmt(this)">
-          <option value="">--</option>
-          <option value="450">🪪 ID Card / Aqoonsi — 450 ETB</option>
-          <option value="200">🏠 Degenaansho / Residence — 200 ETB</option>
-          <option value="150">👶 Birth Cert / Dhalasho — 150 ETB</option>
-          <option value="800">🏗️ Build Permit / Dhismo — 800 ETB</option>
-          <option value="1200">🌱 Land Rights / Dhul — 1,200 ETB</option>
-          <option value="300">💒 Marriage / Guur — 300 ETB</option>
-          <option value="500">🏫 School / Dugsiga — 500 ETB</option>
-          <option value="0">💰 Tax / Canshuur — variable</option>
-        </select>
+
+      <div class="pay-form-card">
+        <div class="pf-title"><span class="so">💳 Lacag Bixi</span><span class="en">💳 Make Payment</span><span class="am">💳 ክፍያ ያድርጉ</span></div>
+        <div class="pf-sub"><span class="so">Buuxi foomka – hal daqiiqo gudahood</span><span class="en">Fill the form – done in under 1 minute</span><span class="am">ቅጹን ይሙሉ – በ1 ደቂቃ</span></div>
+
+        <div class="source-badge">
+          <span class="sb-ico" id="srcIco">🏛️</span>
+          <span class="sb-text"><span class="so">Isha Lacagta:</span><span class="en">Payment source:</span><span class="am">የክፍያ ምንጭ:</span> &nbsp;<span id="srcName">Xaafadaha – Kebele</span></span>
+          <span class="sb-ref" id="srcRef">SRC:KBLT</span>
+        </div>
+
+        <div class="fg">
+          <label><span class="so">Nooca Adeegga *</span><span class="en">Service Type *</span><span class="am">የአገልግሎት አይነት *</span></label>
+          <select id="svcSel" onchange="updateService(this)">
+            <option value="">--</option>
+            <optgroup label="🏛️ Xaafadaha / Kebele">
+              <option value="450|KBLT|🏛️|Xaafadaha">🪪 ID Card / Aqoonsi — 450 ETB</option>
+              <option value="200|KBLT|🏛️|Xaafadaha">🏠 Degenaansho / Residence — 200 ETB</option>
+              <option value="150|KBLT|🏛️|Xaafadaha">👶 Birth Cert / Dhalasho — 150 ETB</option>
+              <option value="300|KBLT|🏛️|Xaafadaha">💒 Marriage / Guur — 300 ETB</option>
+              <option value="800|KBLT|🏛️|Xaafadaha">🏗️ Build Permit / Dhismo — 800 ETB</option>
+              <option value="1200|KBLT|🏛️|Xaafadaha">🌱 Land Rights / Dhul — 1,200 ETB</option>
+            </optgroup>
+            <optgroup label="🏫 Waxbarashada / Education">
+              <option value="500|EDUC|🏫|Waxbarashada">🏫 School Fee / Mushaharka — 500 ETB</option>
+              <option value="200|EDUC|🏫|Waxbarashada">📚 Registration / Diiwaangelinta — 200 ETB</option>
+            </optgroup>
+            <optgroup label="🏥 Caafimaadka / Health">
+              <option value="100|HLTH|🏥|Caafimaadka">🦷 Dental / Ilkaha — 100 ETB</option>
+              <option value="50|HLTH|🏥|Caafimaadka">💊 Pharmacy / Dawo — 50 ETB</option>
+            </optgroup>
+            <optgroup label="💰 Canshuurta / Tax">
+              <option value="0|TAXS|💰|Canshuurta">💰 Tax / Canshuur (variable)</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="fg">
+          <label><span class="so">Xaafadda *</span><span class="en">Kebele *</span><span class="am">ቀበሌ *</span></label>
+          <select id="kbSel">
+            <option value="">--</option>
+            <option>Kebele 01</option><option>Kebele 02</option><option>Kebele 03</option>
+            <option>Kebele 04</option><option>Kebele 05</option><option>Kebele 06</option>
+            <option>Kebele 07</option><option>Kebele 08</option><option>Kebele 09</option>
+            <option>Kebele 10</option><option>Kebele 11 – 20 →</option><option>Kebele 21 – 28 →</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label><span class="so">Magacaaga *</span><span class="en">Full Name *</span><span class="am">ሙሉ ስም *</span></label>
+          <input type="text" id="pName" placeholder="Fatuma Hassan Ali">
+        </div>
+        <div class="fg">
+          <label><span class="so">Aqoonsiga Qaranka *</span><span class="en">National ID *</span><span class="am">ብሄራዊ መታወቂያ *</span></label>
+          <input type="text" id="pId" placeholder="ET-SOM-123456">
+        </div>
+        <div class="fg">
+          <label><span class="so">Lambarka Telefoonka *</span><span class="en">Phone Number *</span><span class="am">ስልክ ቁጥር *</span></label>
+          <input type="tel" id="pPhone" placeholder="+251 9x xxx xxxx">
+        </div>
+        <div class="amt-box">
+          <span class="albl"><span class="so">Lacagta la bixinayo</span><span class="en">Amount to pay</span><span class="am">የሚከፈለው</span></span>
+          <span class="aamt" id="amtDisplay">— ETB</span>
+        </div>
+        <button class="pay-btn" id="payBtn" onclick="doPayment()">
+          🔒 <span id="pmDisplay">Telebirr</span> &nbsp;·&nbsp; <span class="so">Bixi</span><span class="en">Pay</span><span class="am">ክፈል</span>
+        </button>
+        <div class="secure">🔒 <span class="so">Toos u Khisaabka Dowladda · Dhexdhexaad la'aan</span><span class="en">Direct to Government Treasury · No middlemen</span><span class="am">ቀጥታ ለግምጃ ቤት · ያለ አማላጅ</span></div>
       </div>
-      <div class="fg"><label><span class="so">Magacaaga *</span><span class="en">Full Name *</span><span class="am">ሙሉ ስም *</span></label><input type="text" id="pName" placeholder="Fatuma Hassan Ali"></div>
-      <div class="fg"><label><span class="so">Aqoonsiga Qaranka *</span><span class="en">National ID *</span><span class="am">ብሄራዊ መታወቂያ *</span></label><input type="text" id="pId" placeholder="ET-SOM-123456"></div>
-      <div class="fg"><label><span class="so">Lambarka Telefoonka *</span><span class="en">Phone Number *</span><span class="am">ስልክ ቁጥር *</span></label><input type="tel" id="pPhone" placeholder="+251 9x xxx xxxx"></div>
-      <div class="amt-box"><span class="albl"><span class="so">Lacagta la bixinayo</span><span class="en">Amount to pay</span><span class="am">የሚከፈለው</span></span><span class="aamt" id="amtDisplay">— ETB</span></div>
-      <button class="pay-btn" onclick="doPayment()">🔒 <span class="so">Si ammaan ah u bixi</span><span class="en">Pay Securely</span><span class="am">በደህንነት ይክፈሉ</span></button>
-      <div class="secure">🔒 <span class="so">Toos u xukuumadda · Dhexdhexaad la'aan</span><span class="en">Direct to government · No middlemen</span><span class="am">ቀጥታ ለመንግሥት · ያለ አማላጅ</span></div>
     </div>
   </div>
 </section>
 
-<!-- CONTACT -->
-<section class="contact-sec">
-  <div class="sec-inner">
-    <div class="sec-tag"><span class="so">Xiriirka</span><span class="en">Contact</span><span class="am">ያግኙን</span></div>
-    <h2 class="sec-title"><span class="so">Nala Soo Xiriir</span><span class="en">Get in Touch</span><span class="am">ያግኙን</span></h2>
-    <p class="sec-sub"><span class="so">Xafiisyada Jigjiga waa furan yihiin Isniin – Jimce 8:00–17:00</span><span class="en">Jigjiga offices open Monday – Friday 8:00–17:00</span><span class="am">ቢሮዎች ሰኞ – አርብ 8:00–17:00 ክፍት</span></p>
-    <div class="contact-grid">
-      <div class="cc"><div class="cc-ico">📞</div><h3><span class="so">Telefoon</span><span class="en">Phone</span><span class="am">ስልክ</span></h3>
-        <p><span class="so">Xafiiska Guud:</span><span class="en">Main Office:</span><span class="am">ዋና ቢሮ:</span><br><a href="tel:+251257750000">+251 25 775 0000</a><br><br>
-        <span class="so">Degdeg (24/7):</span><span class="en">Emergency (24/7):</span><span class="am">አስቸኳይ:</span><br><a href="tel:+251257759999" style="color:var(--red);font-weight:700">+251 25 775 9999</a></p>
+<!-- LIVE LEDGER -->
+<section class="ledger-sec" id="ledger">
+  <div class="ledger-inner">
+    <div class="st"><span class="so">Xogta Daahfurka</span><span class="en">Live Transparency Ledger</span><span class="am">ቀጥታ ግልፅነት መዝገብ</span></div>
+    <h2 class="sh"><span class="so">Lacagaha Maanta – Meesha Laga Keenay</span><span class="en">Today's Payments – Know the Source</span><span class="am">የዛሬ ክፍያዎች – ምንጩን ያውቁ</span></h2>
+    <p class="ss"><span class="so">Lacag walba waxaad arki kartaa halka ay ka timid – dadweynuhu waa u sharaxaan.</span><span class="en">Every payment is publicly visible with its exact source portal – full transparency for all citizens.</span><span class="am">እያንዳንዱ ክፍያ ምንጩ ይታያል – ለሁሉም ዜጎች ሙሉ ግልፅነት።</span></p>
+
+    <div class="ledger-stats">
+      <div class="ls" style="border-top:3px solid var(--blue);">
+        <span class="n" style="color:var(--blue)">192,750</span>
+        <span class="l">ETB <span class="so">Maanta</span><span class="en">Today</span><span class="am">ዛሬ</span></span>
       </div>
-      <div class="cc"><div class="cc-ico">🕐</div><h3><span class="so">Saacadaha</span><span class="en">Opening Hours</span><span class="am">ሰዓታት</span></h3>
-        <div>
-          <div class="chr"><span class="hd"><span class="so">Isniin–Jimce</span><span class="en">Mon–Fri</span><span class="am">ሰኞ–አርብ</span></span><span class="ht">8:00–17:00</span></div>
-          <div class="chr"><span class="hd"><span class="so">Sabti</span><span class="en">Saturday</span><span class="am">ቅዳሜ</span></span><span class="ht">9:00–13:00</span></div>
-          <div class="chr"><span class="hd"><span class="so">Axad</span><span class="en">Sunday</span><span class="am">እሑድ</span></span><span class="hc"><span class="so">Xidna</span><span class="en">Closed</span><span class="am">ዝጋ</span></span></div>
-          <div class="chr"><span class="hd">Online</span><span class="ht">24 / 7</span></div>
-        </div>
+      <div class="ls" style="border-top:3px solid var(--green);">
+        <span class="n" style="color:var(--green)">847</span>
+        <span class="l"><span class="so">Macaamil</span><span class="en">Transactions</span><span class="am">ግብይቶች</span></span>
       </div>
-      <div class="cc"><div class="cc-ico">📍</div><h3><span class="so">Cinwaanka</span><span class="en">Address</span><span class="am">አድራሻ</span></h3>
-        <p><span class="so">Xarunta Magaalada Jigjiga<br>Wadada Xukuumadda 1<br>Jigjiga, Dawlad Deegaanka Soomaalida<br>Itoobiya</span><span class="en">Jigjiga City Administration<br>Government Road No. 1<br>Jigjiga, Somali Regional State<br>Ethiopia</span><span class="am">የጅጅጋ ከተማ አስተዳደር<br>የመንግሥት መንገድ ቁ. 1<br>ጅጅጋ፣ የሶማሌ ክልል<br>ኢትዮጵያ</span></p>
+      <div class="ls" style="border-top:3px solid var(--sand);">
+        <span class="n" style="color:var(--sand)">5</span>
+        <span class="l"><span class="so">Hab Lacag</span><span class="en">Payment methods</span><span class="am">ዘዴዎች</span></span>
       </div>
+      <div class="ls" style="border-top:3px solid #8b1a1a;">
+        <span class="n" style="color:#8b1a1a">0</span>
+        <span class="l"><span class="so">Dhexdhexaad</span><span class="en">Middlemen</span><span class="am">አማላጆች</span></span>
+      </div>
+    </div>
+
+    <div class="ledger-table-wrap">
+      <div class="lt-header">
+        <span><span class="so">Waqtiga</span><span class="en">Time</span><span class="am">ጊዜ</span></span>
+        <span><span class="so">Adeegga</span><span class="en">Service</span><span class="am">አገልግሎት</span></span>
+        <span><span class="so">Isha</span><span class="en">Source</span><span class="am">ምንጭ</span></span>
+        <span><span class="so">Lacagta</span><span class="en">Amount</span><span class="am">መጠን</span></span>
+        <span><span class="so">Xaalad</span><span class="en">Status</span><span class="am">ሁኔታ</span></span>
+      </div>
+      <div id="ledgerBody"></div>
     </div>
   </div>
 </section>
@@ -405,39 +511,49 @@ body.lang-am span.en { display:none !important; }
         <div class="flag-em" style="width:42px;height:30px;"><div class="fe-g"></div><div class="fe-w"></div><div class="fe-r"></div><div class="fe-t" style="border-width:15px 0 15px 16px;"></div><div class="fe-s" style="font-size:8px;left:4px;">★</div></div>
         <h3><span class="so">Xarunta Jigjiga</span><span class="en">Jigjiga City Portal</span><span class="am">የጅጅጋ ከተማ ፖርታል</span></h3>
       </div>
-      <p><span class="so">Portal rasmiga ah ee Magaalada Jigjiga – adeeg toos ah, hufan oo la gaadhi karo dhammaan muwaadiniinta.</span><span class="en">The official portal of Jigjiga City – direct, transparent and accessible services for all citizens of the Somali Regional State.</span><span class="am">የጅጅጋ ከተማ ይፋዊ ፖርታል – ለሁሉም ዜጎች ቀጥታ፣ ግልፅ እና ተደራሽ አገልግሎቶች።</span></p>
+      <p><span class="so">Portal rasmiga ah – hal khisaab, daahfuran, dhexdhexaad la'aan.</span><span class="en">Official portal – one treasury, transparent, zero middlemen.</span><span class="am">ይፋዊ ፖርታል – አንድ ግምጃ ቤት፣ ግልፅ፣ ያለ አማላጅ።</span></p>
     </div>
-    <div class="ft-col"><h4><span class="so">Adeegyada</span><span class="en">Services</span><span class="am">አገልግሎቶች</span></h4>
-      <a href="#lacag">🪪 <span class="so">Aqoonsiga</span><span class="en">ID Card</span><span class="am">መታወቂያ</span></a>
-      <a href="#lacag">💰 <span class="so">Canshuurta</span><span class="en">Taxes</span><span class="am">ግብር</span></a>
-      <a href="#lacag">🏫 <span class="so">Waxbarashada</span><span class="en">Education</span><span class="am">ትምህርት</span></a>
-      <a href="#lacag">🏥 <span class="so">Caafimaadka</span><span class="en">Health</span><span class="am">ጤና</span></a>
+    <div class="ft-col">
+      <h4><span class="so">Portals</span><span class="en">Portals</span><span class="am">ፖርታሎች</span></h4>
+      <a href="02-kebele-verwaltung.html">🏛️ <span class="so">Xaafadaha</span><span class="en">Kebele</span><span class="am">ቀበሌ</span></a>
+      <a href="03-schule.html">🏫 <span class="so">Waxbarashada</span><span class="en">School</span><span class="am">ት/ቤት</span></a>
+      <a href="04-gesundheit.html">🏥 <span class="so">Caafimaadka</span><span class="en">Health</span><span class="am">ጤና</span></a>
+      <a href="05-govpay-bezahlportal.html">💳 GovPay</a>
     </div>
-    <div class="ft-col"><h4><span class="so">Xaafadaha</span><span class="en">Kebeles</span><span class="am">ቀበሌዎች</span></h4>
-      <a href="#kebele">Kebele 01–07</a><a href="#kebele">Kebele 08–14</a>
-      <a href="#kebele">Kebele 15–21</a><a href="#kebele">Kebele 22–28</a>
+    <div class="ft-col">
+      <h4><span class="so">Hab Lacag</span><span class="en">Payment</span><span class="am">ክፍያ</span></h4>
+      <a href="#lacag">📱 Telebirr</a>
+      <a href="#lacag">🏦 CBE Birr</a>
+      <a href="#lacag">💚 HelloCash</a>
+      <a href="#lacag">📲 M-Pesa</a>
+      <a href="#lacag">🟡 Coopy Birr</a>
     </div>
-    <div class="ft-col"><h4><span class="so">Xiriirka</span><span class="en">Contact</span><span class="am">ያግኙን</span></h4>
+    <div class="ft-col">
+      <h4><span class="so">Xiriirka</span><span class="en">Contact</span><span class="am">ያግኙን</span></h4>
       <a href="tel:+251257750000">📞 +251 25 775 0000</a>
       <a href="tel:+251257759999">🚨 +251 25 775 9999</a>
       <a href="#">✉️ info@jigjiga.gov.et</a>
+      <a href="#ledger">📊 <span class="so">Xogta</span><span class="en">Ledger</span><span class="am">መዝገብ</span></a>
     </div>
   </div>
   <div class="ft-bottom">
     <span>© 2025 Xarunta Jigjiga · Dawlad Deegaanka Soomaalida · Itoobiya</span>
-    <span><span class="so">Xogta Gaarka ah</span><span class="en">Privacy Policy</span><span class="am">ግላዊነት</span></span>
+    <span><span class="so">Dhammaan xuquuqyadu way dhowrsanyihiin</span><span class="en">All rights reserved</span><span class="am">ሁሉም መብቶች የተጠበቁ</span></span>
   </div>
 </footer>
 <div class="flag-sr"><div class="fs-g"></div><div class="fs-w"></div><div class="fs-r"></div><div class="fs-tri"></div></div>
 
-<!-- MODAL -->
+<!-- SUCCESS MODAL -->
 <div class="modal-ov" id="modal">
   <div class="modal">
     <div class="m-check">✅</div>
     <h2><span class="so">Lacagta Waa La Qaatay!</span><span class="en">Payment Successful!</span><span class="am">ክፍያ ተሳክቷል!</span></h2>
-    <p><span class="so">Lacagtaadu si toos ah ayay ugu tagi xisaabta xukuumadda. SMS xaqiijin ayaa la dirayaa.</span><span class="en">Your payment was sent directly to the government. SMS confirmation is being sent.</span><span class="am">ክፍያዎ ቀጥታ ወደ መንግሥት ሒሳብ ተልኳል።</span></p>
-    <div class="r-detail" id="rDetail"></div>
-    <button class="modal-btn" onclick="document.getElementById('modal').classList.remove('open')">📥 <span class="so">Rasiidhka Soo Degso</span><span class="en">Download Receipt</span><span class="am">ደረሰኝ አውርድ</span></button>
+    <p><span class="so">Lacagtaadu si toos ah ayay u gaartay Khisaabka Dowladda. SMS xaqiijin ayaa la dirayaa.</span><span class="en">Your payment reached the Government Treasury directly. SMS confirmation is being sent.</span><span class="am">ክፍያዎ ቀጥታ ወደ ግምጃ ቤት ደረሰ። SMS ይላካል።</span></p>
+    <div class="ref-box" id="refBox">REF: JG-2025-00000</div>
+    <div class="ref-source" id="refSource"></div>
+    <button class="modal-btn" onclick="document.getElementById('modal').classList.remove('open')">
+      <span class="so">Xidh</span><span class="en">Close</span><span class="am">ዝጋ</span>
+    </button>
   </div>
 </div>
 
@@ -446,101 +562,107 @@ body.lang-am span.en { display:none !important; }
 function setLang(l,btn){
   document.body.className=l==='so'?'':'lang-'+l;
   document.querySelectorAll('.lb').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on');
+  if(btn)btn.classList.add('on');
   document.documentElement.lang=l;
   localStorage.setItem('jl',l);
-  renderK(kebeles);
 }
-(function(){const s=localStorage.getItem('jl');if(s&&s!=='so'){const b=document.querySelector('.lb[onclick*="\''+s+'\'"]');if(b)setLang(s,b);}})();
+(function(){
+  const s=localStorage.getItem('jl');
+  if(s&&s!=='so'){const b=document.getElementById('btn-'+s);if(b)setLang(s,b);}
+  else{document.body.className='';const b=document.getElementById('btn-so');if(b){document.querySelectorAll('.lb').forEach(x=>x.classList.remove('on'));b.classList.add('on');}}
+})();
 
-function gl(){const c=document.body.className;if(c.includes('lang-en'))return'en';if(c.includes('lang-am'))return'am';return'so';}
-
-// KEBELE DATA
-const kebeles=[
-  {n:'01',so:'Xaafadda Koobaad',en:'First Quarter',am:'የመጀመሪያ ሰፈር',zone:'Zone 1',pop:'12,400'},
-  {n:'02',so:'Xaafadda Labaad',en:'Second Quarter',am:'ሁለተኛ ሰፈር',zone:'Zone 1',pop:'11,800'},
-  {n:'03',so:'Xaafadda Saddexaad',en:'Third Quarter',am:'ሶስተኛ ሰፈር',zone:'Zone 1',pop:'13,200'},
-  {n:'04',so:'Xaafadda Afaraad',en:'Fourth Quarter',am:'አራተኛ ሰፈር',zone:'Zone 2',pop:'10,900'},
-  {n:'05',so:'Xaafadda Shanaad',en:'Fifth Quarter',am:'አምስተኛ ሰፈር',zone:'Zone 2',pop:'12,100'},
-  {n:'06',so:'Xaafadda Lixaad',en:'Sixth Quarter',am:'ስድስተኛ ሰፈር',zone:'Zone 2',pop:'11,500'},
-  {n:'07',so:'Xaafadda Toddobaad',en:'Seventh Quarter',am:'ሰባተኛ ሰፈር',zone:'Zone 3',pop:'14,200'},
-  {n:'08',so:'Xaafadda Sideedaad',en:'Eighth Quarter',am:'ስምንተኛ ሰፈር',zone:'Zone 3',pop:'13,700'},
-  {n:'09',so:'Xaafadda Sagaalaad',en:'Ninth Quarter',am:'ዘጠነኛ ሰፈር',zone:'Zone 3',pop:'12,800'},
-  {n:'10',so:'Xaafadda Tobnaad',en:'Tenth Quarter',am:'አስረኛ ሰፈር',zone:'Zone 4',pop:'15,100'},
-  {n:'11',so:'Kow iyo Tobnaad',en:'Eleventh Quarter',am:'አሥራ አንደኛ ሰፈር',zone:'Zone 4',pop:'11,300'},
-  {n:'12',so:'Laba iyo Tobnaad',en:'Twelfth Quarter',am:'አሥራ ሁለተኛ ሰፈር',zone:'Zone 4',pop:'10,700'},
-  {n:'13',so:'Saddex iyo Tobnaad',en:'Thirteenth Quarter',am:'አሥራ ሦስተኛ ሰፈር',zone:'Zone 5',pop:'12,600'},
-  {n:'14',so:'Afar iyo Tobnaad',en:'Fourteenth Quarter',am:'አሥራ አራተኛ ሰፈር',zone:'Zone 5',pop:'13,400'},
-  {n:'15',so:'Shan iyo Tobnaad',en:'Fifteenth Quarter',am:'አሥራ አምስተኛ ሰፈር',zone:'Zone 5',pop:'11,900'},
-  {n:'16',so:'Lix iyo Tobnaad',en:'Sixteenth Quarter',am:'አሥራ ስድስተኛ ሰፈር',zone:'Zone 6',pop:'10,500',isNew:true},
-  {n:'17',so:'Toddoba iyo Tobnaad',en:'Seventeenth Quarter',am:'አሥራ ሰባተኛ ሰፈር',zone:'Zone 6',pop:'12,200',isNew:true},
-  {n:'18',so:'Siddeed iyo Tobnaad',en:'Eighteenth Quarter',am:'አሥራ ስምንተኛ ሰፈር',zone:'Zone 6',pop:'11,100'},
-  {n:'19',so:'Sagaal iyo Tobnaad',en:'Nineteenth Quarter',am:'አሥራ ዘጠነኛ ሰፈር',zone:'Zone 7',pop:'13,800'},
-  {n:'20',so:'Xaafadda Labaatan',en:'Twentieth Quarter',am:'ሃያኛ ሰፈር',zone:'Zone 7',pop:'14,600'},
-  {n:'21',so:'Kow iyo Labaatan',en:'Twenty-First Quarter',am:'ሃያ አንደኛ ሰፈር',zone:'Zone 7',pop:'12,900'},
-  {n:'22',so:'Laba iyo Labaatan',en:'Twenty-Second Quarter',am:'ሃያ ሁለተኛ ሰፈር',zone:'Zone 8',pop:'11,700'},
-  {n:'23',so:'Saddex iyo Labaatan',en:'Twenty-Third Quarter',am:'ሃያ ሦስተኛ ሰፈር',zone:'Zone 8',pop:'10,300',isNew:true},
-  {n:'24',so:'Afar iyo Labaatan',en:'Twenty-Fourth Quarter',am:'ሃያ አራተኛ ሰፈር',zone:'Zone 8',pop:'13,100'},
-  {n:'25',so:'Shan iyo Labaatan',en:'Twenty-Fifth Quarter',am:'ሃያ አምስተኛ ሰፈር',zone:'Zone 9',pop:'12,500'},
-  {n:'26',so:'Lix iyo Labaatan',en:'Twenty-Sixth Quarter',am:'ሃያ ስድስተኛ ሰፈር',zone:'Zone 9',pop:'11,400'},
-  {n:'27',so:'Toddoba iyo Labaatan',en:'Twenty-Seventh Quarter',am:'ሃያ ሰባተኛ ሰፈር',zone:'Zone 9',pop:'10,800'},
-  {n:'28',so:'Siddeed iyo Labaatan',en:'Twenty-Eighth Quarter',am:'ሃያ ስምንተኛ ሰፈር',zone:'Zone 10',pop:'13,600',isNew:true},
-];
-
-function renderK(data){
-  const l=gl();
-  document.getElementById('kGrid').innerHTML=data.map(k=>`
-    <a href="#lacag" class="kc" onclick="document.getElementById('kSel').value='${k.n}'">
-      <div class="kc-top">
-        <span class="kc-num">${k.n}</span>
-        <span class="kc-status${k.isNew?' new':''}">${k.isNew?(l==='so'?'Cusub':l==='am'?'አዲስ':'New'):(l==='so'?'Firfircoon':l==='am'?'ንቁ':'Active')}</span>
-      </div>
-      <h3>${l==='en'?k.en:l==='am'?k.am:k.so}</h3>
-      <p>Jigjiga ${k.zone} · ${k.pop} ${l==='so'?'qof':l==='am'?'ሰዎች':'people'}</p>
-      <div class="kc-meta"><span class="kc-tag">Online ✓</span><span class="kc-tag">Telebirr</span></div>
-    </a>`).join('');
-
-  const sel=document.getElementById('kSel');
-  const cur=sel.value;
-  sel.innerHTML='<option value="">--</option>'+data.map(k=>`<option value="${k.n}">Kebele ${k.n} – ${k.en}</option>`).join('');
-  sel.value=cur;
+// PAYMENT METHODS
+let curPM='📱|Telebirr';
+function selPM(el,ico,name,desc){
+  document.querySelectorAll('.pm').forEach(p=>p.classList.remove('sel'));
+  el.classList.add('sel');
+  curPM=ico+'|'+name;
+  document.getElementById('pmDisplay').textContent=name;
 }
 
-function filterK(q){
-  const f=q.toLowerCase();
-  renderK(kebeles.filter(k=>k.n.includes(f)||k.so.toLowerCase().includes(f)||k.en.toLowerCase().includes(f)||k.am.includes(f)||k.zone.toLowerCase().includes(f)));
+// SERVICE SELECTION
+let curAmt='',curSrc='KBLT',curSrcIco='🏛️',curSrcName='Xaafadaha – Kebele';
+const srcMap={
+  'KBLT':['🏛️','Xaafadaha – Kebele','SRC:KBLT'],
+  'EDUC':['🏫','Waxbarashada – School','SRC:EDUC'],
+  'HLTH':['🏥','Caafimaadka – Health','SRC:HLTH'],
+  'TAXS':['💰','Canshuurta – Tax','SRC:TAXS'],
+};
+function updateService(sel){
+  const v=sel.value;
+  if(!v)return;
+  const parts=v.split('|');
+  curAmt=parts[0];
+  curSrc=parts[1];
+  curSrcIco=parts[2];
+  curSrcName=parts[3];
+  document.getElementById('amtDisplay').textContent=curAmt!=='0'?curAmt+' ETB':'— ETB (<span class="so">Ku xidhan</span>)';
+  const sm=srcMap[curSrc]||srcMap['KBLT'];
+  document.getElementById('srcIco').textContent=sm[0];
+  document.getElementById('srcName').textContent=sm[1];
+  document.getElementById('srcRef').textContent=sm[2];
 }
-
-renderK(kebeles);
 
 // PAYMENT
-let selAmt='';
-function updateAmt(s){selAmt=s.value;document.getElementById('amtDisplay').textContent=s.value?s.value+' ETB':'— ETB';}
-
 function doPayment(){
   const name=document.getElementById('pName').value.trim();
   const id=document.getElementById('pId').value.trim();
   const phone=document.getElementById('pPhone').value.trim();
-  const kebele=document.getElementById('kSel').value;
+  const kb=document.getElementById('kbSel').value;
   const svc=document.getElementById('svcSel');
-  const svcTxt=svc.options[svc.selectedIndex].text;
-  const l=gl();
-  if(!name||!id||!phone||!selAmt||!kebele){
-    alert(l==='so'?'⚠️ Fadlan dhammaan goobaha buuxi!':l==='am'?'⚠️ እባክዎ ሁሉንም ሜዳዎች ይሙሉ!':'⚠️ Please fill all required fields!');return;
+  const svcTxt=svc.options[svc.selectedIndex]?.text||'';
+  if(!name||!id||!phone||!curAmt||curAmt==='0'||!kb){
+    alert('⚠️ Fadlan dhammaan goobaha buuxi! / Please fill all fields!');return;
   }
-  const ref='JG-'+kebele+'-'+new Date().getFullYear()+'-'+Math.floor(10000+Math.random()*90000);
-  const now=new Date().toLocaleString('en-GB');
-  document.getElementById('rDetail').innerHTML=`
-    <div class="rdr"><span class="k">Reference / Tixraac</span><span class="v">#${ref}</span></div>
-    <div class="rdr"><span class="k">Kebele</span><span class="v">Kebele ${kebele}</span></div>
-    <div class="rdr"><span class="k">Name / Magac / ስም</span><span class="v">${name}</span></div>
-    <div class="rdr"><span class="k">ID</span><span class="v">${id}</span></div>
-    <div class="rdr"><span class="k">Service / Adeeg</span><span class="v">${svcTxt.split('—')[0].trim()}</span></div>
-    <div class="rdr"><span class="k">Amount / Lacag / መጠን</span><span class="v">${selAmt} ETB</span></div>
-    <div class="rdr"><span class="k">Date / Taarikh / ቀን</span><span class="v">${now}</span></div>
-    <div class="rdr"><span class="k">Status</span><span class="v g">✓ Direct to Government</span></div>`;
+  const ref='JG-'+curSrc+'-'+new Date().getFullYear()+'-'+Math.floor(10000+Math.random()*90000);
+  const pm=curPM.split('|');
+  document.getElementById('refBox').textContent='REF: '+ref;
+  document.getElementById('refSource').innerHTML=
+    '<span style="color:#1a4fa0;font-weight:600">'+curSrcIco+' '+curSrcName+'</span> · '+
+    kb+' · '+pm[1]+' · '+curAmt+' ETB<br>'+
+    '<span style="color:#888;font-size:.8em">'+new Date().toLocaleString('en-GB')+'</span>';
+  // Add to ledger
+  addToLedger(ref,svcTxt.split('—')[0].trim(),curSrcIco,curSrcName,curAmt,pm[1]);
   document.getElementById('modal').classList.add('open');
 }
+
+// LIVE LEDGER
+const initLedger=[
+  {t:'09:47',svc:'ID Card – Aqoonsi',ico:'🏛️',src:'Xaafadaha',amt:'450',pm:'Telebirr'},
+  {t:'09:31',svc:'School Fee – Mushaharka',ico:'🏫',src:'Waxbarashada',amt:'500',pm:'CBE Birr'},
+  {t:'09:18',svc:'Birth Cert – Dhalasho',ico:'🏛️',src:'Xaafadaha',amt:'150',pm:'HelloCash'},
+  {t:'09:05',svc:'Dental – Ilkaha',ico:'🏥',src:'Caafimaadka',amt:'100',pm:'Telebirr'},
+  {t:'08:52',svc:'Land Rights – Dhul',ico:'🏛️',src:'Xaafadaha',amt:'1,200',pm:'CBE Birr'},
+  {t:'08:40',svc:'Tax – Canshuur',ico:'💰',src:'Canshuurta',amt:'4,500',pm:'Telebirr'},
+  {t:'08:28',svc:'Marriage – Guur',ico:'🏛️',src:'Xaafadaha',amt:'300',pm:'M-Pesa'},
+  {t:'08:15',svc:'Pharmacy – Dawo',ico:'🏥',src:'Caafimaadka',amt:'50',pm:'HelloCash'},
+];
+
+const srcColors={'Xaafadaha':'background:#e8f0fb;color:#0d2d6b','Waxbarashada':'background:#eaf5ee;color:#0f4d25','Caafimaadka':'background:#e6f7f7;color:#0d4d50','Canshuurta':'background:#fdf6e8;color:#7a4d00'};
+
+function addToLedger(ref,svc,ico,src,amt,pm){
+  const body=document.getElementById('ledgerBody');
+  const row=document.createElement('div');
+  row.className='lt-row';
+  row.style.background='rgba(26,79,160,.04)';
+  const now=new Date();
+  const t=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
+  row.innerHTML=`<span class="lt-time">${t}</span><span class="lt-service">${svc}</span><span class="source-pill" style="${srcColors[src]||'background:#f5f5f5;color:#333'}">${ico} ${src}</span><span class="lt-amount">+${amt} ETB</span><span class="lt-status">✓ ${pm}</span>`;
+  body.insertBefore(row,body.firstChild);
+}
+
+function renderLedger(){
+  initLedger.forEach(r=>{
+    const body=document.getElementById('ledgerBody');
+    const row=document.createElement('div');
+    row.className='lt-row';
+    row.innerHTML=`<span class="lt-time">${r.t}</span><span class="lt-service">${r.svc}</span><span class="source-pill" style="${srcColors[r.src]||'background:#f5f5f5;color:#333'}">${r.ico} ${r.src}</span><span class="lt-amount">+${r.amt} ETB</span><span class="lt-status">✓ ${r.pm}</span>`;
+    body.appendChild(row);
+  });
+}
+renderLedger();
+document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)this.classList.remove('open');});
 </script>
 </body>
 </html>
