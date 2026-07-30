@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="so">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nidaamka Xeerarka | Dawlad Deegaanka Soomaalida</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:#0a1628; --navy-mid:#112240; --navy-light:#1a3a6e;
+  --blue:#1a4fa0; --blue-light:#2c6fda; --blue-pale:#e8f0fb;
+  --gold:#c9963a; --gold-light:#e8b85a; --gold-pale:#fdf6e8;
+  --red:#8b1a1a; --red-light:#c0392b; --red-pale:#f9ecec;
+  --green:#1a7a3c; --green-pale:#eaf5ee;
+  --white:#f7f9fd; --ink:#0d1b3e; --gray:#5a6880; --border:#c8d4e8;
+  --shadow:0 4px 24px rgba(13,27,62,.12); --shadow-lg:0 12px 48px rgba(13,27,62,.2);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'IBM Plex Sans',sans-serif;background:var(--white);color:var(--ink);overflow-x:hidden;}
+
+/* LANGUAGE */
+.so{display:block!important;} .en{display:none!important;} .am{display:none!important;}
+span.so{display:inline!important;} span.en{display:none!important;} span.am{display:none!important;}
+body.lang-en .so{display:none!important;} body.lang-en .en{display:block!important;}
+body.lang-en span.so{display:none!important;} body.lang-en span.en{display:inline!important;} body.lang-en span.am{display:none!important;}
+body.lang-am .so{display:none!important;} body.lang-am .am{display:block!important;}
+body.lang-am span.so{display:none!important;} body.lang-am span.am{display:inline!important;} body.lang-am span.en{display:none!important;}
+
+/* FLAG */
+.flag-sr{height:8px;display:flex;position:relative;}
+.fs-g{flex:1;background:#1a7a3c;} .fs-w{flex:1;background:#fff;} .fs-r{flex:1;background:#8b1a1a;}
+.fs-tri{position:absolute;top:0;left:0;width:0;height:0;border-style:solid;border-width:8px 0 0 20px;border-color:transparent transparent transparent var(--blue);}
+
+/* TOPBAR */
+.topbar{background:var(--navy);color:rgba(255,255,255,.65);font-size:.74rem;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.06);}
+.tb{max-width:1200px;margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
+.tb a{color:var(--gold-light);text-decoration:none;}
+.lang-sw{display:flex;gap:6px;}
+.lb{background:none;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.65);padding:3px 10px;border-radius:4px;cursor:pointer;font-size:.72rem;font-family:'IBM Plex Sans',sans-serif;transition:all .2s;font-weight:600;}
+.lb.on,.lb:hover{background:var(--gold);border-color:var(--gold);color:var(--navy);}
+
+/* HEADER */
+header{background:var(--navy-mid);border-bottom:3px solid var(--gold);position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,.3);}
+.hd{max-width:1200px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:72px;gap:20px;}
+.logo{display:flex;align-items:center;gap:14px;text-decoration:none;}
+.logo-shield{width:44px;height:50px;background:var(--gold);clip-path:polygon(50% 0%,100% 15%,100% 60%,50% 100%,0% 60%,0% 15%);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
+.logo-tx h1{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:#fff;line-height:1.2;}
+.logo-tx span{font-size:.66rem;color:rgba(255,255,255,.5);letter-spacing:.1em;text-transform:uppercase;}
+nav{display:flex;align-items:center;gap:2px;}
+nav a{color:rgba(255,255,255,.75);text-decoration:none;padding:8px 12px;font-size:.83rem;font-weight:500;border-radius:6px;transition:all .2s;}
+nav a:hover{background:rgba(255,255,255,.08);color:#fff;}
+.nav-login{background:var(--gold)!important;color:var(--navy)!important;font-weight:700!important;}
+.nav-login:hover{background:var(--gold-light)!important;}
+.hamburger{display:none;background:none;border:none;cursor:pointer;padding:8px;}
+.hamburger span{display:block;width:22px;height:2px;background:#fff;margin:4px 0;border-radius:2px;}
+
+/* HERO */
+.hero{background:var(--navy);padding:80px 24px 0;position:relative;overflow:hidden;min-height:580px;display:flex;align-items:stretch;}
+.hero-grid{position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0,rgba(255,255,255,.02) 1px,transparent 1px,transparent 60px),repeating-linear-gradient(90deg,rgba(255,255,255,.02) 0,rgba(255,255,255,.02) 1px,transparent 1px,transparent 60px);}
+.hero-glow{position:absolute;top:-100px;right:-100px;width:600px;height:600px;background:radial-gradient(circle,rgba(201,150,58,.08) 0%,transparent 70%);}
+.hero-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 460px;gap:60px;align-items:end;position:relative;z-index:1;width:100%;}
+.hero-text{padding-bottom:70px;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(201,150,58,.12);border:1px solid rgba(201,150,58,.25);color:var(--gold-light);font-size:.7rem;font-weight:700;padding:5px 14px;border-radius:20px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:24px;}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite;flex-shrink:0;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.5)}}
+.hero h2{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3.4rem);font-weight:900;color:#fff;line-height:1.05;margin-bottom:18px;}
+.hero h2 em{font-style:italic;color:var(--gold-light);}
+.hero p{font-size:.97rem;color:rgba(255,255,255,.6);line-height:1.8;margin-bottom:32px;font-weight:300;max-width:480px;}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:36px;}
+.btn-gold{background:var(--gold);color:var(--navy);padding:13px 26px;border-radius:8px;font-weight:700;text-decoration:none;font-size:.92rem;transition:all .2s;box-shadow:0 4px 16px rgba(201,150,58,.3);}
+.btn-gold:hover{background:var(--gold-light);transform:translateY(-2px);}
+.btn-ghost{border:1.5px solid rgba(255,255,255,.25);color:rgba(255,255,255,.85);padding:13px 26px;border-radius:8px;font-weight:500;text-decoration:none;font-size:.92rem;transition:all .2s;}
+.btn-ghost:hover{border-color:rgba(255,255,255,.5);background:rgba(255,255,255,.06);}
+.hero-trust{display:flex;gap:20px;flex-wrap:wrap;}
+.ht{display:flex;align-items:center;gap:6px;font-size:.75rem;color:rgba(255,255,255,.4);}
+.ht::before{content:'✓';color:var(--gold);font-weight:700;}
+
+/* ORGAN CARDS IN HERO */
+.organ-cards{display:flex;flex-direction:column;gap:10px;padding-bottom:60px;}
+.oc{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:16px 18px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .25s;text-decoration:none;}
+.oc:hover{background:rgba(255,255,255,.09);border-color:rgba(201,150,58,.4);transform:translateX(6px);}
+.oc-ico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;}
+.oc-info{flex:1;}
+.oc-name{font-size:.9rem;font-weight:600;color:#fff;margin-bottom:2px;}
+.oc-role{font-size:.72rem;color:rgba(255,255,255,.45);letter-spacing:.04em;}
+.oc-badge{font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:3px;text-transform:uppercase;letter-spacing:.06em;}
+.badge-high{background:rgba(139,26,26,.3);color:#ff8080;}
+.badge-mid{background:rgba(201,150,58,.2);color:var(--gold-light);}
+.badge-low{background:rgba(26,122,60,.2);color:#80ffaa;}
+
+/* CBAND */
+.cband{height:6px;display:flex;}
+.cb-g{flex:1;background:#1a7a3c;} .cb-w{flex:1;background:#ddd;} .cb-r{flex:1;background:#8b1a1a;}
+
+/* SECTION */
+.sec{padding:72px 24px;}
+.si{max-width:1200px;margin:0 auto;}
+.st{font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.st::before{content:'';width:22px;height:2px;background:var(--gold);}
+.sh{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3vw,2.4rem);color:var(--ink);margin-bottom:10px;font-weight:700;}
+.ss{color:var(--gray);font-size:.96rem;margin-bottom:44px;font-weight:300;max-width:560px;}
+
+/* 4 ORGAN SECTIONS */
+.organs-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
+.organ-card{border-radius:16px;overflow:hidden;border:1px solid var(--border);transition:all .3s;box-shadow:var(--shadow);}
+.organ-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);}
+.organ-header{padding:24px 24px 20px;position:relative;}
+.organ-header h3{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:6px;}
+.organ-header p{font-size:.82rem;color:rgba(255,255,255,.65);line-height:1.6;}
+.organ-badge{position:absolute;top:20px;right:20px;font-size:.65rem;font-weight:700;padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.06em;}
+.organ-body{background:#fff;padding:20px 24px;}
+.organ-access{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;}
+.access-item{display:flex;align-items:center;gap:10px;font-size:.83rem;}
+.access-ico{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0;}
+.access-yes{color:var(--green);}
+.access-no{color:var(--red);}
+.access-partial{color:var(--gold);}
+.organ-btn{display:block;text-align:center;padding:10px;border-radius:8px;font-size:.85rem;font-weight:700;text-decoration:none;transition:all .2s;margin-top:4px;}
+
+/* POLICE */
+.org-police .organ-header{background:linear-gradient(135deg,#0a1628,#1a3a6e);}
+.org-police .organ-badge{background:rgba(201,150,58,.2);color:var(--gold-light);}
+.org-police .organ-btn{background:var(--navy);color:#fff;}
+.org-police .organ-btn:hover{background:var(--navy-light);}
+
+/* STAATSANWALT */
+.org-state .organ-header{background:linear-gradient(135deg,#1a0a28,#3a1a6e);}
+.org-state .organ-badge{background:rgba(139,26,139,.2);color:#cc80ff;}
+.org-state .organ-btn{background:#3a1a6e;color:#fff;}
+.org-state .organ-btn:hover{background:#4a2a8e;}
+
+/* GERICHT */
+.org-court .organ-header{background:linear-gradient(135deg,#1a2800,#3a6e1a);}
+.org-court .organ-badge{background:rgba(26,122,60,.2);color:#80ff99;}
+.org-court .organ-btn{background:#1a7a3c;color:#fff;}
+.org-court .organ-btn:hover{background:#25a050;}
+
+/* STRAFVOLLZUG */
+.org-prison .organ-header{background:linear-gradient(135deg,#280a0a,#6e1a1a);}
+.org-prison .organ-badge{background:rgba(139,26,26,.2);color:#ff8080;}
+.org-prison .organ-btn{background:#8b1a1a;color:#fff;}
+.org-prison .organ-btn:hover{background:#b52222;}
+
+/* TRANSPARENCY DASHBOARD */
+.dash-sec{background:var(--navy);padding:72px 24px;}
+.dash-inner{max-width:1200px;margin:0 auto;}
+.dash-inner .st{color:var(--gold-light);}
+.dash-inner .st::before{background:var(--gold);}
+.dash-inner .sh{color:#fff;}
+.dash-inner .ss{color:rgba(255,255,255,.55);}
+.dash-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px;}
+.dash-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:22px 18px;text-align:center;transition:background .2s;}
+.dash-card:hover{background:rgba(255,255,255,.09);}
+.dash-card .dn{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--gold-light);display:block;line-height:1;}
+.dash-card .dl{font-size:.7rem;color:rgba(255,255,255,.45);margin-top:5px;display:block;text-transform:uppercase;letter-spacing:.08em;}
+.dash-card:nth-child(1){border-top:3px solid var(--blue-light);}
+.dash-card:nth-child(2){border-top:3px solid var(--gold);}
+.dash-card:nth-child(3){border-top:3px solid var(--green);}
+.dash-card:nth-child(4){border-top:3px solid #cc80ff;}
+
+/* ACTIVITY FEED */
+.activity-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.af{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;}
+.af h4{font-size:.85rem;font-weight:600;color:rgba(255,255,255,.8);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.af h4::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--gold);}
+.af-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05);}
+.af-item:last-child{border-bottom:none;}
+.af-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px;}
+.af-time{font-size:.68rem;color:rgba(255,255,255,.3);font-family:'IBM Plex Mono',monospace;flex-shrink:0;margin-top:2px;}
+.af-text{font-size:.8rem;color:rgba(255,255,255,.6);line-height:1.5;}
+.af-organ{font-size:.65rem;font-weight:700;padding:1px 6px;border-radius:3px;margin-top:3px;display:inline-block;}
+
+/* LOGIN MODAL */
+.modal-ov{display:none;position:fixed;inset:0;background:rgba(10,22,40,.85);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(6px);}
+.modal-ov.open{display:flex;}
+.modal{background:#fff;border-radius:20px;width:90%;max-width:460px;overflow:hidden;box-shadow:0 20px 80px rgba(0,0,0,.4);animation:mIn .3s ease;}
+@keyframes mIn{from{opacity:0;transform:scale(.92) translateY(24px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.modal-top{background:var(--navy-mid);padding:28px 32px 24px;}
+.modal-top h2{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:4px;}
+.modal-top p{font-size:.82rem;color:rgba(255,255,255,.5);}
+.modal-body{padding:28px 32px;}
+.organ-select{display:flex;flex-direction:column;gap:10px;margin-bottom:20px;}
+.os{display:flex;align-items:center;gap:12px;padding:12px 16px;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;transition:all .2s;}
+.os:hover{border-color:var(--blue);background:var(--blue-pale);}
+.os.sel{border-color:var(--blue);background:var(--blue-pale);}
+.os-ico{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.os-name{font-size:.9rem;font-weight:600;color:var(--ink);}
+.os-level{font-size:.7rem;color:var(--gray);}
+.fg{margin-bottom:14px;}
+.fg label{display:block;font-size:.72rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--gray);margin-bottom:6px;}
+.fg input{width:100%;background:var(--white);border:1.5px solid var(--border);color:var(--ink);padding:12px 15px;border-radius:8px;font-size:.9rem;font-family:'IBM Plex Sans',sans-serif;outline:none;transition:all .2s;}
+.fg input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,79,160,.1);}
+.login-btn{width:100%;background:var(--navy);color:#fff;border:none;padding:14px;border-radius:10px;font-size:.95rem;font-weight:700;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;transition:all .2s;}
+.login-btn:hover{background:var(--navy-light);}
+.modal-close{position:absolute;top:16px;right:16px;background:rgba(255,255,255,.1);border:none;color:#fff;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;}
+
+/* REPORT FORM */
+.report-sec{padding:72px 24px;background:var(--white);}
+.report-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 480px;gap:56px;align-items:start;}
+.report-form{background:var(--navy);border-radius:18px;padding:32px 28px;box-shadow:var(--shadow-lg);}
+.rf-title{font-family:'Playfair Display',serif;font-size:1.2rem;color:#fff;margin-bottom:4px;}
+.rf-sub{font-size:.82rem;color:rgba(255,255,255,.5);margin-bottom:22px;}
+.rfg{margin-bottom:14px;}
+.rfg label{display:block;font-size:.72rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:6px;}
+.rfg input,.rfg select,.rfg textarea{width:100%;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);color:#fff;padding:12px 15px;border-radius:8px;font-size:.9rem;font-family:'IBM Plex Sans',sans-serif;outline:none;transition:all .2s;}
+.rfg input::placeholder,.rfg textarea::placeholder{color:rgba(255,255,255,.25);}
+.rfg input:focus,.rfg select:focus{border-color:var(--gold);background:rgba(255,255,255,.1);}
+.rfg select option{background:var(--navy);color:#fff;}
+.rfg textarea{resize:vertical;min-height:90px;}
+.fgrid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.full{grid-column:1/-1;}
+.submit-btn{width:100%;background:var(--gold);color:var(--navy);border:none;padding:14px;border-radius:10px;font-size:.95rem;font-weight:700;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;transition:all .2s;margin-top:4px;}
+.submit-btn:hover{background:var(--gold-light);transform:translateY(-2px);}
+.anon-note{display:flex;align-items:center;gap:8px;font-size:.75rem;color:rgba(255,255,255,.4);margin-top:10px;}
+.anon-note::before{content:'🔒';}
+
+/* RIGHT SIDE INFO */
+.report-info{display:flex;flex-direction:column;gap:18px;}
+.ri-card{background:#fff;border-radius:14px;padding:22px 20px;border:1px solid var(--border);box-shadow:var(--shadow);}
+.ri-card h3{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:12px;padding-bottom:10px;border-bottom:2px solid var(--gold-pale);}
+.ri-item{display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;font-size:.83rem;}
+.ri-ico{font-size:1rem;flex-shrink:0;}
+.ri-item strong{display:block;font-size:.68rem;text-transform:uppercase;letter-spacing:.07em;color:var(--gray);}
+.emergency-card{background:linear-gradient(135deg,var(--red),var(--red-light));border-radius:14px;padding:22px 20px;color:#fff;}
+.emergency-card h3{color:#ffd0d0;font-family:'Playfair Display',serif;font-size:1rem;margin-bottom:10px;}
+.em-btn{display:block;background:#fff;color:var(--red);text-align:center;padding:11px;border-radius:8px;font-weight:700;text-decoration:none;font-size:.9rem;margin-top:10px;}
+
+/* FOOTER */
+footer{background:var(--ink);color:rgba(255,255,255,.5);padding:52px 24px 22px;}
+.ft{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:44px;padding-bottom:36px;border-bottom:1px solid rgba(255,255,255,.07);}
+.ft-brand .ftl{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.ft-brand .ftl h3{font-family:'Playfair Display',serif;color:#fff;font-size:1.1rem;}
+.ft-brand p{font-size:.83rem;line-height:1.8;font-weight:300;}
+.ft-col h4{color:var(--gold-light);font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;margin-bottom:13px;font-weight:700;}
+.ft-col a{display:block;color:rgba(255,255,255,.45);text-decoration:none;font-size:.82rem;margin-bottom:9px;transition:color .2s;}
+.ft-col a:hover{color:var(--gold-light);}
+.ft-bottom{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;padding-top:20px;font-size:.75rem;flex-wrap:wrap;gap:8px;}
+
+/* SUCCESS MODAL */
+.success-ov{display:none;position:fixed;inset:0;background:rgba(10,22,40,.85);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
+.success-ov.open{display:flex;}
+.success-modal{background:#fff;border-radius:18px;padding:38px 32px;max-width:420px;width:90%;text-align:center;box-shadow:var(--shadow-lg);animation:mIn .3s ease;}
+.sm-check{width:68px;height:68px;background:var(--green-pale);border:3px solid var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2rem;margin:0 auto 18px;}
+.success-modal h2{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--navy);margin-bottom:8px;}
+.success-modal p{font-size:.85rem;color:var(--gray);line-height:1.6;margin-bottom:20px;}
+.ref-box{background:var(--navy);border-radius:10px;padding:14px;font-family:'IBM Plex Mono',monospace;font-size:.9rem;color:var(--gold-light);letter-spacing:.1em;margin-bottom:20px;}
+.sm-btn{background:var(--navy);color:#fff;border:none;padding:12px 28px;border-radius:8px;font-size:.9rem;font-weight:700;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;}
+
+@media(max-width:960px){.hero-inner,.report-inner{grid-template-columns:1fr;}.organs-grid{grid-template-columns:1fr;}.dash-grid{grid-template-columns:1fr 1fr;}.activity-grid{grid-template-columns:1fr;}.ft{grid-template-columns:1fr 1fr;}nav{display:none;}nav.open{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:var(--navy-mid);padding:12px 0;box-shadow:var(--shadow);}nav.open a{padding:12px 24px;border-bottom:1px solid rgba(255,255,255,.06);border-radius:0;}header{position:relative;}.hamburger{display:block;}}
+@media(max-width:600px){.dash-grid{grid-template-columns:1fr 1fr;}.ft{grid-template-columns:1fr;}.fgrid2{grid-template-columns:1fr;}.full{grid-column:1;}}
+</style>
+</head>
+<body>
+
+<div class="flag-sr"><div class="fs-g"></div><div class="fs-w"></div><div class="fs-r"></div><div class="fs-tri"></div></div>
+
+<div class="topbar">
+  <div class="tb">
+    <span>🇪🇹 <span class="so">Dawlad Deegaanka Soomaalida &nbsp;›&nbsp; <a href="#">Nidaamka Xeerarka</a></span><span class="en">Somali Regional State &nbsp;›&nbsp; <a href="#">Justice System</a></span><span class="am">የሶማሌ ክልል &nbsp;›&nbsp; <a href="#">የፍትህ ስርዓት</a></span></span>
+    <div class="lang-sw">
+      <button class="lb on" id="btn-so" onclick="setLang('so',this)">SO</button>
+      <button class="lb" id="btn-en" onclick="setLang('en',this)">EN</button>
+      <button class="lb" id="btn-am" onclick="setLang('am',this)">አማ</button>
+    </div>
+  </div>
+</div>
+
+<header>
+  <div class="hd">
+    <a class="logo" href="#">
+      <div class="logo-shield">⚖️</div>
+      <div class="logo-tx">
+        <h1><span class="so">Nidaamka Xeerarka Soomaalida</span><span class="en">Somali Justice & Security System</span><span class="am">የሶማሌ ፍትህ እና ደህንነት ስርዓት</span></h1>
+        <span><span class="so">Dawlad Deegaanka Soomaalida · Itoobiya</span><span class="en">Somali Regional State · Ethiopia</span><span class="am">የሶማሌ ክልል · ኢትዮጵያ</span></span>
+      </div>
+    </a>
+    <button class="hamburger" onclick="document.getElementById('mainnav').classList.toggle('open')"><span></span><span></span><span></span></button>
+    <nav id="mainnav">
+      <a href="index.html"><span class="so">🏠 Xarunta Guud</span><span class="en">🏠 Main Portal</span><span class="am">🏠 ዋና ፖርታል</span></a>
+      <a href="#organan"><span class="so">🏛️ Orgaanada</span><span class="en">🏛️ Organs</span><span class="am">🏛️ አካላት</span></a>
+      <a href="#daah-furka"><span class="so">📊 Daahfurka</span><span class="en">📊 Transparency</span><span class="am">📊 ግልፅነት</span></a>
+      <a href="#warbixin"><span class="so">📢 Warbixin</span><span class="en">📢 Report</span><span class="am">📢 ሪፖርት</span></a>
+      <a href="#" onclick="openLogin()" class="nav-login"><span class="so">🔐 Gal</span><span class="en">🔐 Login</span><span class="am">🔐 ግባ</span></a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div><div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-badge"><div class="badge-dot"></div><span class="so">Nidaamka Rasmi ah · Somali Region</span><span class="en">Official Justice System · Somali Region</span><span class="am">ይፋዊ የፍትህ ስርዓት · የሶማሌ ክልል</span></div>
+      <h2><span class="so">Xeer. Nabad.<br><em>Caddaalad.</em></span><span class="en">Law. Peace.<br><em>Justice.</em></span><span class="am">ህግ። ሰላም።<br><em>ፍትህ።</em></span></h2>
+      <p><span class="so">Nidaamka wadajirka ah ee Booliska, Xeer Ilaaliyaha, Maxkamadda iyo Xabsiga – mid walba xuquuqiisa, mid walba waajibaadkiisa, wada shaqayn daahfuran.</span><span class="en">The integrated system of Police, Prosecution, Court and Corrections – each with defined rights, duties, and full transparency between all four organs.</span><span class="am">የፖሊስ፣ ዓቃቤ ህግ፣ ፍርድ ቤት እና እስር ቤት የተቀናጀ ስርዓት – እያንዳንዱ ግልፅ መብትና ግዴታ ያለው።</span></p>
+      <div class="hero-btns">
+        <a href="#organan" class="btn-gold"><span class="so">🏛️ Orgaanada Arag</span><span class="en">🏛️ View All Organs</span><span class="am">🏛️ ሁሉንም አካላት ይመልከቱ</span></a>
+        <a href="#" onclick="openLogin()" class="btn-ghost"><span class="so">🔐 Gal Nidaamka</span><span class="en">🔐 System Login</span><span class="am">🔐 ስርዓቱን ያስገቡ</span></a>
+      </div>
+      <div class="hero-trust">
+        <div class="ht"><span class="so">4 Orgaan</span><span class="en">4 Organs</span><span class="am">4 አካላት</span></div>
+        <div class="ht"><span class="so">Daahfuran</span><span class="en">Transparent</span><span class="am">ግልፅ</span></div>
+        <div class="ht"><span class="so">Xuquuq kala duwan</span><span class="en">Role-based access</span><span class="am">ሚና ላይ ተመስርቶ</span></div>
+        <div class="ht"><span class="so">24/7 Online</span><span class="en">24/7 Online</span><span class="am">24/7 ኦንላይን</span></div>
+      </div>
+    </div>
+    <div class="organ-cards">
+      <a href="#police" class="oc">
+        <div class="oc-ico" style="background:rgba(26,79,160,.2)">👮</div>
+        <div class="oc-info"><div class="oc-name"><span class="so">Booliska</span><span class="en">Police</span><span class="am">ፖሊስ</span></div><div class="oc-role"><span class="so">Xadgudubka Baarista</span><span class="en">Investigation & Arrest</span><span class="am">ምርመራ እና እስር</span></div></div>
+        <span class="oc-badge badge-high"><span class="so">Xukun Sare</span><span class="en">High Access</span><span class="am">ከፍተኛ</span></span>
+      </a>
+      <a href="#prosecution" class="oc">
+        <div class="oc-ico" style="background:rgba(100,26,160,.2)">⚖️</div>
+        <div class="oc-info"><div class="oc-name"><span class="so">Xeer Ilaaliyaha</span><span class="en">Prosecution</span><span class="am">ዓቃቤ ህግ</span></div><div class="oc-role"><span class="so">Dacwada Xukumida</span><span class="en">Criminal Charges</span><span class="am">የወንጀል ክሶች</span></div></div>
+        <span class="oc-badge badge-high"><span class="so">Xukun Sare</span><span class="en">High Access</span><span class="am">ከፍተኛ</span></span>
+      </a>
+      <a href="#court" class="oc">
+        <div class="oc-ico" style="background:rgba(26,122,60,.2)">🏛️</div>
+        <div class="oc-info"><div class="oc-name"><span class="so">Maxkamadda</span><span class="en">Court</span><span class="am">ፍርድ ቤት</span></div><div class="oc-role"><span class="so">Xukunka Garsoorka</span><span class="en">Judicial Decisions</span><span class="am">የፍርድ ውሳኔዎች</span></div></div>
+        <span class="oc-badge badge-mid"><span class="so">Xukun Dhexe</span><span class="en">Mid Access</span><span class="am">መካከለኛ</span></span>
+      </a>
+      <a href="#corrections" class="oc">
+        <div class="oc-ico" style="background:rgba(139,26,26,.2)">🔒</div>
+        <div class="oc-info"><div class="oc-name"><span class="so">Xabsiga</span><span class="en">Corrections</span><span class="am">ማረሚያ ቤት</span></div><div class="oc-role"><span class="so">Maxaabiista Maaraynta</span><span class="en">Inmate Management</span><span class="am">እስረኛ አስተዳደር</span></div></div>
+        <span class="oc-badge badge-low"><span class="so">Xukun Hooseeye</span><span class="en">Limited Access</span><span class="am">የተወሰነ</span></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="cband"><div class="cb-g"></div><div class="cb-w"></div><div class="cb-r"></div></div>
+
+<!-- 4 ORGANS -->
+<section class="sec" id="organan" style="background:#fff;">
+  <div class="si">
+    <div class="st"><span class="so">Afarta Orgaan</span><span class="en">The Four Organs</span><span class="am">አራቱ አካላት</span></div>
+    <h2 class="sh"><span class="so">Kala Dambaynta & Xuquuqaha</span><span class="en">Hierarchy & Access Rights</span><span class="am">ተዋረድ እና የመዳረሻ መብቶች</span></h2>
+    <p class="ss"><span class="so">Orgaan kasta wuxuu leeyahay xuquuqiisa gaarka ah – midna ma gali karo xogta midka kale la'aanta ogolaanshaha.</span><span class="en">Each organ has strictly defined access rights – none can access another's data without authorization.</span><span class="am">እያንዳንዱ አካል ጥብቅ የሆኑ የመዳረሻ መብቶች አሉት – ያለፈቃድ የሌላውን መረጃ ማግኘት አይችልም።</span></p>
+    <div class="organs-grid">
+
+      <!-- POLICE -->
+      <div class="organ-card org-police" id="police">
+        <div class="organ-header">
+          <span class="organ-badge"><span class="so">Xukun Sare</span><span class="en">Highest Access</span><span class="am">ከፍተኛ</span></span>
+          <div style="font-size:2.5rem;margin-bottom:12px;">👮</div>
+          <h3><span class="so">Booliska Soomaalida</span><span class="en">Somali Regional Police</span><span class="am">የሶማሌ ክልል ፖሊስ</span></h3>
+          <p><span class="so">Baarista dambiyada, xiritaanka, xogta jirka ee shakiyayaasha, iyo warbixinnada baarista.</span><span class="en">Crime investigation, arrests, biometric data of suspects, investigation reports and evidence management.</span><span class="am">የወንጀል ምርመራ፣ እስር፣ የተጠርጣሪዎች ባዮሜትሪክ ውሂብ እና ማስረጃ አስተዳደር።</span></p>
+        </div>
+        <div class="organ-body">
+          <div class="organ-access">
+            <div class="access-item"><span class="access-ico" style="background:#eaf5ee">✅</span><span><strong><span class="so">Xogta Dambiyada – Buuxda</span><span class="en">Crime Database – Full</span><span class="am">የወንጀል መረጃ – ሙሉ</span></strong></span></div>
+            <div class="access-item"><span class="access-ico" style="background:#eaf5ee">✅</span><span><strong><span class="so">Kaydka Faraha – Buuxda</span><span class="en">Fingerprint & Biometrics – Full</span><span class="am">የጣት አሻራ – ሙሉ</span></strong></span></div>
+            <div class="access-item"><span class="access-ico" style="background:#eaf5ee">✅</span><span><strong><span class="so">Warbixinnada Baarista – Buuxda</span><span class="en">Investigation Reports – Full</span><span class="am">የምርመራ ሪፖርቶች – ሙሉ</span></strong></span></div>
+            <div class="access-item"><span class="access-ico" style="background:#fff6e0">⚡</span><span><span class="access-partial"><span class="so">Xukunka Maxkamadda – Akhris Kaliya</span><span class="en">Court Decisions – Read Only</span><span class="am">የፍርድ ውሳኔ – ማንበብ ብቻ</span></span></span></div>
+            <div class="access-item"><span class="access-ico" style="background:#f9ecec">❌</span><span><span class="access-no"><span class="so">Xabsiga Maaraynta – Entr Yok</span><span class="en">Prison Management – No Access</span><span class="am">እስር ቤት አስተዳደር – አይፈቀድም</span></span></span></div>
+          </div>
+          <a href="#" onclick="openLogin()" class="organ-btn"><span class="so">🔐 Gal Booliska Portal</span><span class="en">🔐 Police Portal Login</span><span class="am">🔐 የፖሊስ ፖርታል</span></a>
+        </div>
+      </div>
+
+      <!-- PROSECUTION -->
+      <div class="organ-card org-state" id="prosecution">
+        <div class="organ-header">
+          <span class="organ-badge"><span class="so">Xukun Sare</span><span class="en">High Access</span><span class="am">ከፍተኛ</span></span>
+          <div style="font-size:2.5rem;margin-bottom:12px;">⚖️</div>
+          <h3><span class="so">Xeer Ilaaliyaha Gobolka</span><span class="en">Regional Prosecution</span><span class="am">የክልል ዓቃቤ ህግ</span></h3>
+          <p><span class="so">Dacwadaha dambiga, xogta kiiska, xiriirka maxkamadda, iyo diiwaanka kiisaska la xukumay.</span><span class="en">Criminal charges, case files, court coordination, and records of prosecuted cases with outcomes.</span><span class="am">የወንጀል ክሶች፣ የጉዳይ ፋይሎች፣ የፍርድ ቤት ቅንጅት እና የተከሰሱ ጉዳዮች መዝገብ።</span></p>
+        </div>
+        <div class="organ-body">
+          <div class="organ-access">
+            <div class="access-item"><span class="access-ico" style="background:#eaf5ee">✅</span><span><strong><span class="so">Warbixinnada Booliska – Akhris</span><span class="en">Police Reports – Read Access</span><span class="am">የፖሊስ ሪፖርቶች – ማንበብ</span></strong></span></div>
+            <div class="access-item"><span class="access-ico" style="background:#eaf5ee">✅</span><span><strong><span class="so">Kiisaska Dacwadaha – Buuxda</span><span class="en">Prosecution Cases – Full</span><span class="am">የክስ ጉዳዮች – ሙሉ</span></strong></span></div>
+            <div class="access-item"><span class="access-ico" style="background:#eaf5ee">✅</span><span><strong><span class="so">Xogta Dambiilayaasha – Buuxda</span><span class="en">Criminal Records – Full</span><span class="am">የወንጀለኛ መዝገቦች – ሙሉ</span></strong></span></div>
+            <div class="access-item"><span class="access-ico" style="background:#fff6e0">⚡</span><span><span class="access-partial"><span class="so">Maxkamadda Xogta – Wadaag</span><span class="en">Court Data – Shared View</span><span class="am">የፍርድ ቤት ውሂብ – የጋራ</span></span></span></div>
+            <div class="access-item"><span class="access-ico" style="background:#f9ecec">❌</span><span><span class="access-no"><span class="so">Xabsiga Gudaha – Entr Yok</span><span class="en">Prison Interior – No Access</span><span class="am">የእስር ቤት ውስጥ – አይፈቀድም</span></span></span></div>
+          </div>
+          <a href="#" onclick="openLogin()" class="organ-btn"><span class="so">🔐 Gal Xeer Ilaaliyaha Portal</span><span class="en">🔐 Prosecution Portal Login</span><span class="am">🔐 የዓቃቤ ህግ ፖርታል</span></a>
+        </div>
+      </div>
+
+      <!-- COURT -->
+      <div class="organ-card org-court" id="court">
+        <div class="organ-header">
+          <span class="organ-badge"><span class="so">Madaxbanaani Buuxda</span><span class="en">Full Independence</span><span class="am">ሙሉ ነፃነት</span></span>
+          <div style="font-size:2.5rem;margin-bottom:12px;">🏛️</div>
+          <h3><span class="so">Maxkamadda Gobolka</span><span class="en">Regional Court</span><span class="am">የክልል ፍርድ ቤት</span></h3>
+          <p><span class="so">Madaxbanaan oo xukunta garsoorka ah – heshiisyada, xukunka, iyo xuquuqda aadanaha ilaalinta.</span><span class="en">Fully independent judiciary – hearings, verdicts, and human rights oversight with no police or prosecution interference.</span><span class="am">ሙሉ ነፃ የፍትህ አካል – ችሎቶች፣ ውሳኔዎች እና የሰብዓዊ መብቶች ክትትል።</span></p>
+        </div>
+        <div class="organ-body">
+          <div class="organ-access">
+            <div class="access-item"><span class="access-ico" style="background:#eaf5ee">✅</span><span><strong><span class="so">Kiisaska Dacwadaha – Akhris</span><span class="en">Prosecution Files – Read Only</span><span class="am">የክስ ፋይሎች – ማንበብ</span></strong></span></div>
+            <div class="access-item"><span class="access-ico" style="background:#eaf5ee">✅</span><span><strong><span class="so">Xukunka Maxkamadda – Buuxda</span><span class="en">Court Records – Full Control</span><span class="am">የፍርድ ቤት መዝገቦች – ሙሉ</span></strong></span></div>
+            <div class="access-item"><span class="access-ico" style="background:#eaf5ee">✅</span><span><strong><span class="so">Xuquuqda Aadanaha – Buuxda</span><span class="en">Human Rights Review – Full</span><span class="am">የሰብዓዊ መብቶች ክለሳ – ሙሉ</span></strong></span></div>
+            <div class="access-item"><span class="access-ico" style="background:#fff6e0">⚡</span><span><span class="access-partial"><span class="so">Xabsiga Heerka – Kormeer</span><span class="en">Prison Status – Oversight Only</span><span class="am">እስር ቤት ሁኔታ – ቁጥጥር ብቻ</span></span></span></div>
+            <div class="access-item"><span class="access-ico" style="background:#f9ecec">❌</span><span><span class="access-no"><span class="so">Booliska Baarista – Gal Mays</span><span class="en">Police Investigation – No Write</span><span class="am">የፖሊስ ምርመራ – ጽፍ አይፈቀድም</span></span></span></div>
+          </div>
+          <a href="#" onclick="openLogin()" class="organ-btn"><span class="so">🔐 Gal Maxkamadda Portal</span><span class="en">🔐 Court Portal Login</span><span class="am">🔐 የፍርድ ቤት ፖርታል</span></a>
+        </div>
+      </div>
+
+      <!-- CORRECTIONS -->
+      <div class="organ-card org-prison" id="corrections">
+        <div class="organ-header">
+          <span class="organ-badge"><span class="so">Xukun Xaddidan</span><span class="en">Limited Access</span><span class="am">የተወሰነ</span></span>
+          <div style="font-size:2.5rem;margin-bottom:12px;">🔒</div>
+          <h3><span class="so">Xabsiga & Dib u Habeynta</span><span class="en">Corrections & Rehabilitation</span><span class="am">ማረሚያ እና ማደስ</span></h3>
+          <p><span class="so">Maxaabiista maaraynta, barnaamijyada dib u habeynta, xaaladaha caafimaadka, iyo warbixinnada tababarka.</span><span class="en">Inmate management, rehabilitation programs, health conditions, and education records within the facility.</span><span class="am">የእስረኛ አስተዳደር፣ የማደስ ፕሮግራሞች፣ የጤና ሁኔታዎች እና የትምህርት መዝገቦች።</span></p>
+        </div>
+        <div class="organ-body">
+          <div class="organ-access">
+            <div class="access-item"><span class="access-ico" style="background:#eaf5ee">✅</span><span><strong><span class="so">Maxaabiista Xogta – Buuxda</span><span class="en">Inmate Records – Full</span><span class="am">የእስረኛ መዝገቦች – ሙሉ</span></strong></span></div>
+            <div class="access-item"><span class="access-ico" style="background:#eaf5ee">✅</span><span><strong><span class="so">Barnaamijyada – Buuxda</span><span class="en">Rehab Programs – Full</span><span class="am">የማደስ ፕሮግራሞች – ሙሉ</span></strong></span></div>
+            <div class="access-item"><span class="access-ico" style="background:#fff6e0">⚡</span><span><span class="access-partial"><span class="so">Xukunka Maxkamadda – Akhris</span><span class="en">Court Orders – Read Only</span><span class="am">የፍርድ ቤት ትዕዛዞች – ማንበብ</span></span></span></div>
+            <div class="access-item"><span class="access-ico" style="background:#f9ecec">❌</span><span><span class="access-no"><span class="so">Baarista Xogta – Gal Mays</span><span class="en">Investigation Data – No Access</span><span class="am">የምርመራ ውሂብ – አይፈቀድም</span></span></span></div>
+            <div class="access-item"><span class="access-ico" style="background:#f9ecec">❌</span><span><span class="access-no"><span class="so">Dacwadaha Xogta – Gal Mays</span><span class="en">Prosecution Files – No Access</span><span class="am">የክስ ፋይሎች – አይፈቀድም</span></span></span></div>
+          </div>
+          <a href="#" onclick="openLogin()" class="organ-btn"><span class="so">🔐 Gal Xabsiga Portal</span><span class="en">🔐 Corrections Portal Login</span><span class="am">🔐 የማረሚያ ፖርታል</span></a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- TRANSPARENCY DASHBOARD -->
+<section class="dash-sec" id="daah-furka">
+  <div class="dash-inner">
+    <div class="st"><span class="so">Daahfurka Dadweynaha</span><span class="en">Public Transparency</span><span class="am">የህዝብ ግልፅነት</span></div>
+    <h2 class="sh"><span class="so">Xogta Nidaamka – Wada Muuqata</span><span class="en">System Statistics – Live & Public</span><span class="am">የስርዓት ስታቲስቲክስ – ቀጥታ እና ህዝባዊ</span></h2>
+    <p class="ss"><span class="so">Macluumaadka hoose wuxuu la heli karaa dadka oo dhan – mid walba wuxuu arki karaa sida nidaamka shaqaynaya.</span><span class="en">All statistics below are publicly accessible – every citizen can see how the justice system is performing.</span><span class="am">ሁሉም ስታቲስቲክስ ለሕዝብ ይፋ ነው – እያንዳንዱ ዜጋ የፍትህ ስርዓቱ እንዴት እየሰራ እንደሆነ ማየት ይችላል።</span></p>
+    <div class="dash-grid">
+      <div class="dash-card"><span class="dn" id="statOpenCases">—</span><span class="dl"><span class="so">Kiisas Furan</span><span class="en">Open Cases</span><span class="am">ክፍት ጉዳዮች</span></span></div>
+      <div class="dash-card"><span class="dn" id="statResolvedPct">—</span><span class="dl"><span class="so">Dacwado Dhamaystay</span><span class="en">Cases Resolved</span><span class="am">የተፈቱ ጉዳዮች</span></span></div>
+      <div class="dash-card"><span class="dn" id="statInmates">—</span><span class="dl"><span class="so">Maxaabiis Hadda</span><span class="en">Current Inmates</span><span class="am">አሁን ያሉ እስረኞች</span></span></div>
+      <div class="dash-card"><span class="dn" id="statAvgDays">—</span><span class="dl"><span class="so">Ø Waqtiga Kiiska</span><span class="en">Avg. Case Duration</span><span class="am">አማካይ የጉዳይ ጊዜ</span></span></div>
+    </div>
+    <div class="activity-grid">
+      <div class="af">
+        <h4><span class="so">Waxqabadka Dhabta ah</span><span class="en">Recent Activity</span><span class="am">የቅርብ ጊዜ እንቅስቃሴ</span></h4>
+        <div class="af-item"><div class="af-dot" style="background:#4a90d9;"></div><div style="flex:1;"><div class="af-text"><span class="so">Kiis cusub la furay – Jigjiga Zone 3</span><span class="en">New case opened – Jigjiga Zone 3</span><span class="am">አዲስ ጉዳይ ተከፈተ – ጅጅጋ ዞን 3</span></div><span class="af-organ" style="background:rgba(26,79,160,.1);color:#1a4fa0;">Police</span></div><div class="af-time">09:14</div></div>
+        <div class="af-item"><div class="af-dot" style="background:#9b59b6;"></div><div style="flex:1;"><div class="af-text"><span class="so">Dacwad la xukumay – Case #2847</span><span class="en">Verdict delivered – Case #2847</span><span class="am">ፍርድ ተሰጠ – ጉዳይ #2847</span></div><span class="af-organ" style="background:rgba(100,26,160,.1);color:#7b26c0;">Court</span></div><div class="af-time">08:52</div></div>
+        <div class="af-item"><div class="af-dot" style="background:#27ae60;"></div><div style="flex:1;"><div class="af-text"><span class="so">Maxbuus si xor ah loo daayay – ID #1094</span><span class="en">Inmate released – ID #1094</span><span class="am">እስረኛ ተፈታ – መለያ #1094</span></div><span class="af-organ" style="background:rgba(139,26,26,.1);color:#8b1a1a;">Corrections</span></div><div class="af-time">08:30</div></div>
+        <div class="af-item"><div class="af-dot" style="background:#c9963a;"></div><div style="flex:1;"><div class="af-text"><span class="so">Dacwad la gudbiyay maxkamadda – Case #3102</span><span class="en">Case filed to court – Case #3102</span><span class="am">ጉዳይ ለፍርድ ቤት ቀረበ – #3102</span></div><span class="af-organ" style="background:rgba(100,26,160,.1);color:#7b26c0;">Prosecution</span></div><div class="af-time">08:11</div></div>
+      </div>
+      <div class="af">
+        <h4><span class="so">Xuquuqda Aadanaha Kormeerka</span><span class="en">Human Rights Oversight</span><span class="am">የሰብዓዊ መብቶች ቁጥጥር</span></h4>
+        <div class="af-item"><div class="af-dot" style="background:#27ae60;"></div><div style="flex:1;"><div class="af-text"><span class="so">Xabsiga kormeer – Xaalad wanaagsan</span><span class="en">Prison inspection completed – Good conditions</span><span class="am">የእስር ቤት ምርመራ – ጥሩ ሁኔታዎች</span></div><span class="af-organ" style="background:rgba(26,122,60,.1);color:#1a7a3c;">Court</span></div><div class="af-time">Jun 10</div></div>
+        <div class="af-item"><div class="af-dot" style="background:#4a90d9;"></div><div style="flex:1;"><div class="af-text"><span class="so">Booliska tababar – 47 saraakiil</span><span class="en">Police training completed – 47 officers</span><span class="am">የፖሊስ ስልጠና – 47 መኮንኖች</span></div><span class="af-organ" style="background:rgba(26,79,160,.1);color:#1a4fa0;">Police</span></div><div class="af-time">Jun 8</div></div>
+        <div class="af-item"><div class="af-dot" style="background:#c9963a;"></div><div style="flex:1;"><div class="af-text"><span class="so">Warbixin sannadeedka la daabacay – 2024</span><span class="en">Annual transparency report published – 2024</span><span class="am">አመታዊ ግልፅነት ሪፖርት ታተመ – 2024</span></div><span class="af-organ" style="background:rgba(201,150,58,.1);color:#c9963a;">System</span></div><div class="af-time">Jun 1</div></div>
+        <div class="af-item"><div class="af-dot" style="background:#27ae60;"></div><div style="flex:1;"><div class="af-text"><span class="so">Dacwado 98% garsoor xaq ah – Q1 2025</span><span class="en">98% of cases with fair trial – Q1 2025</span><span class="am">98% ፍትሃዊ ሙከራ – Q1 2025</span></div><span class="af-organ" style="background:rgba(26,122,60,.1);color:#1a7a3c;">Court</span></div><div class="af-time">Apr 1</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REPORT SECTION -->
+<section class="report-sec" id="warbixin">
+  <div class="report-inner">
+    <div class="report-info">
+      <div class="st"><span class="so">Warbixin & Cabasho</span><span class="en">Report & Complaint</span><span class="am">ሪፖርት እና 민원</span></div>
+      <h2 class="sh"><span class="so">Wax xun u Soo Gudbi</span><span class="en">Report Misconduct</span><span class="am">በደልን ሪፖርት ያድርጉ</span></h2>
+      <p style="color:var(--gray);font-size:.96rem;margin-bottom:28px;font-weight:300;"><span class="so">Haddaad aragto xad gudub, musuqmaasuq, ama xaquuq darro – u soo gudbi si qarsoodi ah. Ma jiro ciqaab.</span><span class="en">If you witness misconduct, corruption, or rights violations – report anonymously. No retaliation.</span><span class="am">ጥቃት፣ ሙስና ወይም የመብት ጥሰት ካዩ – ሳይታወቁ ሪፖርት ያድርጉ። ምንም ቅጣት የለም።</span></p>
+      <div class="ri-card">
+        <h3><span class="so">Xuquuqdaada</span><span class="en">Your Rights</span><span class="am">መብቶችዎ</span></h3>
+        <div class="ri-item"><span class="ri-ico">⚖️</span><div><strong><span class="so">Garsoor Xaq ah</span><span class="en">Right to Fair Trial</span><span class="am">ፍትሃዊ ሙከራ</span></strong><span><span class="so"> – Qof kasta wuxuu xuq u leeyahay maxkamad xaq ah</span><span class="en"> – Everyone has the right to a fair hearing</span><span class="am"> – ሁሉም ሰው ፍትሃዊ ችሎት የማግኘት መብት አለው</span></span></div></div>
+        <div class="ri-item"><span class="ri-ico">🔒</span><div><strong><span class="so">Xabsi Sharci ah</span><span class="en">Legal Detention Only</span><span class="am">ህጋዊ እስር ብቻ</span></strong><span><span class="so"> – Xiritaanku waxa uu u baahan yahay amar maxkamad</span><span class="en"> – Detention requires court order within 48 hours</span><span class="am"> – እስር በ48 ሰዓት ውስጥ የፍርድ ቤት ትዕዛዝ ይፈልጋል</span></span></div></div>
+        <div class="ri-item"><span class="ri-ico">👨‍⚖️</span><div><strong><span class="so">Qareen Xaq ah</span><span class="en">Right to Lawyer</span><span class="am">ጠበቃ የማግኘት መብት</span></strong><span><span class="so"> – Lacag la'aantaba qareen ayaa lagugu siin karaa</span><span class="en"> – Free legal representation if you cannot afford one</span><span class="am"> – ካልቻሉ ነፃ ጠበቃ ይሰጥዎታል</span></span></div></div>
+      </div>
+      <div class="emergency-card">
+        <h3><span class="so">🚨 Xaaladda Degdegga ah</span><span class="en">🚨 Emergency</span><span class="am">🚨 አስቸኳይ</span></h3>
+        <p style="font-size:.83rem;color:rgba(255,255,255,.8);line-height:1.6;"><span class="so">Haddaad baahi degdeg ah u leedahay – wac:</span><span class="en">For immediate emergency assistance – call:</span><span class="am">ለፈጣን አስቸኳይ እርዳታ – ይደውሉ:</span></p>
+        <a href="tel:+251257759911" class="em-btn">📞 +251 25 775 9911</a>
+      </div>
+    </div>
+
+    <div class="report-form">
+      <div class="rf-title"><span class="so">📢 Warbixin Qarsoodi ah</span><span class="en">📢 Anonymous Report</span><span class="am">📢 ስም-አልባ ሪፖርት</span></div>
+      <div class="rf-sub"><span class="so">Magacaagu ma muuqan doono – xog kasta waa qarsoodi</span><span class="en">Your identity is protected – all data is confidential</span><span class="am">ማንነትዎ ይጠበቃል – ሁሉም ውሂብ ሚስጥራዊ ነው</span></div>
+      <div class="fgrid2">
+        <div class="rfg"><label><span class="so">Gobolka *</span><span class="en">Region *</span><span class="am">ክልል *</span></label>
+          <select id="repRegion">
+            <option value="">-- <span class="so">Dooro</span><span class="en">Select</span> --</option>
+            <option>Jigjiga Zone</option><option>Shinile Zone</option><option>Korahe Zone</option>
+            <option>Jarar Zone</option><option>Shabelle Zone</option><option>Dollo Zone</option>
+            <option>Nogob Zone</option><option>Siti Zone</option><option>Liben Zone</option>
+          </select>
+        </div>
+        <div class="rfg"><label><span class="so">Orgaanka *</span><span class="en">Which Organ *</span><span class="am">አካሉ *</span></label>
+          <select id="repOrgan">
+            <option value="">-- <span class="so">Dooro</span><span class="en">Select</span> --</option>
+            <option value="police"><span class="so">Booliska</span><span class="en">Police</span></option>
+            <option value="prosecution"><span class="so">Xeer Ilaaliyaha</span><span class="en">Prosecution</span></option>
+            <option value="court"><span class="so">Maxkamadda</span><span class="en">Court</span></option>
+            <option value="corrections"><span class="so">Xabsiga</span><span class="en">Corrections</span></option>
+          </select>
+        </div>
+        <div class="rfg full"><label><span class="so">Nooca Dhibaatada *</span><span class="en">Type of Violation *</span><span class="am">የጥሰት አይነት *</span></label>
+          <select id="repViolation">
+            <option value="">-- <span class="so">Dooro</span><span class="en">Select</span> --</option>
+            <option><span class="so">Musuqmaasuq</span><span class="en">Corruption / Bribery</span></option>
+            <option><span class="so">Xadgudub Jireed</span><span class="en">Physical Abuse</span></option>
+            <option><span class="so">Xiritaan Sharci Darro</span><span class="en">Illegal Detention</span></option>
+            <option><span class="so">Xaq Darro</span><span class="en">Rights Violation</span></option>
+            <option><span class="so">Kale</span><span class="en">Other</span></option>
+          </select>
+        </div>
+        <div class="rfg full"><label><span class="so">Faahfaahinta *</span><span class="en">Description *</span><span class="am">መግለጫ *</span></label>
+          <textarea id="repDescription" placeholder="Sharax waxa dhacay...  /  Describe what happened...  /  ምን እንደሆነ ይግለፁ..."></textarea>
+        </div>
+        <div class="rfg"><label><span class="so">Taariikhda</span><span class="en">Date of Incident</span><span class="am">ቀን</span></label>
+          <input type="date" id="repDate">
+        </div>
+        <div class="rfg"><label><span class="so">Lambarka (Ikhtiyaari)</span><span class="en">Phone (Optional)</span><span class="am">ስልክ (አስፈላጊ አይደለም)</span></label>
+          <input type="tel" id="repPhone" placeholder="+251 9x xxx xxxx">
+        </div>
+      </div>
+      <button class="submit-btn" onclick="submitReport()">
+        📨 <span class="so">U Gudbi si Qarsoodi ah</span><span class="en">Submit Anonymously</span><span class="am">ሳይታወቁ ያስገቡ</span>
+      </button>
+      <div class="anon-note"><span class="so">IP-gaaga lama duubayo. Warbixintaada waxaa baari doona hay'ad madaxbanaani ah.</span><span class="en">Your IP is not logged. Your report will be reviewed by an independent oversight body.</span><span class="am">የእርስዎ IP አይመዘገብም። ሪፖርትዎ በነፃ ቁጥጥር አካል ይገመገማል።</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="cband"><div class="cb-g"></div><div class="cb-w"></div><div class="cb-r"></div></div>
+
+<footer>
+  <div class="ft">
+    <div class="ft-brand">
+      <div class="ftl"><div style="font-size:1.5rem">⚖️</div><h3><span class="so">Nidaamka Xeerarka Soomaalida</span><span class="en">Somali Justice System</span><span class="am">የሶማሌ ፍትህ ስርዓት</span></h3></div>
+      <p><span class="so">Nidaamka wadajirka ah ee caddaaladda, ammaanka, iyo xuquuqda aadanaha ee Gobolka Soomaalida – daahfuran, xaq leh, oo la gaadhi karo.</span><span class="en">The integrated justice, security, and human rights system of the Somali Regional State – transparent, fair, and accessible.</span><span class="am">የሶማሌ ክልል የተቀናጀ ፍትህ፣ ደህንነት እና የሰብዓዊ መብቶች ስርዓት – ግልፅ፣ ፍትሃዊ እና ተደራሽ።</span></p>
+    </div>
+    <div class="ft-col"><h4><span class="so">Orgaanada</span><span class="en">Organs</span><span class="am">አካላት</span></h4>
+      <a href="#police">👮 <span class="so">Booliska</span><span class="en">Police</span><span class="am">ፖሊስ</span></a>
+      <a href="#prosecution">⚖️ <span class="so">Xeer Ilaaliyaha</span><span class="en">Prosecution</span><span class="am">ዓቃቤ ህግ</span></a>
+      <a href="#court">🏛️ <span class="so">Maxkamadda</span><span class="en">Court</span><span class="am">ፍርድ ቤት</span></a>
+      <a href="#corrections">🔒 <span class="so">Xabsiga</span><span class="en">Corrections</span><span class="am">ማረሚያ</span></a>
+    </div>
+    <div class="ft-col"><h4><span class="so">Xiriirka</span><span class="en">Contact</span><span class="am">ያግኙን</span></h4>
+      <a href="tel:+251257759911">🚨 +251 25 775 9911</a>
+      <a href="#">✉️ justice@somali.gov.et</a>
+      <a href="#warbixin">📢 <span class="so">Warbixin</span><span class="en">Report</span><span class="am">ሪፖርት</span></a>
+    </div>
+    <div class="ft-col"><h4><span class="so">Xeerarka</span><span class="en">Legal</span><span class="am">ህጋዊ</span></h4>
+      <a href="#"><span class="so">Xuquuqda Aadanaha</span><span class="en">Human Rights</span><span class="am">ሰብዓዊ መብቶች</span></a>
+      <a href="#"><span class="so">Xogta Gaarka</span><span class="en">Privacy Policy</span><span class="am">ግላዊነት</span></a>
+      <a href="#daah-furka"><span class="so">Daahfurka</span><span class="en">Transparency</span><span class="am">ግልፅነት</span></a>
+    </div>
+  </div>
+  <div class="ft-bottom">
+    <span>© 2025 Nidaamka Xeerarka Soomaalida · Dawlad Deegaanka Soomaalida · Itoobiya</span>
+    <span><span class="so">Dhammaan xuquuqyadu way dhowrsanyihiin</span><span class="en">All rights reserved</span><span class="am">ሁሉም መብቶች የተጠበቁ ናቸው</span></span>
+  </div>
+</footer>
+<div class="flag-sr"><div class="fs-g"></div><div class="fs-w"></div><div class="fs-r"></div><div class="fs-tri"></div></div>
+
+<!-- LOGIN MODAL -->
+<div class="modal-ov" id="loginModal" data-organ="police" style="position:fixed;min-height:100px;">
+  <div class="modal" style="position:relative;">
+    <div class="modal-top">
+      <button class="modal-close" onclick="closeLogin()">✕</button>
+      <h2><span class="so">🔐 Gal Nidaamka</span><span class="en">🔐 System Login</span><span class="am">🔐 ስርዓቱን ያስገቡ</span></h2>
+      <p><span class="so">Orgaankaaga dooro si aad u gasho portal-kaaga</span><span class="en">Select your organ to access your portal</span><span class="am">ፖርታልዎን ለመድረስ አካልዎን ይምረጡ</span></p>
+    </div>
+    <div class="modal-body">
+      <div class="organ-select">
+        <div class="os sel" onclick="selectOrgan(this,'police')"><div class="os-ico" style="background:#e8f0fb">👮</div><div><div class="os-name"><span class="so">Booliska</span><span class="en">Police</span><span class="am">ፖሊስ</span></div><div class="os-level"><span class="so">Xukun Sare</span><span class="en">High Access</span><span class="am">ከፍተኛ</span></div></div></div>
+        <div class="os" onclick="selectOrgan(this,'prosecution')"><div class="os-ico" style="background:#f0e8ff">⚖️</div><div><div class="os-name"><span class="so">Xeer Ilaaliyaha</span><span class="en">Prosecution</span><span class="am">ዓቃቤ ህግ</span></div><div class="os-level"><span class="so">Xukun Sare</span><span class="en">High Access</span><span class="am">ከፍተኛ</span></div></div></div>
+        <div class="os" onclick="selectOrgan(this,'court')"><div class="os-ico" style="background:#eaf5ee">🏛️</div><div><div class="os-name"><span class="so">Maxkamadda</span><span class="en">Court</span><span class="am">ፍርድ ቤት</span></div><div class="os-level"><span class="so">Madaxbanaan</span><span class="en">Independent</span><span class="am">ነፃ</span></div></div></div>
+        <div class="os" onclick="selectOrgan(this,'corrections')"><div class="os-ico" style="background:#f9ecec">🔒</div><div><div class="os-name"><span class="so">Xabsiga</span><span class="en">Corrections</span><span class="am">ማረሚያ</span></div><div class="os-level"><span class="so">Xukun Xaddidan</span><span class="en">Limited Access</span><span class="am">የተወሰነ</span></div></div></div>
+      </div>
+      <div class="fg"><label><span class="so">ID / Lambarka Shaqaalaha</span><span class="en">Staff ID / Badge Number</span><span class="am">የሰራተኛ መታወቂያ</span></label><input type="text" id="loginId" placeholder="e.g. SR-POL-2847"></div>
+      <div class="fg"><label><span class="so">Furaha Sirta ah</span><span class="en">Password</span><span class="am">የይለፍ ቃል</span></label><input type="password" id="loginPassword" placeholder="••••••••"></div>
+      <button class="login-btn" onclick="doLogin()"><span class="so">🔐 Gal</span><span class="en">🔐 Login</span><span class="am">🔐 ግባ</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div class="success-ov" id="successModal">
+  <div class="success-modal">
+    <div class="sm-check">✅</div>
+    <h2><span class="so">Warbixinta Waa La Helay!</span><span class="en">Report Received!</span><span class="am">ሪፖርቱ ተቀብሏል!</span></h2>
+    <p><span class="so">Warbixintaadu waxay gaartay hay'adda madaxbanaan ah. Waxaa la baari doonaa 48 saacadood gudahood.</span><span class="en">Your report has been received by the independent oversight body and will be reviewed within 48 hours.</span><span class="am">ሪፖርትዎ ወደ ነፃ ቁጥጥር አካል ደርሷል እና በ48 ሰዓት ውስጥ ይገምገማል።</span></p>
+    <div class="ref-box" id="reportRef">REF: SR-2025-00000</div>
+    <button class="sm-btn" onclick="document.getElementById('successModal').classList.remove('open')"><span class="so">Xidh</span><span class="en">Close</span><span class="am">ዝጋ</span></button>
+  </div>
+</div>
+
+<script>
+// LANGUAGE
+function setLang(l,btn){
+  document.body.className=l==='so'?'':'lang-'+l;
+  document.querySelectorAll('.lb').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  document.documentElement.lang=l;
+  localStorage.setItem('jl',l);
+}
+(function(){
+  const s=localStorage.getItem('jl');
+  if(s&&s!=='so'){const b=document.getElementById('btn-'+s);if(b)setLang(s,b);}
+  else{document.body.className='';document.documentElement.lang='so';}
+})();
+
+// LOGIN MODAL
+function openLogin(){document.getElementById('loginModal').classList.add('open');}
+function closeLogin(){document.getElementById('loginModal').classList.remove('open');}
+let selOrgan='police';
+function selectOrgan(el,org){
+  document.querySelectorAll('.os').forEach(o=>o.classList.remove('sel'));
+  el.classList.add('sel');
+  selOrgan=org;
+  document.getElementById('loginModal').dataset.organ=org;
+}
+function doLogin(){
+  const id=document.getElementById('loginId').value.trim();
+  if(!id){alert('Please enter your Staff ID');return;}
+  closeLogin();
+  const portals={police:'Booliska Portal – Jigjiga',prosecution:'Xeer Ilaaliyaha Portal',court:'Maxkamadda Portal',corrections:'Xabsiga Portal'};
+  const access={police:'Crime DB · Biometrics · Investigation Reports',prosecution:'Case Files · Criminal Records · Court Coordination',court:'All Court Records · Human Rights · Oversight',corrections:'Inmate Records · Rehab Programs · Health Data'};
+  alert('✅ Login Successful!\n\n🔐 ' + portals[selOrgan] + '\n📋 Access: ' + access[selOrgan] + '\n👤 ID: ' + id + '\n\n⚠️ This session is logged and monitored.');
+}
+
+// REPORT
+function submitReport(){
+  const ref='SR-'+new Date().getFullYear()+'-'+Math.floor(10000+Math.random()*90000);
+  document.getElementById('reportRef').textContent='REF: '+ref;
+  document.getElementById('successModal').classList.add('open');
+}
+
+// Close modals on overlay click
+document.getElementById('loginModal').addEventListener('click',function(e){if(e.target===this)closeLogin();});
+document.getElementById('successModal').addEventListener('click',function(e){if(e.target===this)this.classList.remove('open');});
+</script>
+
+<!-- Echte Supabase-Anbindung: überschreibt die Demo-Funktionen oben -->
+<script type="module">
+import { login } from './src/auth.js';
+import { supabase } from './src/supabase-config.js';
+
+(async () => {
+  const { data, error } = await supabase.rpc('public_dashboard_stats');
+  if (error || !data) return;
+  document.getElementById('statOpenCases').textContent = data.open_cases;
+  document.getElementById('statResolvedPct').textContent = data.resolved_pct + '%';
+  document.getElementById('statInmates').textContent = data.current_inmates;
+  document.getElementById('statAvgDays').textContent = data.avg_days + ' Tage';
+})();
+
+window.doLogin = async function doLogin(){
+  const id = document.getElementById('loginId').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  const organ = document.getElementById('loginModal').dataset.organ;
+  if(!id || !password){ alert('Bitte Staff ID und Passwort eingeben.'); return; }
+
+  const result = await login(id, password, organ);
+  if(!result.success){ alert('❌ Login fehlgeschlagen: ' + result.error); return; }
+
+  window.location.href = 'dashboard.html';
+};
+
+window.submitReport = async function submitReport(){
+  const region = document.getElementById('repRegion').value;
+  const organ = document.getElementById('repOrgan').value;
+  const violation = document.getElementById('repViolation').value;
+  const description = document.getElementById('repDescription').value.trim();
+  const incidentDate = document.getElementById('repDate').value || null;
+  const phone = document.getElementById('repPhone').value.trim() || null;
+
+  if(!region || !organ || !violation || !description){ alert('Bitte alle Pflichtfelder (*) ausfüllen.'); return; }
+
+  const reference = 'SR-'+new Date().getFullYear()+'-'+Math.floor(10000+Math.random()*90000);
+
+  const { error } = await supabase.from('reports').insert({
+    region, organ, violation_type: violation, description,
+    incident_date: incidentDate, phone, reference
+  });
+
+  if(error){ alert('❌ Fehler beim Speichern: ' + error.message); return; }
+
+  document.getElementById('reportRef').textContent = 'REF: ' + reference;
+  document.getElementById('successModal').classList.add('open');
+};
+</script>
+</body>
+</html>

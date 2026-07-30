@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="so">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard | Nidaamka Xeerarka</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:#0a1628; --navy-mid:#112240; --navy-light:#1a3a6e;
+  --blue:#1a4fa0; --blue-light:#2c6fda; --blue-pale:#e8f0fb;
+  --gold:#c9963a; --gold-light:#e8b85a; --gold-pale:#fdf6e8;
+  --purple:#3a1a6e; --purple-light:#7b26c0; --purple-pale:#f3ecfb;
+  --green:#1a7a3c; --green-light:#25a050; --green-pale:#eaf5ee;
+  --red:#8b1a1a; --red-light:#c0392b; --red-pale:#f9ecec;
+  --gray:#5a6880; --gray-pale:#eef1f7; --border:#c8d4e8;
+  --white:#f7f9fd; --ink:#0d1b3e;
+  --shadow:0 4px 24px rgba(13,27,62,.12); --shadow-lg:0 12px 48px rgba(13,27,62,.2);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'IBM Plex Sans',sans-serif;background:var(--white);color:var(--ink);min-height:100vh;}
+.hidden{display:none!important;}
+
+/* GUARD SCREEN */
+#guard{display:flex;align-items:center;justify-content:center;min-height:100vh;color:var(--gray);font-size:.9rem;}
+
+/* TOPBAR */
+header{background:var(--navy);border-bottom:3px solid var(--gold);position:sticky;top:0;z-index:100;}
+.hd{max-width:1280px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:68px;gap:16px;flex-wrap:wrap;}
+.logo{display:flex;align-items:center;gap:12px;}
+.logo-shield{width:38px;height:44px;background:var(--gold);clip-path:polygon(50% 0%,100% 15%,100% 60%,50% 100%,0% 60%,0% 15%);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.logo-tx h1{font-family:'Playfair Display',serif;font-size:.95rem;font-weight:700;color:#fff;}
+.logo-tx span{font-size:.65rem;color:rgba(255,255,255,.5);letter-spacing:.08em;text-transform:uppercase;}
+.who{display:flex;align-items:center;gap:12px;}
+.who-name{text-align:right;}
+.who-name .n{font-size:.85rem;font-weight:600;color:#fff;}
+.who-name .o{font-size:.7rem;color:rgba(255,255,255,.5);}
+.logout-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#fff;padding:8px 16px;border-radius:8px;font-size:.8rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s;}
+.logout-btn:hover{background:rgba(255,255,255,.15);}
+
+/* LAYOUT */
+.main{max-width:1280px;margin:0 auto;padding:28px 24px 80px;}
+.pagehead{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:14px;margin-bottom:22px;}
+.pagehead h2{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--ink);margin-bottom:4px;}
+.pagehead p{color:var(--gray);font-size:.88rem;}
+.btn{background:var(--navy);color:#fff;border:none;padding:11px 20px;border-radius:8px;font-size:.86rem;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;}
+.btn:hover{background:var(--navy-light);}
+.btn.gold{background:var(--gold);color:var(--navy);}
+.btn.gold:hover{background:var(--gold-light);}
+.btn.ghost{background:transparent;border:1.5px solid var(--border);color:var(--ink);}
+.btn.ghost:hover{background:var(--gray-pale);}
+.btn.small{padding:7px 14px;font-size:.78rem;}
+.btn:disabled{opacity:.4;cursor:not-allowed;}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:26px;}
+.stat{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 18px;box-shadow:var(--shadow);}
+.stat .n{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:900;color:var(--navy);display:block;line-height:1;font-variant-numeric:tabular-nums;}
+.stat .l{font-size:.68rem;color:var(--gray);text-transform:uppercase;letter-spacing:.06em;margin-top:4px;display:block;}
+.stat.acc-investigation{border-top:3px solid var(--blue);}
+.stat.acc-prosecution{border-top:3px solid var(--purple-light);}
+.stat.acc-court{border-top:3px solid var(--green);}
+.stat.acc-corrections{border-top:3px solid var(--red);}
+.stat.acc-closed{border-top:3px solid var(--gray);}
+
+/* TOOLBAR */
+.toolbar{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;align-items:center;}
+.toolbar input[type=text]{flex:1;min-width:200px;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:.86rem;font-family:inherit;outline:none;}
+.toolbar input[type=text]:focus{border-color:var(--blue);}
+.toolbar select{padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:.86rem;font-family:inherit;background:#fff;}
+
+/* TABLE */
+.tablewrap{background:#fff;border:1px solid var(--border);border-radius:14px;overflow:auto;box-shadow:var(--shadow);}
+table{width:100%;border-collapse:collapse;font-size:.85rem;min-width:760px;}
+thead th{text-align:left;padding:12px 16px;background:var(--gray-pale);color:var(--gray);font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;font-weight:700;white-space:nowrap;}
+tbody td{padding:13px 16px;border-top:1px solid var(--border);vertical-align:middle;}
+tbody tr{cursor:pointer;transition:background .15s;}
+tbody tr:hover{background:var(--blue-pale);}
+.mono{font-family:'IBM Plex Mono',monospace;font-size:.82rem;color:var(--gray);}
+.empty-row td{text-align:center;color:var(--gray);padding:40px;font-style:italic;}
+
+/* STATUS PILL */
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:.7rem;font-weight:700;padding:4px 11px;border-radius:20px;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;}
+.pill::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor;}
+.pill.investigation{background:var(--blue-pale);color:var(--blue);}
+.pill.prosecution{background:var(--purple-pale);color:var(--purple-light);}
+.pill.court{background:var(--green-pale);color:var(--green);}
+.pill.corrections{background:var(--red-pale);color:var(--red);}
+.pill.closed{background:var(--gray-pale);color:var(--gray);}
+
+/* MODAL */
+.ov{display:none;position:fixed;inset:0;background:rgba(10,22,40,.8);z-index:1000;align-items:flex-start;justify-content:center;overflow-y:auto;padding:40px 20px;backdrop-filter:blur(4px);}
+.ov.open{display:flex;}
+.modal{background:#fff;border-radius:18px;width:100%;max-width:560px;box-shadow:var(--shadow-lg);animation:mIn .25s ease;}
+@keyframes mIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.modal-top{background:var(--navy-mid);padding:22px 28px;border-radius:18px 18px 0 0;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;}
+.modal-top h3{font-family:'Playfair Display',serif;color:#fff;font-size:1.15rem;}
+.modal-top p{color:rgba(255,255,255,.5);font-size:.78rem;margin-top:3px;}
+.modal-close{background:rgba(255,255,255,.1);border:none;color:#fff;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:.9rem;flex-shrink:0;}
+.modal-body{padding:24px 28px;max-height:70vh;overflow-y:auto;}
+.fg{margin-bottom:14px;}
+.fg label{display:block;font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gray);margin-bottom:6px;}
+.fg input,.fg select,.fg textarea{width:100%;border:1.5px solid var(--border);padding:11px 14px;border-radius:8px;font-size:.87rem;font-family:inherit;outline:none;}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--blue);}
+.fg textarea{resize:vertical;min-height:70px;}
+.fgrid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.formfoot{display:flex;justify-content:flex-end;gap:10px;margin-top:6px;}
+
+/* CASE DETAIL */
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;}
+.detail-item{background:var(--gray-pale);border-radius:8px;padding:10px 13px;}
+.detail-item .k{font-size:.65rem;color:var(--gray);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px;}
+.detail-item .v{font-size:.87rem;font-weight:600;color:var(--ink);}
+.detail-item.full{grid-column:1/-1;}
+.actions-box{background:var(--gold-pale);border:1px solid #ecd9a8;border-radius:10px;padding:16px;margin-bottom:18px;}
+.actions-box h4{font-size:.8rem;color:var(--ink);margin-bottom:10px;}
+.actions-box .btn-row{display:flex;gap:8px;flex-wrap:wrap;}
+
+/* TIMELINE */
+.timeline{border-left:2px solid var(--border);margin-left:8px;}
+.tl-item{position:relative;padding:2px 0 16px 20px;}
+.tl-item::before{content:'';position:absolute;left:-6px;top:3px;width:10px;height:10px;border-radius:50%;background:var(--gold);border:2px solid #fff;box-shadow:0 0 0 1px var(--border);}
+.tl-item .a{font-size:.83rem;font-weight:600;color:var(--ink);}
+.tl-item .o{font-size:.68rem;color:var(--gold);text-transform:uppercase;letter-spacing:.04em;font-weight:700;}
+.tl-item .n{font-size:.8rem;color:var(--gray);margin-top:2px;}
+.tl-item .t{font-size:.68rem;color:var(--gray);margin-top:2px;font-family:'IBM Plex Mono',monospace;}
+
+.msg{padding:12px 16px;border-radius:8px;font-size:.82rem;margin-bottom:14px;}
+.msg.err{background:var(--red-pale);color:var(--red);}
+.msg.ok{background:var(--green-pale);color:var(--green);}
+
+@media(max-width:860px){.stats{grid-template-columns:repeat(2,1fr);}.fgrid2,.detail-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<div id="guard">Wird geprüft, ob du eingeloggt bist…</div>
+
+<div id="app" class="hidden">
+  <header>
+    <div class="hd">
+      <div class="logo">
+        <div class="logo-shield">⚖️</div>
+        <div class="logo-tx">
+          <h1>Nidaamka Xeerarka — Dashboard</h1>
+          <span>Internes System</span>
+        </div>
+      </div>
+      <div class="who">
+        <a href="index.html" style="color:rgba(255,255,255,.6);text-decoration:none;font-size:.8rem;">🏠 Hauptportal</a>
+        <div class="who-name">
+          <div class="n" id="whoName">—</div>
+          <div class="o" id="whoOrgan">—</div>
+        </div>
+        <button class="logout-btn" id="btnLogout">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="main">
+    <div class="pagehead">
+      <div>
+        <h2>Fallakten</h2>
+        <p id="pageSub">Fälle, auf die dein Organ Zugriff hat</p>
+      </div>
+      <button class="btn gold" id="btnNewCase">+ Neuer Fall</button>
+    </div>
+
+    <div class="stats" id="stats"></div>
+
+    <div class="toolbar">
+      <input type="text" id="search" placeholder="Suche nach Fallnummer oder Name…">
+      <select id="filterStatus">
+        <option value="">Alle Phasen</option>
+        <option value="investigation">Ermittlung</option>
+        <option value="prosecution">Anklage</option>
+        <option value="court">Gericht</option>
+        <option value="corrections">Vollzug</option>
+        <option value="closed">Abgeschlossen</option>
+      </select>
+    </div>
+
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Fallnummer</th><th>Verdächtiger</th><th>Tatbestand</th>
+            <th>Datum</th><th>Bearbeitendes Organ</th><th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="caseRows"><tr class="empty-row"><td colspan="6">Lade Fälle…</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- NEW CASE MODAL -->
+<div class="ov" id="newCaseModal">
+  <div class="modal">
+    <div class="modal-top">
+      <div><h3>Neuen Fall anlegen</h3><p>Wird automatisch der Ermittlungs-Phase zugewiesen</p></div>
+      <button class="modal-close" onclick="closeModal('newCaseModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="newCaseMsg"></div>
+      <div class="fgrid2">
+        <div class="fg"><label>Verdächtiger *</label><input type="text" id="ncSuspect" placeholder="Vollständiger Name"></div>
+        <div class="fg"><label>Nationale ID</label><input type="text" id="ncNid" placeholder="Optional"></div>
+      </div>
+      <div class="fg"><label>Tatbestand *</label>
+        <select id="ncCrime">
+          <option value="">-- Auswählen --</option>
+          <option>Diebstahl</option><option>Körperverletzung</option><option>Betrug</option>
+          <option>Drogendelikt</option>
+          <option>Illegale Festnahme</option><option>Verkehrsdelikt</option><option>Mord</option><option>Sonstiges</option>
+        </select>
+      </div>
+      <div class="fg"><label>Beschreibung</label><textarea id="ncDesc" placeholder="Was ist passiert…"></textarea></div>
+      <div class="fgrid2">
+        <div class="fg"><label>Datum des Vorfalls</label><input type="date" id="ncDate"></div>
+        <div class="fg"><label>Kebele / Zone</label>
+          <select id="ncKebele">
+            <option value="">-- Auswählen --</option>
+            <option>Jigjiga Zone</option><option>Shinile Zone</option><option>Korahe Zone</option>
+            <option>Jarar Zone</option><option>Shabelle Zone</option><option>Dollo Zone</option>
+            <option>Nogob Zone</option><option>Siti Zone</option><option>Liben Zone</option>
+          </select>
+        </div>
+      </div>
+      <div class="formfoot">
+        <button class="btn ghost small" onclick="closeModal('newCaseModal')">Abbrechen</button>
+        <button class="btn small" id="btnSaveCase">Fall anlegen</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CASE DETAIL MODAL -->
+<div class="ov" id="detailModal">
+  <div class="modal" style="max-width:640px;">
+    <div class="modal-top">
+      <div><h3 id="dTitle">Fall</h3><p id="dSub">—</p></div>
+      <button class="modal-close" onclick="closeModal('detailModal')">✕</button>
+    </div>
+    <div class="modal-body" id="detailBody">Lädt…</div>
+  </div>
+</div>
+
+<script type="module">
+import { supabase } from './src/supabase-config.js';
+
+let profile = null;
+let cases = [];
+let activeCase = null;
+
+const CRIME_ORGAN_LABEL = {
+  investigation:'Booliska (Police)', prosecution:'Xeer Ilaaliyaha (Prosecution)',
+  court:'Maxkamadda (Court)', corrections:'Xabsiga (Corrections)', closed:'Abgeschlossen'
+};
+const ORGAN_LABEL = {
+  police:'Booliska (Police)', prosecution:'Xeer Ilaaliyaha (Prosecution)',
+  court:'Maxkamadda (Court)', corrections:'Xabsiga (Corrections)', admin:'Admin'
+};
+const STAGE_OWNER = { investigation:'police', prosecution:'prosecution', court:'court', corrections:'corrections' };
+const STATUS_LABEL = {
+  investigation:'Ermittlung', prosecution:'Anklage', court:'Gericht',
+  corrections:'Vollzug', closed:'Abgeschlossen'
+};
+
+window.closeModal = (id) => document.getElementById(id).classList.remove('open');
+function openModal(id){ document.getElementById(id).classList.add('open'); }
+
+async function init(){
+  const { data: { session } } = await supabase.auth.getSession();
+  if(!session){
+    window.location.href = '06-polizei.html';
+    return;
+  }
+
+  const { data: p, error } = await supabase.from('users').select('*').eq('email', session.user.email).maybeSingle();
+  if(error || !p){
+    document.getElementById('guard').textContent = 'Kein Profil gefunden. Bitte neu einloggen.';
+    await supabase.auth.signOut();
+    return;
+  }
+  profile = p;
+
+  document.getElementById('guard').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+  document.getElementById('whoName').textContent = profile.full_name;
+  document.getElementById('whoOrgan').textContent = ORGAN_LABEL[profile.organ] || profile.organ;
+  document.getElementById('pageSub').textContent = profile.organ === 'admin'
+    ? 'Alle Fälle (Admin-Zugriff)'
+    : 'Fälle, auf die dein Organ (' + (ORGAN_LABEL[profile.organ]||profile.organ) + ') Zugriff hat';
+
+  document.getElementById('btnNewCase').style.display = (profile.organ === 'police' || profile.organ === 'admin') ? '' : 'none';
+
+  await loadCases();
+}
+
+async function loadCases(){
+  const { data, error } = await supabase.from('cases').select('*').order('created_at', { ascending:false });
+  if(error){
+    document.getElementById('caseRows').innerHTML = '<tr class="empty-row"><td colspan="6">Fehler beim Laden: '+error.message+'</td></tr>';
+    return;
+  }
+  cases = data || [];
+  renderStats();
+  renderTable();
+}
+
+function renderStats(){
+  const order = ['investigation','prosecution','court','corrections','closed'];
+  const box = document.getElementById('stats');
+  box.innerHTML = order.map(s => {
+    const n = cases.filter(c => c.status === s).length;
+    return '<div class="stat acc-'+s+'"><span class="n">'+n+'</span><span class="l">'+STATUS_LABEL[s]+'</span></div>';
+  }).join('');
+}
+
+function renderTable(){
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  const f = document.getElementById('filterStatus').value;
+  const rows = cases.filter(c =>
+    (!f || c.status === f) &&
+    (!q || (c.case_number||'').toLowerCase().includes(q) || (c.suspect_name||'').toLowerCase().includes(q))
+  );
+  const tbody = document.getElementById('caseRows');
+  if(rows.length === 0){
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="6">Keine Fälle gefunden</td></tr>';
+    return;
+  }
+  tbody.innerHTML = rows.map(c => `
+    <tr onclick="openCase('${c.id}')">
+      <td class="mono">${c.case_number || '—'}</td>
+      <td>${escapeHtml(c.suspect_name)}</td>
+      <td>${escapeHtml(c.crime_type)}</td>
+      <td class="mono">${c.incident_date || '—'}</td>
+      <td>${CRIME_ORGAN_LABEL[c.status] || c.status}</td>
+      <td><span class="pill ${c.status}">${STATUS_LABEL[c.status]}</span></td>
+    </tr>
+  `).join('');
+}
+
+function escapeHtml(s){
+  return (s||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+
+window.openCase = async function openCase(id){
+  activeCase = cases.find(c => c.id === id);
+  if(!activeCase) return;
+
+  document.getElementById('dTitle').textContent = activeCase.case_number;
+  document.getElementById('dSub').textContent = activeCase.suspect_name + ' · ' + activeCase.crime_type;
+
+  const { data: events } = await supabase.from('case_events').select('*').eq('case_id', id).order('created_at', { ascending:true });
+
+  const canAct = profile.organ === 'admin' || profile.organ === STAGE_OWNER[activeCase.status];
+  let actionsHtml = '';
+  if(canAct && activeCase.status !== 'closed'){
+    if(activeCase.status === 'investigation'){
+      actionsHtml = `<div class="actions-box"><h4>Nächster Schritt (Booliska)</h4>
+        <div class="btn-row"><button class="btn small" onclick="advanceCase('prosecution')">An Xeer Ilaaliyaha übergeben →</button></div></div>`;
+    } else if(activeCase.status === 'prosecution'){
+      actionsHtml = `<div class="actions-box"><h4>Nächster Schritt (Xeer Ilaaliyaha)</h4>
+        <div class="fg" style="margin-bottom:10px;"><label>Anklageschrift / Notiz</label><textarea id="verdictNote" placeholder="Anklagepunkte…"></textarea></div>
+        <div class="btn-row"><button class="btn small" onclick="advanceCase('court')">Anklage erheben & an Maxkamadda übergeben →</button></div></div>`;
+    } else if(activeCase.status === 'court'){
+      actionsHtml = `<div class="actions-box"><h4>Urteil (Maxkamadda)</h4>
+        <div class="fg" style="margin-bottom:10px;"><label>Urteil</label><textarea id="verdictNote" placeholder="Urteilsbegründung…"></textarea></div>
+        <div class="btn-row">
+          <button class="btn small ghost" onclick="advanceCase('closed')">Freispruch — Fall abschließen</button>
+          <button class="btn small" onclick="advanceCase('corrections')">Haftstrafe — an Xabsiga übergeben →</button>
+        </div></div>`;
+    } else if(activeCase.status === 'corrections'){
+      actionsHtml = `<div class="actions-box"><h4>Vollzug (Xabsiga)</h4>
+        <div class="fg" style="margin-bottom:10px;"><label>Entlassungs-/Vollzugsnotiz</label><textarea id="verdictNote" placeholder="Notiz…"></textarea></div>
+        <div class="btn-row"><button class="btn small" onclick="advanceCase('closed')">Fall abschließen (Entlassung)</button></div></div>`;
+    }
+  }
+
+  document.getElementById('detailBody').innerHTML = `
+    <div class="detail-grid">
+      <div class="detail-item"><div class="k">Verdächtiger</div><div class="v">${escapeHtml(activeCase.suspect_name)}</div></div>
+      <div class="detail-item"><div class="k">Nationale ID</div><div class="v">${escapeHtml(activeCase.national_id) || '—'}</div></div>
+      <div class="detail-item"><div class="k">Tatbestand</div><div class="v">${escapeHtml(activeCase.crime_type)}</div></div>
+      <div class="detail-item"><div class="k">Datum</div><div class="v">${activeCase.incident_date || '—'}</div></div>
+      <div class="detail-item"><div class="k">Kebele/Zone</div><div class="v">${escapeHtml(activeCase.kebele) || '—'}</div></div>
+      <div class="detail-item"><div class="k">Status</div><div class="v"><span class="pill ${activeCase.status}">${STATUS_LABEL[activeCase.status]}</span></div></div>
+      <div class="detail-item full"><div class="k">Beschreibung</div><div class="v" style="font-weight:400;">${escapeHtml(activeCase.description) || '—'}</div></div>
+      ${activeCase.verdict ? `<div class="detail-item full"><div class="k">Urteil / Notiz</div><div class="v" style="font-weight:400;">${escapeHtml(activeCase.verdict)}</div></div>` : ''}
+    </div>
+    ${actionsHtml}
+    <h4 style="font-size:.85rem;margin-bottom:12px;">Verlauf</h4>
+    <div class="timeline">
+      ${(events||[]).map(e => `
+        <div class="tl-item">
+          <div class="o">${ORGAN_LABEL[e.organ] || e.organ || 'System'}</div>
+          <div class="a">${escapeHtml(e.action)}</div>
+          ${e.note ? `<div class="n">${escapeHtml(e.note)}</div>` : ''}
+          <div class="t">${new Date(e.created_at).toLocaleString('de-DE')}</div>
+        </div>`).join('') || '<p style="color:var(--gray);font-size:.83rem;">Kein Verlauf</p>'}
+    </div>
+  `;
+  openModal('detailModal');
+};
+
+window.advanceCase = async function advanceCase(nextStatus){
+  const note = document.getElementById('verdictNote');
+  const payload = { status: nextStatus };
+  if(note && note.value.trim()) payload.verdict = note.value.trim();
+
+  const { error } = await supabase.from('cases').update(payload).eq('id', activeCase.id);
+  if(error){ alert('❌ Fehler: ' + error.message); return; }
+
+  closeModal('detailModal');
+  await loadCases();
+};
+
+document.getElementById('btnNewCase').addEventListener('click', () => {
+  document.getElementById('newCaseMsg').innerHTML = '';
+  openModal('newCaseModal');
+});
+
+document.getElementById('btnSaveCase').addEventListener('click', async () => {
+  const suspect = document.getElementById('ncSuspect').value.trim();
+  const crime = document.getElementById('ncCrime').value;
+  if(!suspect || !crime){
+    document.getElementById('newCaseMsg').innerHTML = '<div class="msg err">Bitte Verdächtiger und Tatbestand ausfüllen.</div>';
+    return;
+  }
+  const { error } = await supabase.from('cases').insert({
+    suspect_name: suspect,
+    national_id: document.getElementById('ncNid').value.trim() || null,
+    crime_type: crime,
+    description: document.getElementById('ncDesc').value.trim() || null,
+    incident_date: document.getElementById('ncDate').value || null,
+    kebele: document.getElementById('ncKebele').value || null,
+    created_by: (await supabase.auth.getUser()).data.user.id
+  });
+  if(error){
+    document.getElementById('newCaseMsg').innerHTML = '<div class="msg err">Fehler: '+error.message+'</div>';
+    return;
+  }
+  closeModal('newCaseModal');
+  ['ncSuspect','ncNid','ncCrime','ncDesc','ncDate','ncKebele'].forEach(id => document.getElementById(id).value = '');
+  await loadCases();
+});
+
+document.getElementById('search').addEventListener('input', renderTable);
+document.getElementById('filterStatus').addEventListener('change', renderTable);
+document.getElementById('btnLogout').addEventListener('click', async () => {
+  await supabase.auth.signOut();
+  window.location.href = '06-polizei.html';
+});
+
+init();
+</script>
+</body>
+</html>
