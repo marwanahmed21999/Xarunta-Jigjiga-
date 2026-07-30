@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mitarbeiter-Registrierung | Xarunta Jigjiga</title>
+<title>Mitarbeiter-Registrierung | Xarunta Deegaanka Soomaalida</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -54,7 +54,7 @@ body.lang-de span.so{display:none!important;}body.lang-de span.de{display:inline
       <button class="lb" id="btn-de">DE</button>
     </div>
     <h1><span class="so">Diiwaangelinta Shaqaalaha</span><span class="en">Staff Registration</span><span class="am">የሰራተኛ ምዝገባ</span><span class="de">Mitarbeiter-Registrierung</span></h1>
-    <p><span class="so">Xarunta Jigjiga · Akoonku wuu furmi doonaa marka la hubiyo</span><span class="en">Xarunta Jigjiga · Account will be activated after review</span><span class="am">ጅጅጋ ማዕከል · መለያው ከተረጋገጠ በኋላ ይከፈታል</span><span class="de">Xarunta Jigjiga · Konto wird nach Prüfung freigeschaltet</span></p>
+    <p><span class="so">Xarunta Deegaanka Soomaalida · Akoonku wuu furmi doonaa marka la hubiyo</span><span class="en">Somali Regional State Portal · Account will be activated after review</span><span class="am">የሶማሌ ክልል ፖርታል · መለያው ከተረጋገጠ በኋላ ይከፈታል</span><span class="de">Xarunta Deegaanka Soomaalida · Konto wird nach Prüfung freigeschaltet</span></p>
   </div>
   <div class="body">
     <div id="msg"></div>
@@ -78,8 +78,8 @@ body.lang-de span.so{display:none!important;}body.lang-de span.de{display:inline
 </div>
 
 <script type="module">
-import { supabase } from './src/supabase-config.js';
-import { initLangSwitcher, t } from './src/i18n.js';
+import { supabase } from '../src/supabase-config.js';
+import { initLangSwitcher, t } from '../src/i18n.js';
 
 function applyOrganPlaceholder() {
   const opt = document.querySelector('#organ option[value=""]');

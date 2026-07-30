@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mitarbeiter-Login | Xarunta Jigjiga</title>
+<title>Mitarbeiter-Login | Xarunta Deegaanka Soomaalida</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -65,8 +65,8 @@ body.lang-de span.so{display:none!important;}body.lang-de span.de{display:inline
 </div>
 
 <script type="module">
-import { login } from './src/auth.js';
-import { initLangSwitcher, t } from './src/i18n.js';
+import { login } from '../src/auth.js';
+import { initLangSwitcher, t } from '../src/i18n.js';
 
 ['so','en','am','de'].forEach(l => {
   document.getElementById('btn-' + l).addEventListener('click', (e) => window.setLang(l, e.target));

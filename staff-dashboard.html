@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mitarbeiter-Dashboard | Xarunta Jigjiga</title>
+<title>Mitarbeiter-Dashboard | Xarunta Deegaanka Soomaalida</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -118,7 +118,7 @@ body.lang-de span.so{display:none!important;}body.lang-de span.de{display:inline
 <div id="app" class="hidden">
   <header>
     <div class="hd">
-      <div class="logo"><h1>Xarunta Jigjiga — Mitarbeiter-Dashboard</h1><span><span class="so">Nidaamka Gudaha</span><span class="en">Internal System</span><span class="am">የውስጥ ስርዓት</span><span class="de">Internes System</span></span></div>
+      <div class="logo"><h1>Xarunta Deegaanka Soomaalida — Mitarbeiter-Dashboard</h1><span><span class="so">Nidaamka Gudaha</span><span class="en">Internal System</span><span class="am">የውስጥ ስርዓት</span><span class="de">Internes System</span></span></div>
       <div class="who">
         <div class="lang-sw">
           <button class="lb on" id="btn-so">SO</button>
@@ -190,8 +190,8 @@ body.lang-de span.so{display:none!important;}body.lang-de span.de{display:inline
 </div>
 
 <script type="module">
-import { supabase } from './src/supabase-config.js';
-import { initLangSwitcher, t } from './src/i18n.js';
+import { supabase } from '../src/supabase-config.js';
+import { initLangSwitcher, t } from '../src/i18n.js';
 
 let profile = null;
 let allRequests = [];
