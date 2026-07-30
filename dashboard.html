@@ -275,9 +275,9 @@ body.lang-de span.so{display:none!important;}body.lang-de span.de{display:inline
 </div>
 
 <script type="module">
-import { supabase } from './src/supabase-config.js';
-import { initLangSwitcher, t } from './src/i18n.js';
-import { wireLocationCascade, readLocation } from './src/location-picker.js';
+import { supabase } from '../src/supabase-config.js';
+import { initLangSwitcher, t } from '../src/i18n.js';
+import { wireLocationCascade, readLocation } from '../src/location-picker.js';
 
 let profile = null;
 let cases = [];
@@ -301,6 +301,17 @@ const STATUS_LABEL = {
 function organLabel(o){ return ORGAN_LABEL[o] ? t(ORGAN_LABEL[o]) : (o || '—'); }
 function statusLabel(s){ return STATUS_LABEL[s] ? t(STATUS_LABEL[s]) : s; }
 function currentOrganLabel(status){ return status === 'closed' ? statusLabel('closed') : organLabel(STAGE_OWNER[status]); }
+
+function formatEventAction(action){
+  if(action === 'created'){
+    return t({so:'Kiis la sameeyay', en:'Case created', am:'ጉዳይ ተፈጥሯል', de:'Fall angelegt'});
+  }
+  if(action && action.startsWith('transition:')){
+    const [, from, to] = action.split(':');
+    return t({so:'Xaalad: ', en:'Status: ', am:'ሁኔታ: ', de:'Status: '}) + statusLabel(from) + ' → ' + statusLabel(to);
+  }
+  return action || '';
+}
 
 window.closeModal = (id) => document.getElementById(id).classList.remove('open');
 function openModal(id){ document.getElementById(id).classList.add('open'); }
@@ -470,7 +481,7 @@ window.openCase = async function openCase(id){
       ${(events||[]).map(e => `
         <div class="tl-item">
           <div class="o">${organLabel(e.organ) || e.organ || 'System'}</div>
-          <div class="a">${escapeHtml(e.action)}</div>
+          <div class="a">${escapeHtml(formatEventAction(e.action))}</div>
           ${e.note ? `<div class="n">${escapeHtml(e.note)}</div>` : ''}
           <div class="t">${new Date(e.created_at).toLocaleString('de-DE')}</div>
         </div>`).join('') || '<p style="color:var(--gray);font-size:.83rem;">' + t({so:'Wax taariikh ah lama helin', en:'No history', am:'ምንም ታሪክ የለም', de:'Kein Verlauf'}) + '</p>'}

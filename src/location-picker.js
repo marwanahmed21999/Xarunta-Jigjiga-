@@ -66,9 +66,9 @@ export function wireLocationCascade({ zoneSel, woredaSel, citySel, kebeleWrap, k
 
 export function readLocation({ zoneSel, woredaSel, citySel, kebeleFieldId }) {
   const kebeleEl = document.getElementById(kebeleFieldId);
-  const zoneName = zoneSel.selectedOptions[0] ? zoneSel.selectedOptions[0].textContent : '';
-  const woredaName = woredaSel.selectedOptions[0] ? woredaSel.selectedOptions[0].textContent : '';
-  const cityName = citySel.selectedOptions[0] ? citySel.selectedOptions[0].textContent : '';
+  const zoneName = zoneSel.value && zoneSel.selectedOptions[0] ? zoneSel.selectedOptions[0].textContent : '';
+  const woredaName = woredaSel.value && woredaSel.selectedOptions[0] ? woredaSel.selectedOptions[0].textContent : '';
+  const cityName = citySel.value && citySel.selectedOptions[0] ? citySel.selectedOptions[0].textContent : '';
   const kebeleName = kebeleEl ? (kebeleEl.tagName === 'SELECT' ? (kebeleEl.selectedOptions[0] ? kebeleEl.selectedOptions[0].textContent : '') : kebeleEl.value.trim()) : '';
   const complete = !!(zoneSel.value && woredaSel.value && citySel.value && kebeleName);
   const full = [zoneName, woredaName, cityName, kebeleName].filter(Boolean).join(' / ');

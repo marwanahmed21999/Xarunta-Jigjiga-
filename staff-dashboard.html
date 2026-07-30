@@ -218,6 +218,16 @@ const ORGAN_LABEL = {
 function statusLabel(s){ return STATUS_LABEL[s] ? t(STATUS_LABEL[s]) : s; }
 function serviceLabel(s){ return SERVICE_LABEL[s] ? t(SERVICE_LABEL[s]) : s; }
 function organLabel(o){ return ORGAN_LABEL[o] ? t(ORGAN_LABEL[o]) : (o || '—'); }
+function formatEventAction(action){
+  if(action === 'created'){
+    return t({so:'Codsi la sameeyay', en:'Request created', am:'ጥያቄ ተፈጥሯል', de:'Antrag eingereicht'});
+  }
+  if(action && action.startsWith('transition:')){
+    const [, from, to] = action.split(':');
+    return t({so:'Xaalad: ', en:'Status: ', am:'ሁኔታ: ', de:'Status: '}) + statusLabel(from) + ' → ' + statusLabel(to);
+  }
+  return action || '';
+}
 
 function esc(s){ return (s||'').toString().replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
 
@@ -366,7 +376,7 @@ window.openReq = async function(id){
     ${actionsHtml}
     <h4 style="font-size:.85rem;margin-bottom:10px;">${t({so:'Taariikhda', en:'Timeline', am:'ታሪክ', de:'Verlauf'})}</h4>
     <div class="timeline">${(events||[]).map(e => `
-      <div class="tl-item"><div class="a">${esc(e.action)}</div>${e.note?'<div class="n">'+esc(e.note)+'</div>':''}<div class="t">${new Date(e.created_at).toLocaleString('de-DE')}</div></div>`).join('') || '<p style="color:var(--gray);font-size:.83rem;">' + t({so:'Wax taariikh ah lama helin', en:'No history', am:'ምንም ታሪክ የለም', de:'Kein Verlauf'}) + '</p>'}</div>
+      <div class="tl-item"><div class="a">${esc(formatEventAction(e.action))}</div>${e.note?'<div class="n">'+esc(e.note)+'</div>':''}<div class="t">${new Date(e.created_at).toLocaleString('de-DE')}</div></div>`).join('') || '<p style="color:var(--gray);font-size:.83rem;">' + t({so:'Wax taariikh ah lama helin', en:'No history', am:'ምንም ታሪክ የለም', de:'Kein Verlauf'}) + '</p>'}</div>
   `;
   document.getElementById('detailModal').classList.add('open');
 };
