@@ -39,11 +39,7 @@ const ACCESS_RIGHTS = {
   }
 };
 
-async function login(staffId, password, organ, opts = {}) {
-  const email = staffEmail(staffId);
-  const { error: authError } = await supabase.auth.signInWithPassword({ email, password });
-  if (authError) return { success: false, error: authError.message };
-
+async function completeLogin(staffId, organ, opts) {
   const { data: profile, error: profileError } = await supabase
     .from('users')
     .select('*')
@@ -66,8 +62,64 @@ async function login(staffId, password, organ, opts = {}) {
   return { success: true, profile };
 }
 
+async function login(staffId, password, organ, opts = {}) {
+  const email = staffEmail(staffId);
+  const { error: authError } = await supabase.auth.signInWithPassword({ email, password });
+  if (authError) return { success: false, error: authError.message };
+
+  // Zwei-Faktor-Prüfung: falls dieser Account TOTP eingerichtet hat, reicht das Passwort allein nicht.
+  const { data: aal } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+  if (aal && aal.nextLevel === 'aal2' && aal.currentLevel !== aal.nextLevel) {
+    const { data: factorsData } = await supabase.auth.mfa.listFactors();
+    const factor = factorsData && factorsData.totp && factorsData.totp[0];
+    if (factor) {
+      return { success: false, mfaRequired: true, factorId: factor.id, staffId, organ, opts };
+    }
+  }
+
+  return await completeLogin(staffId, organ, opts);
+}
+
+async function verifyMfaAndCompleteLogin(factorId, code, staffId, organ, opts) {
+  const { data: challenge, error: challengeError } = await supabase.auth.mfa.challenge({ factorId });
+  if (challengeError) return { success: false, error: challengeError.message };
+
+  const { error: verifyError } = await supabase.auth.mfa.verify({
+    factorId, challengeId: challenge.id, code
+  });
+  if (verifyError) return { success: false, error: verifyError.message };
+
+  return await completeLogin(staffId, organ, opts);
+}
+
 async function logout() {
   await supabase.auth.signOut();
+}
+
+// --- Zwei-Faktor-Authentifizierung (TOTP) verwalten, für bereits eingeloggte Nutzer ---
+
+async function mfaStatus() {
+  const { data, error } = await supabase.auth.mfa.listFactors();
+  if (error) return { enrolled: false, factors: [] };
+  const verified = (data.totp || []).filter(f => f.status === 'verified');
+  return { enrolled: verified.length > 0, factors: verified };
+}
+
+async function mfaEnroll() {
+  return await supabase.auth.mfa.enroll({ factorType: 'totp' });
+}
+
+async function mfaConfirmEnroll(factorId, code) {
+  const { data: challenge, error: challengeError } = await supabase.auth.mfa.challenge({ factorId });
+  if (challengeError) return { success: false, error: challengeError.message };
+  const { error: verifyError } = await supabase.auth.mfa.verify({ factorId, challengeId: challenge.id, code });
+  if (verifyError) return { success: false, error: verifyError.message };
+  return { success: true };
+}
+
+async function mfaUnenroll(factorId) {
+  const { error } = await supabase.auth.mfa.unenroll({ factorId });
+  return { success: !error, error: error ? error.message : null };
 }
 
 function checkAccess(organ, resource) {
@@ -77,4 +129,4 @@ function checkAccess(organ, resource) {
   return rights.canRead.includes(resource) || rights.canWrite.includes('*');
 }
 
-export { login, logout, checkAccess, ACCESS_RIGHTS };
+export { login, logout, checkAccess, ACCESS_RIGHTS, verifyMfaAndCompleteLogin, mfaStatus, mfaEnroll, mfaConfirmEnroll, mfaUnenroll };

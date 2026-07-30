@@ -171,6 +171,7 @@ body.lang-de span.so{display:none!important;}body.lang-de span.de{display:inline
           <div class="n" id="whoName">—</div>
           <div class="o" id="whoOrgan">—</div>
         </div>
+        <button class="btn ghost small" id="btnSecurity" style="margin-right:.4rem;">🔒 <span class="so">Ammaanka</span><span class="en">Security</span><span class="am">ደህንነት</span><span class="de">Sicherheit</span></button>
         <button class="logout-btn" id="btnLogout"><span class="so">Ka bax</span><span class="en">Logout</span><span class="am">ውጣ</span><span class="de">Logout</span></button>
       </div>
     </div>
@@ -274,11 +275,25 @@ body.lang-de span.so{display:none!important;}body.lang-de span.de{display:inline
   </div>
 </div>
 
+<!-- SECURITY / 2FA MODAL -->
+<div class="ov" id="securityModal">
+  <div class="modal" style="max-width:480px;">
+    <div class="modal-top">
+      <div><h3>🔒 <span class="so">Ammaanka Account-kaaga</span><span class="en">Account Security</span><span class="am">የመለያ ደህንነት</span><span class="de">Konto-Sicherheit</span></h3>
+        <p><span class="so">Xaqiijinta Labaad (2FA) waxay ilaalisaa account-kaaga xitaa haddii password-kaagu la ogaado</span><span class="en">Two-Factor Authentication protects your account even if your password is compromised</span><span class="am">ባለ ሁለት ደረጃ ማረጋገጫ የይለፍ ቃልዎ ቢጋለጥም መለያዎን ይጠብቃል</span><span class="de">Zwei-Faktor-Authentifizierung (2FA) schützt dein Konto, selbst wenn dein Passwort bekannt wird</span></p>
+      </div>
+      <button class="modal-close" onclick="closeModal('securityModal')">✕</button>
+    </div>
+    <div class="modal-body" id="securityBody">Lädt…</div>
+  </div>
+</div>
+
 <script type="module">
-import { supabase } from '../src/supabase-config.js';
-import { initLangSwitcher, t } from '../src/i18n.js';
-import { wireLocationCascade, readLocation } from '../src/location-picker.js';
-import { printDocument } from '../src/print-document.js';
+import { supabase } from './src/supabase-config.js';
+import { initLangSwitcher, t } from './src/i18n.js';
+import { wireLocationCascade, readLocation } from './src/location-picker.js';
+import { printDocument } from './src/print-document.js';
+import { mfaStatus, mfaEnroll, mfaConfirmEnroll, mfaUnenroll } from './src/auth.js';
 
 let profile = null;
 let cases = [];
@@ -575,6 +590,69 @@ document.getElementById('filterStatus').addEventListener('change', renderTable);
 document.getElementById('btnLogout').addEventListener('click', async () => {
   await supabase.auth.signOut();
   window.location.href = '06-polizei.html';
+});
+
+// --- Sicherheit / 2FA ---
+
+async function renderSecurityModal(){
+  const body = document.getElementById('securityBody');
+  body.innerHTML = t({so:'Lädt…', en:'Loading…', am:'እየጫነ ነው…', de:'Lädt…'});
+  const status = await mfaStatus();
+
+  if(status.enrolled){
+    const factor = status.factors[0];
+    body.innerHTML = `
+      <div style="background:#eafaf1;border:1px solid #b7e4c7;border-radius:8px;padding:1rem;margin-bottom:1rem;">
+        <p style="margin:0;color:#1e6b3c;font-weight:600;">✅ <span class="so">2FA waa la shaqeeyaa</span><span class="en">2FA is active</span><span class="am">2FA ገባሪ ነው</span><span class="de">2FA ist aktiv</span></p>
+      </div>
+      <button class="btn ghost small" id="btnMfaUnenroll" style="width:100%;"><span class="so">Dami 2FA</span><span class="en">Disable 2FA</span><span class="am">2FA አጥፋ</span><span class="de">2FA deaktivieren</span></button>
+    `;
+    document.getElementById('btnMfaUnenroll').addEventListener('click', async () => {
+      if(!confirm(t({so:'Ma hubtaa?', en:'Are you sure?', am:'እርግጠኛ ነዎት?', de:'Bist du sicher, dass du 2FA deaktivieren willst?'}))) return;
+      const res = await mfaUnenroll(factor.id);
+      if(!res.success){ alert('❌ ' + res.error); return; }
+      renderSecurityModal();
+    });
+    return;
+  }
+
+  const { data, error } = await mfaEnroll();
+  if(error){
+    body.innerHTML = '<p style="color:#8b1a1a;">❌ ' + error.message + '</p>';
+    return;
+  }
+  const qr = data.totp.qr_code;
+  const secret = data.totp.secret;
+  const factorId = data.id;
+
+  body.innerHTML = `
+    <p><span class="so">1. Ku qor Google Authenticator ama app kale oo la mid ah</span><span class="en">1. Scan this with Google Authenticator (or a similar app)</span><span class="am">1. በGoogle Authenticator ወይም ተመሳሳይ መተግበሪያ ይቃኙ</span><span class="de">1. Scanne dies mit Google Authenticator (oder einer ähnlichen App)</span></p>
+    <div style="text-align:center;margin:1rem 0;background:#fff;padding:1rem;border-radius:8px;">${qr}</div>
+    <p style="font-size:.8rem;color:#666;"><span class="so">Ama gali gacanta:</span><span class="en">Or enter manually:</span><span class="am">ወይም በእጅ ያስገቡ:</span><span class="de">Oder manuell eingeben:</span> <code>${secret}</code></p>
+    <div class="fg"><label><span class="so">2. Geli lambarka 6-ka ah</span><span class="en">2. Enter the 6-digit code</span><span class="am">2. የ6 አሃዝ ኮድ ያስገቡ</span><span class="de">2. 6-stelligen Code eingeben</span></label>
+      <input type="text" id="mfaEnrollCode" inputmode="numeric" maxlength="6" placeholder="123456"></div>
+    <div id="mfaEnrollMsg"></div>
+    <button class="btn small" id="btnMfaConfirm" style="width:100%;"><span class="so">Xaqiiji oo Shaqeeyi</span><span class="en">Confirm & Activate</span><span class="am">አረጋግጥ እና አግብር</span><span class="de">Bestätigen & aktivieren</span></button>
+  `;
+  document.getElementById('btnMfaConfirm').addEventListener('click', async () => {
+    const code = document.getElementById('mfaEnrollCode').value.trim();
+    const msgEl = document.getElementById('mfaEnrollMsg');
+    if(!code || code.length !== 6){
+      msgEl.innerHTML = '<p style="color:#8b1a1a;">' + t({so:'Fadlan geli 6 lambar.', en:'Please enter 6 digits.', am:'እባክዎ 6 አሃዝ ያስገቡ።', de:'Bitte einen 6-stelligen Code eingeben.'}) + '</p>';
+      return;
+    }
+    const res = await mfaConfirmEnroll(factorId, code);
+    if(!res.success){
+      msgEl.innerHTML = '<p style="color:#8b1a1a;">❌ ' + res.error + '</p>';
+      return;
+    }
+    renderSecurityModal();
+  });
+}
+
+document.getElementById('btnSecurity').addEventListener('click', () => {
+  openModal('securityModal');
+  renderSecurityModal();
 });
 
 init();

@@ -573,6 +573,22 @@ footer{background:var(--ink);color:rgba(255,255,255,.5);padding:52px 24px 22px;}
   </div>
 </div>
 
+<!-- MFA MODAL -->
+<div class="modal-ov" id="mfaModal">
+  <div class="modal" style="position:relative;">
+    <div class="modal-top">
+      <button class="modal-close" onclick="document.getElementById('mfaModal').classList.remove('open')">✕</button>
+      <h2>🔒 <span class="so">Xaqiijinta Labaad</span><span class="en">Two-Factor Verification</span><span class="am">ሁለተኛ ማረጋገጫ</span></h2>
+      <p><span class="so">Geli lambarka 6-ka ah ee ka yimid app-kaaga Authenticator</span><span class="en">Enter the 6-digit code from your authenticator app</span><span class="am">ከማረጋገጫ መተግበሪያዎ የ6 አሃዝ ኮድ ያስገቡ</span></p>
+    </div>
+    <div class="modal-body">
+      <div id="mfaMsg"></div>
+      <div class="fg"><label>Code</label><input type="text" id="mfaCode" inputmode="numeric" maxlength="6" placeholder="123456"></div>
+      <button class="login-btn" onclick="submitMfaCode()"><span class="so">Xaqiiji</span><span class="en">Verify</span><span class="am">አረጋግጥ</span></button>
+    </div>
+  </div>
+</div>
+
 <!-- SUCCESS MODAL -->
 <div class="success-ov" id="successModal">
   <div class="success-modal">
@@ -633,10 +649,10 @@ document.getElementById('successModal').addEventListener('click',function(e){if(
 
 <!-- Echte Supabase-Anbindung: überschreibt die Demo-Funktionen oben -->
 <script type="module">
-import { login } from '../src/auth.js';
-import { supabase } from '../src/supabase-config.js';
-import { wireLocationCascade, readLocation } from '../src/location-picker.js';
-import { printDocument } from '../src/print-document.js';
+import { login, verifyMfaAndCompleteLogin } from './src/auth.js';
+import { supabase } from './src/supabase-config.js';
+import { wireLocationCascade, readLocation } from './src/location-picker.js';
+import { printDocument } from './src/print-document.js';
 
 wireLocationCascade({
   zoneSel: document.getElementById('repZone'),
@@ -663,8 +679,35 @@ window.doLogin = async function doLogin(){
   if(!id || !password){ alert('Bitte Staff ID und Passwort eingeben.'); return; }
 
   const result = await login(id, password, organ);
+
+  if(result.mfaRequired){
+    window.__pendingMfa = result;
+    closeLogin();
+    document.getElementById('mfaMsg').innerHTML = '';
+    document.getElementById('mfaCode').value = '';
+    document.getElementById('mfaModal').classList.add('open');
+    return;
+  }
+
   if(!result.success){ alert('❌ Login fehlgeschlagen: ' + result.error); return; }
 
+  window.location.href = 'dashboard.html';
+};
+
+window.submitMfaCode = async function submitMfaCode(){
+  const pending = window.__pendingMfa;
+  const code = document.getElementById('mfaCode').value.trim();
+  const msgEl = document.getElementById('mfaMsg');
+  if(!pending){ return; }
+  if(!code || code.length !== 6){
+    msgEl.innerHTML = '<p style="color:#8b1a1a;">Bitte einen 6-stelligen Code eingeben.</p>';
+    return;
+  }
+  const result = await verifyMfaAndCompleteLogin(pending.factorId, code, pending.staffId, pending.organ, pending.opts || {});
+  if(!result.success){
+    msgEl.innerHTML = '<p style="color:#8b1a1a;">❌ ' + result.error + '</p>';
+    return;
+  }
   window.location.href = 'dashboard.html';
 };
 
