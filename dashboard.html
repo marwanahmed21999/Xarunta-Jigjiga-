@@ -129,12 +129,25 @@ tbody tr:hover{background:var(--blue-pale);}
 .msg.err{background:var(--red-pale);color:var(--red);}
 .msg.ok{background:var(--green-pale);color:var(--green);}
 
+.lang-sw{display:flex;gap:6px;}
+.lb{background:none;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.65);padding:3px 10px;border-radius:4px;cursor:pointer;font-size:.72rem;font-family:inherit;font-weight:600;}
+.lb.on,.lb:hover{background:var(--gold);border-color:var(--gold);color:var(--navy);}
+
+.so{display:block!important;}.en{display:none!important;}.am{display:none!important;}.de{display:none!important;}
+span.so{display:inline!important;}span.en{display:none!important;}span.am{display:none!important;}span.de{display:none!important;}
+body.lang-en .so{display:none!important;}body.lang-en .en{display:block!important;}
+body.lang-en span.so{display:none!important;}body.lang-en span.en{display:inline!important;}
+body.lang-am .so{display:none!important;}body.lang-am .am{display:block!important;}
+body.lang-am span.so{display:none!important;}body.lang-am span.am{display:inline!important;}
+body.lang-de .so{display:none!important;}body.lang-de .de{display:block!important;}
+body.lang-de span.so{display:none!important;}body.lang-de span.de{display:inline!important;}
+
 @media(max-width:860px){.stats{grid-template-columns:repeat(2,1fr);}.fgrid2,.detail-grid{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
 
-<div id="guard">Wird geprüft, ob du eingeloggt bist…</div>
+<div id="guard"><span class="so">Waa la hubinayaa haddii aad gashay…</span><span class="en">Checking whether you're logged in…</span><span class="am">ገብተዋል ወይ እየተረጋገጠ ነው…</span><span class="de">Wird geprüft, ob du eingeloggt bist…</span></div>
 
 <div id="app" class="hidden">
   <header>
@@ -143,16 +156,22 @@ tbody tr:hover{background:var(--blue-pale);}
         <div class="logo-shield">⚖️</div>
         <div class="logo-tx">
           <h1>Nidaamka Xeerarka — Dashboard</h1>
-          <span>Internes System</span>
+          <span><span class="so">Nidaamka Gudaha</span><span class="en">Internal System</span><span class="am">የውስጥ ስርዓት</span><span class="de">Internes System</span></span>
         </div>
       </div>
       <div class="who">
-        <a href="index.html" style="color:rgba(255,255,255,.6);text-decoration:none;font-size:.8rem;">🏠 Hauptportal</a>
+        <div class="lang-sw">
+          <button class="lb on" id="btn-so">SO</button>
+          <button class="lb" id="btn-en">EN</button>
+          <button class="lb" id="btn-am">አማ</button>
+          <button class="lb" id="btn-de">DE</button>
+        </div>
+        <a href="index.html" style="color:rgba(255,255,255,.6);text-decoration:none;font-size:.8rem;">🏠 <span class="so">Xarunta Guud</span><span class="en">Main Portal</span><span class="am">ዋና ፖርታል</span><span class="de">Hauptportal</span></a>
         <div class="who-name">
           <div class="n" id="whoName">—</div>
           <div class="o" id="whoOrgan">—</div>
         </div>
-        <button class="logout-btn" id="btnLogout">Logout</button>
+        <button class="logout-btn" id="btnLogout"><span class="so">Ka bax</span><span class="en">Logout</span><span class="am">ውጣ</span><span class="de">Logout</span></button>
       </div>
     </div>
   </header>
@@ -160,23 +179,23 @@ tbody tr:hover{background:var(--blue-pale);}
   <div class="main">
     <div class="pagehead">
       <div>
-        <h2>Fallakten</h2>
+        <h2><span class="so">Kiisaska</span><span class="en">Cases</span><span class="am">ጉዳዮች</span><span class="de">Fallakten</span></h2>
         <p id="pageSub">Fälle, auf die dein Organ Zugriff hat</p>
       </div>
-      <button class="btn gold" id="btnNewCase">+ Neuer Fall</button>
+      <button class="btn gold" id="btnNewCase">+ <span class="so">Kiis Cusub</span><span class="en">New Case</span><span class="am">አዲስ ጉዳይ</span><span class="de">Neuer Fall</span></button>
     </div>
 
     <div class="stats" id="stats"></div>
 
     <div class="toolbar">
-      <input type="text" id="search" placeholder="Suche nach Fallnummer oder Name…">
+      <input type="text" id="search" placeholder="Fallnummer oder Name…">
       <select id="filterStatus">
-        <option value="">Alle Phasen</option>
-        <option value="investigation">Ermittlung</option>
-        <option value="prosecution">Anklage</option>
-        <option value="court">Gericht</option>
-        <option value="corrections">Vollzug</option>
-        <option value="closed">Abgeschlossen</option>
+        <option value="" data-so="Dhammaan Marxaladaha" data-en="All Stages" data-am="ሁሉም ደረጃዎች" data-de="Alle Phasen">Alle Phasen</option>
+        <option value="investigation" data-so="Baaritaan" data-en="Investigation" data-am="ምርመራ" data-de="Ermittlung">Ermittlung</option>
+        <option value="prosecution" data-so="Dacwad" data-en="Prosecution" data-am="ክስ" data-de="Anklage">Anklage</option>
+        <option value="court" data-so="Maxkamad" data-en="Court" data-am="ፍርድ ቤት" data-de="Gericht">Gericht</option>
+        <option value="corrections" data-so="Xabsi" data-en="Corrections" data-am="እስር ቤት" data-de="Vollzug">Vollzug</option>
+        <option value="closed" data-so="La Xiray" data-en="Closed" data-am="ተዘግቷል" data-de="Abgeschlossen">Abgeschlossen</option>
       </select>
     </div>
 
@@ -184,11 +203,15 @@ tbody tr:hover{background:var(--blue-pale);}
       <table>
         <thead>
           <tr>
-            <th>Fallnummer</th><th>Verdächtiger</th><th>Tatbestand</th>
-            <th>Datum</th><th>Bearbeitendes Organ</th><th>Status</th>
+            <th><span class="so">Lambarka Kiiska</span><span class="en">Case No.</span><span class="am">የጉዳይ ቁጥር</span><span class="de">Fallnummer</span></th>
+            <th><span class="so">Shakisan</span><span class="en">Suspect</span><span class="am">ተጠርጣሪ</span><span class="de">Verdächtiger</span></th>
+            <th><span class="so">Dambiga</span><span class="en">Crime</span><span class="am">ወንጀል</span><span class="de">Tatbestand</span></th>
+            <th><span class="so">Taariikhda</span><span class="en">Date</span><span class="am">ቀን</span><span class="de">Datum</span></th>
+            <th><span class="so">Orgaanka Wax Qabanaya</span><span class="en">Handling Organ</span><span class="am">የሚይዘው አካል</span><span class="de">Bearbeitendes Organ</span></th>
+            <th>Status</th>
           </tr>
         </thead>
-        <tbody id="caseRows"><tr class="empty-row"><td colspan="6">Lade Fälle…</td></tr></tbody>
+        <tbody id="caseRows"><tr class="empty-row"><td colspan="6">Lädt…</td></tr></tbody>
       </table>
     </div>
   </div>
@@ -198,38 +221,43 @@ tbody tr:hover{background:var(--blue-pale);}
 <div class="ov" id="newCaseModal">
   <div class="modal">
     <div class="modal-top">
-      <div><h3>Neuen Fall anlegen</h3><p>Wird automatisch der Ermittlungs-Phase zugewiesen</p></div>
+      <div><h3><span class="so">Kiis Cusub Samee</span><span class="en">Create New Case</span><span class="am">አዲስ ጉዳይ ይፍጠሩ</span><span class="de">Neuen Fall anlegen</span></h3><p><span class="so">Waxaa si toos ah loo geliyaa marxaladda Baaritaanka</span><span class="en">Automatically assigned to the Investigation stage</span><span class="am">በራስ-ሰር ወደ ምርመራ ደረጃ ይመደባል</span><span class="de">Wird automatisch der Ermittlungs-Phase zugewiesen</span></p></div>
       <button class="modal-close" onclick="closeModal('newCaseModal')">✕</button>
     </div>
     <div class="modal-body">
       <div id="newCaseMsg"></div>
       <div class="fgrid2">
-        <div class="fg"><label>Verdächtiger *</label><input type="text" id="ncSuspect" placeholder="Vollständiger Name"></div>
-        <div class="fg"><label>Nationale ID</label><input type="text" id="ncNid" placeholder="Optional"></div>
+        <div class="fg"><label><span class="so">Shakisan *</span><span class="en">Suspect *</span><span class="am">ተጠርጣሪ *</span><span class="de">Verdächtiger *</span></label><input type="text" id="ncSuspect" placeholder="Vollständiger Name"></div>
+        <div class="fg"><label><span class="so">Aqoonsiga Qaranka</span><span class="en">National ID</span><span class="am">ብሔራዊ መታወቂያ</span><span class="de">Nationale ID</span></label><input type="text" id="ncNid" placeholder="Optional"></div>
       </div>
-      <div class="fg"><label>Tatbestand *</label>
+      <div class="fg"><label><span class="so">Dambiga *</span><span class="en">Crime *</span><span class="am">ወንጀል *</span><span class="de">Tatbestand *</span></label>
         <select id="ncCrime">
-          <option value="">-- Auswählen --</option>
-          <option>Diebstahl</option><option>Körperverletzung</option><option>Betrug</option>
-          <option>Drogendelikt</option>
-          <option>Illegale Festnahme</option><option>Verkehrsdelikt</option><option>Mord</option><option>Sonstiges</option>
+          <option value="" data-so="-- Dooro --" data-en="-- Select --" data-am="-- ይምረጡ --" data-de="-- Auswählen --">-- Auswählen --</option>
+          <option data-so="Xatooyo" data-en="Theft" data-am="ስርቆት" data-de="Diebstahl">Diebstahl</option>
+          <option data-so="Dhaawac Jireed" data-en="Assault" data-am="የአካል ጉዳት" data-de="Körperverletzung">Körperverletzung</option>
+          <option data-so="Khiyaano" data-en="Fraud" data-am="ማጭበርበር" data-de="Betrug">Betrug</option>
+          <option data-so="Dambiga Daroogada" data-en="Drug Offense" data-am="የዕፅ ወንጀል" data-de="Drogendelikt">Drogendelikt</option>
+          <option data-so="Xiritaan Sharci Darro" data-en="Illegal Detention" data-am="ህገ-ወጥ እስር" data-de="Illegale Festnahme">Illegale Festnahme</option>
+          <option data-so="Dambiga Gaadiidka" data-en="Traffic Offense" data-am="የትራፊክ ወንጀል" data-de="Verkehrsdelikt">Verkehrsdelikt</option>
+          <option data-so="Dil" data-en="Murder" data-am="ግድያ" data-de="Mord">Mord</option>
+          <option data-so="Kale" data-en="Other" data-am="ሌላ" data-de="Sonstiges">Sonstiges</option>
         </select>
       </div>
-      <div class="fg"><label>Beschreibung</label><textarea id="ncDesc" placeholder="Was ist passiert…"></textarea></div>
+      <div class="fg"><label><span class="so">Faahfaahin</span><span class="en">Description</span><span class="am">መግለጫ</span><span class="de">Beschreibung</span></label><textarea id="ncDesc" placeholder="…"></textarea></div>
       <div class="fgrid2">
-        <div class="fg"><label>Datum des Vorfalls</label><input type="date" id="ncDate"></div>
-        <div class="fg"><label>Kebele / Zone</label>
-          <select id="ncKebele">
-            <option value="">-- Auswählen --</option>
-            <option>Jigjiga Zone</option><option>Shinile Zone</option><option>Korahe Zone</option>
-            <option>Jarar Zone</option><option>Shabelle Zone</option><option>Dollo Zone</option>
-            <option>Nogob Zone</option><option>Siti Zone</option><option>Liben Zone</option>
-          </select>
-        </div>
+        <div class="fg"><label><span class="so">Taariikhda Dhacdada</span><span class="en">Date of Incident</span><span class="am">የክስተቱ ቀን</span><span class="de">Datum des Vorfalls</span></label><input type="date" id="ncDate"></div>
+      </div>
+      <div class="fgrid2">
+        <div class="fg"><label>Gobolka / Zone</label><select id="ncZone"><option value="">Lädt…</option></select></div>
+        <div class="fg"><label>Degmo / Woreda</label><select id="ncWoreda" disabled><option value="">--</option></select></div>
+      </div>
+      <div class="fgrid2">
+        <div class="fg"><label>Magaalo / Stadt</label><select id="ncCity" disabled><option value="">--</option></select></div>
+        <div class="fg" id="ncKebeleWrap"><label>Kebele</label><select id="ncKebele" disabled><option value="">--</option></select></div>
       </div>
       <div class="formfoot">
-        <button class="btn ghost small" onclick="closeModal('newCaseModal')">Abbrechen</button>
-        <button class="btn small" id="btnSaveCase">Fall anlegen</button>
+        <button class="btn ghost small" onclick="closeModal('newCaseModal')"><span class="so">Jooji</span><span class="en">Cancel</span><span class="am">ይቅር</span><span class="de">Abbrechen</span></button>
+        <button class="btn small" id="btnSaveCase"><span class="so">Kiis Samee</span><span class="en">Create Case</span><span class="am">ጉዳይ ፍጠር</span><span class="de">Fall anlegen</span></button>
       </div>
     </div>
   </div>
@@ -248,27 +276,75 @@ tbody tr:hover{background:var(--blue-pale);}
 
 <script type="module">
 import { supabase } from './src/supabase-config.js';
+import { initLangSwitcher, t } from './src/i18n.js';
+import { wireLocationCascade, readLocation } from './src/location-picker.js';
 
 let profile = null;
 let cases = [];
 let activeCase = null;
 
-const CRIME_ORGAN_LABEL = {
-  investigation:'Booliska (Police)', prosecution:'Xeer Ilaaliyaha (Prosecution)',
-  court:'Maxkamadda (Court)', corrections:'Xabsiga (Corrections)', closed:'Abgeschlossen'
-};
 const ORGAN_LABEL = {
-  police:'Booliska (Police)', prosecution:'Xeer Ilaaliyaha (Prosecution)',
-  court:'Maxkamadda (Court)', corrections:'Xabsiga (Corrections)', admin:'Admin'
+  police:    {so:'Booliska (Police)', en:'Police', am:'ፖሊስ', de:'Booliska (Police)'},
+  prosecution:{so:'Xeer Ilaaliyaha', en:'Prosecution', am:'ዓቃቤ ህግ', de:'Xeer Ilaaliyaha (Staatsanwaltschaft)'},
+  court:     {so:'Maxkamadda', en:'Court', am:'ፍርድ ቤት', de:'Maxkamadda (Gericht)'},
+  corrections:{so:'Xabsiga', en:'Corrections', am:'እስር ቤት', de:'Xabsiga (Vollzug)'},
+  admin:     {so:'Admin', en:'Admin', am:'አስተዳዳሪ', de:'Admin'}
 };
 const STAGE_OWNER = { investigation:'police', prosecution:'prosecution', court:'court', corrections:'corrections' };
 const STATUS_LABEL = {
-  investigation:'Ermittlung', prosecution:'Anklage', court:'Gericht',
-  corrections:'Vollzug', closed:'Abgeschlossen'
+  investigation:{so:'Baaritaan', en:'Investigation', am:'ምርመራ', de:'Ermittlung'},
+  prosecution:{so:'Dacwad', en:'Prosecution', am:'ክስ', de:'Anklage'},
+  court:{so:'Maxkamad', en:'Court', am:'ፍርድ ቤት', de:'Gericht'},
+  corrections:{so:'Xabsi', en:'Corrections', am:'እስር ቤት', de:'Vollzug'},
+  closed:{so:'La Xiray', en:'Closed', am:'ተዘግቷል', de:'Abgeschlossen'}
 };
+function organLabel(o){ return ORGAN_LABEL[o] ? t(ORGAN_LABEL[o]) : (o || '—'); }
+function statusLabel(s){ return STATUS_LABEL[s] ? t(STATUS_LABEL[s]) : s; }
+function currentOrganLabel(status){ return status === 'closed' ? statusLabel('closed') : organLabel(STAGE_OWNER[status]); }
 
 window.closeModal = (id) => document.getElementById(id).classList.remove('open');
 function openModal(id){ document.getElementById(id).classList.add('open'); }
+
+function applyOptionTranslations(){
+  const lang = localStorage.getItem('jl') || 'so';
+  document.querySelectorAll('option[data-so]').forEach(opt => {
+    opt.textContent = opt.dataset[lang] || opt.dataset.so;
+  });
+}
+
+['so','en','am','de'].forEach(l => {
+  document.getElementById('btn-' + l).addEventListener('click', (e) => {
+    window.setLang(l, e.target);
+    applyOptionTranslations();
+    renderStats(); renderTable();
+    if(profile) updatePageSub();
+  });
+});
+initLangSwitcher();
+applyOptionTranslations();
+
+wireLocationCascade({
+  zoneSel: document.getElementById('ncZone'),
+  woredaSel: document.getElementById('ncWoreda'),
+  citySel: document.getElementById('ncCity'),
+  kebeleWrap: document.getElementById('ncKebeleWrap'),
+  kebeleFieldId: 'ncKebele',
+  kebeleLabelHtml: '<label>Kebele</label>'
+});
+
+function updatePageSub(){
+  if(profile.organ === 'admin'){
+    document.getElementById('pageSub').textContent = t({so:'Dhammaan Kiisaska (Admin)', en:'All Cases (Admin Access)', am:'ሁሉም ጉዳዮች (አስተዳዳሪ)', de:'Alle Fälle (Admin-Zugriff)'});
+    return;
+  }
+  const org = organLabel(profile.organ);
+  document.getElementById('pageSub').textContent = t({
+    so:'Kiisaska uu xuquuq u leeyahay orgaankaaga (' + org + ')',
+    en:'Cases your organ (' + org + ') has access to',
+    am:'የእርስዎ አካል (' + org + ') መዳረሻ ያለው ጉዳዮች',
+    de:'Fälle, auf die dein Organ (' + org + ') Zugriff hat'
+  });
+}
 
 async function init(){
   const { data: { session } } = await supabase.auth.getSession();
@@ -279,7 +355,7 @@ async function init(){
 
   const { data: p, error } = await supabase.from('users').select('*').eq('email', session.user.email).maybeSingle();
   if(error || !p){
-    document.getElementById('guard').textContent = 'Kein Profil gefunden. Bitte neu einloggen.';
+    document.getElementById('guard').textContent = t({so:'Profile lama helin. Fadlan mar kale gal.', en:'No profile found. Please log in again.', am:'መገለጫ አልተገኘም። እባክዎ እንደገና ይግቡ።', de:'Kein Profil gefunden. Bitte neu einloggen.'});
     await supabase.auth.signOut();
     return;
   }
@@ -288,10 +364,8 @@ async function init(){
   document.getElementById('guard').classList.add('hidden');
   document.getElementById('app').classList.remove('hidden');
   document.getElementById('whoName').textContent = profile.full_name;
-  document.getElementById('whoOrgan').textContent = ORGAN_LABEL[profile.organ] || profile.organ;
-  document.getElementById('pageSub').textContent = profile.organ === 'admin'
-    ? 'Alle Fälle (Admin-Zugriff)'
-    : 'Fälle, auf die dein Organ (' + (ORGAN_LABEL[profile.organ]||profile.organ) + ') Zugriff hat';
+  document.getElementById('whoOrgan').textContent = organLabel(profile.organ);
+  updatePageSub();
 
   document.getElementById('btnNewCase').style.display = (profile.organ === 'police' || profile.organ === 'admin') ? '' : 'none';
 
@@ -301,7 +375,7 @@ async function init(){
 async function loadCases(){
   const { data, error } = await supabase.from('cases').select('*').order('created_at', { ascending:false });
   if(error){
-    document.getElementById('caseRows').innerHTML = '<tr class="empty-row"><td colspan="6">Fehler beim Laden: '+error.message+'</td></tr>';
+    document.getElementById('caseRows').innerHTML = '<tr class="empty-row"><td colspan="6">' + t({so:'Khalad:', en:'Error loading:', am:'የመጫን ስህተት:', de:'Fehler beim Laden:'}) + ' ' + error.message + '</td></tr>';
     return;
   }
   cases = data || [];
@@ -314,7 +388,7 @@ function renderStats(){
   const box = document.getElementById('stats');
   box.innerHTML = order.map(s => {
     const n = cases.filter(c => c.status === s).length;
-    return '<div class="stat acc-'+s+'"><span class="n">'+n+'</span><span class="l">'+STATUS_LABEL[s]+'</span></div>';
+    return '<div class="stat acc-'+s+'"><span class="n">'+n+'</span><span class="l">'+statusLabel(s)+'</span></div>';
   }).join('');
 }
 
@@ -327,7 +401,7 @@ function renderTable(){
   );
   const tbody = document.getElementById('caseRows');
   if(rows.length === 0){
-    tbody.innerHTML = '<tr class="empty-row"><td colspan="6">Keine Fälle gefunden</td></tr>';
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="6">' + t({so:'Wax kiisas ah lama helin', en:'No cases found', am:'ምንም ጉዳይ አልተገኘም', de:'Keine Fälle gefunden'}) + '</td></tr>';
     return;
   }
   tbody.innerHTML = rows.map(c => `
@@ -336,8 +410,8 @@ function renderTable(){
       <td>${escapeHtml(c.suspect_name)}</td>
       <td>${escapeHtml(c.crime_type)}</td>
       <td class="mono">${c.incident_date || '—'}</td>
-      <td>${CRIME_ORGAN_LABEL[c.status] || c.status}</td>
-      <td><span class="pill ${c.status}">${STATUS_LABEL[c.status]}</span></td>
+      <td>${currentOrganLabel(c.status)}</td>
+      <td><span class="pill ${c.status}">${statusLabel(c.status)}</span></td>
     </tr>
   `).join('');
 }
@@ -359,47 +433,47 @@ window.openCase = async function openCase(id){
   let actionsHtml = '';
   if(canAct && activeCase.status !== 'closed'){
     if(activeCase.status === 'investigation'){
-      actionsHtml = `<div class="actions-box"><h4>Nächster Schritt (Booliska)</h4>
-        <div class="btn-row"><button class="btn small" onclick="advanceCase('prosecution')">An Xeer Ilaaliyaha übergeben →</button></div></div>`;
+      actionsHtml = `<div class="actions-box"><h4>${t({so:'Tallaabada Xigta (Booliska)', en:'Next Step (Police)', am:'ቀጣይ ደረጃ (ፖሊስ)', de:'Nächster Schritt (Booliska)'})}</h4>
+        <div class="btn-row"><button class="btn small" onclick="advanceCase('prosecution')">${t({so:'U wareeji Xeer Ilaaliyaha →', en:'Forward to Prosecution →', am:'ወደ ዓቃቤ ህግ ላክ →', de:'An Xeer Ilaaliyaha übergeben →'})}</button></div></div>`;
     } else if(activeCase.status === 'prosecution'){
-      actionsHtml = `<div class="actions-box"><h4>Nächster Schritt (Xeer Ilaaliyaha)</h4>
-        <div class="fg" style="margin-bottom:10px;"><label>Anklageschrift / Notiz</label><textarea id="verdictNote" placeholder="Anklagepunkte…"></textarea></div>
-        <div class="btn-row"><button class="btn small" onclick="advanceCase('court')">Anklage erheben & an Maxkamadda übergeben →</button></div></div>`;
+      actionsHtml = `<div class="actions-box"><h4>${t({so:'Tallaabada Xigta (Xeer Ilaaliyaha)', en:'Next Step (Prosecution)', am:'ቀጣይ ደረጃ (ዓቃቤ ህግ)', de:'Nächster Schritt (Xeer Ilaaliyaha)'})}</h4>
+        <div class="fg" style="margin-bottom:10px;"><label>${t({so:'Warqadda Dacwadda / Fiiro Gaar Ah', en:'Charge Sheet / Note', am:'የክስ ወረቀት / ማስታወሻ', de:'Anklageschrift / Notiz'})}</label><textarea id="verdictNote" placeholder="…"></textarea></div>
+        <div class="btn-row"><button class="btn small" onclick="advanceCase('court')">${t({so:'Dacwad Qaad & u Wareeji Maxkamadda →', en:'File Charges & Forward to Court →', am:'ክስ መስርተው ወደ ፍርድ ቤት ይላኩ →', de:'Anklage erheben & an Maxkamadda übergeben →'})}</button></div></div>`;
     } else if(activeCase.status === 'court'){
-      actionsHtml = `<div class="actions-box"><h4>Urteil (Maxkamadda)</h4>
-        <div class="fg" style="margin-bottom:10px;"><label>Urteil</label><textarea id="verdictNote" placeholder="Urteilsbegründung…"></textarea></div>
+      actionsHtml = `<div class="actions-box"><h4>${t({so:'Xukunka (Maxkamadda)', en:'Verdict (Court)', am:'ፍርድ (ፍርድ ቤት)', de:'Urteil (Maxkamadda)'})}</h4>
+        <div class="fg" style="margin-bottom:10px;"><label>${t({so:'Xukunka', en:'Verdict', am:'ፍርድ', de:'Urteil'})}</label><textarea id="verdictNote" placeholder="…"></textarea></div>
         <div class="btn-row">
-          <button class="btn small ghost" onclick="advanceCase('closed')">Freispruch — Fall abschließen</button>
-          <button class="btn small" onclick="advanceCase('corrections')">Haftstrafe — an Xabsiga übergeben →</button>
+          <button class="btn small ghost" onclick="advanceCase('closed')">${t({so:'La Sii Daayay — Kiiska Xir', en:'Acquitted — Close Case', am:'ነፃ ተብሏል — ጉዳዩን ዝጋ', de:'Freispruch — Fall abschließen'})}</button>
+          <button class="btn small" onclick="advanceCase('corrections')">${t({so:'Xukun Xabsi — u Wareeji Xabsiga →', en:'Custodial Sentence — Forward to Corrections →', am:'የእስር ፍርድ — ወደ ማረሚያ ቤት ላክ →', de:'Haftstrafe — an Xabsiga übergeben →'})}</button>
         </div></div>`;
     } else if(activeCase.status === 'corrections'){
-      actionsHtml = `<div class="actions-box"><h4>Vollzug (Xabsiga)</h4>
-        <div class="fg" style="margin-bottom:10px;"><label>Entlassungs-/Vollzugsnotiz</label><textarea id="verdictNote" placeholder="Notiz…"></textarea></div>
-        <div class="btn-row"><button class="btn small" onclick="advanceCase('closed')">Fall abschließen (Entlassung)</button></div></div>`;
+      actionsHtml = `<div class="actions-box"><h4>${t({so:'Xabsiga (Xabsiga)', en:'Corrections (Corrections)', am:'ማረሚያ ቤት', de:'Vollzug (Xabsiga)'})}</h4>
+        <div class="fg" style="margin-bottom:10px;"><label>${t({so:'Fiiro Sii Daynta', en:'Release / Custody Note', am:'የመልቀቅ ማስታወሻ', de:'Entlassungs-/Vollzugsnotiz'})}</label><textarea id="verdictNote" placeholder="…"></textarea></div>
+        <div class="btn-row"><button class="btn small" onclick="advanceCase('closed')">${t({so:'Kiiska Xir (Sii Daynta)', en:'Close Case (Release)', am:'ጉዳዩን ዝጋ (መልቀቅ)', de:'Fall abschließen (Entlassung)'})}</button></div></div>`;
     }
   }
 
   document.getElementById('detailBody').innerHTML = `
     <div class="detail-grid">
-      <div class="detail-item"><div class="k">Verdächtiger</div><div class="v">${escapeHtml(activeCase.suspect_name)}</div></div>
-      <div class="detail-item"><div class="k">Nationale ID</div><div class="v">${escapeHtml(activeCase.national_id) || '—'}</div></div>
-      <div class="detail-item"><div class="k">Tatbestand</div><div class="v">${escapeHtml(activeCase.crime_type)}</div></div>
-      <div class="detail-item"><div class="k">Datum</div><div class="v">${activeCase.incident_date || '—'}</div></div>
+      <div class="detail-item"><div class="k">${t({so:'Shakisan', en:'Suspect', am:'ተጠርጣሪ', de:'Verdächtiger'})}</div><div class="v">${escapeHtml(activeCase.suspect_name)}</div></div>
+      <div class="detail-item"><div class="k">${t({so:'Aqoonsiga Qaranka', en:'National ID', am:'ብሔራዊ መታወቂያ', de:'Nationale ID'})}</div><div class="v">${escapeHtml(activeCase.national_id) || '—'}</div></div>
+      <div class="detail-item"><div class="k">${t({so:'Dambiga', en:'Crime', am:'ወንጀል', de:'Tatbestand'})}</div><div class="v">${escapeHtml(activeCase.crime_type)}</div></div>
+      <div class="detail-item"><div class="k">${t({so:'Taariikhda', en:'Date', am:'ቀን', de:'Datum'})}</div><div class="v">${activeCase.incident_date || '—'}</div></div>
       <div class="detail-item"><div class="k">Kebele/Zone</div><div class="v">${escapeHtml(activeCase.kebele) || '—'}</div></div>
-      <div class="detail-item"><div class="k">Status</div><div class="v"><span class="pill ${activeCase.status}">${STATUS_LABEL[activeCase.status]}</span></div></div>
-      <div class="detail-item full"><div class="k">Beschreibung</div><div class="v" style="font-weight:400;">${escapeHtml(activeCase.description) || '—'}</div></div>
-      ${activeCase.verdict ? `<div class="detail-item full"><div class="k">Urteil / Notiz</div><div class="v" style="font-weight:400;">${escapeHtml(activeCase.verdict)}</div></div>` : ''}
+      <div class="detail-item"><div class="k">Status</div><div class="v"><span class="pill ${activeCase.status}">${statusLabel(activeCase.status)}</span></div></div>
+      <div class="detail-item full"><div class="k">${t({so:'Faahfaahin', en:'Description', am:'መግለጫ', de:'Beschreibung'})}</div><div class="v" style="font-weight:400;">${escapeHtml(activeCase.description) || '—'}</div></div>
+      ${activeCase.verdict ? `<div class="detail-item full"><div class="k">${t({so:'Xukunka / Fiiro', en:'Verdict / Note', am:'ፍርድ / ማስታወሻ', de:'Urteil / Notiz'})}</div><div class="v" style="font-weight:400;">${escapeHtml(activeCase.verdict)}</div></div>` : ''}
     </div>
     ${actionsHtml}
-    <h4 style="font-size:.85rem;margin-bottom:12px;">Verlauf</h4>
+    <h4 style="font-size:.85rem;margin-bottom:12px;">${t({so:'Taariikhda Kiiska', en:'Timeline', am:'ታሪክ', de:'Verlauf'})}</h4>
     <div class="timeline">
       ${(events||[]).map(e => `
         <div class="tl-item">
-          <div class="o">${ORGAN_LABEL[e.organ] || e.organ || 'System'}</div>
+          <div class="o">${organLabel(e.organ) || e.organ || 'System'}</div>
           <div class="a">${escapeHtml(e.action)}</div>
           ${e.note ? `<div class="n">${escapeHtml(e.note)}</div>` : ''}
           <div class="t">${new Date(e.created_at).toLocaleString('de-DE')}</div>
-        </div>`).join('') || '<p style="color:var(--gray);font-size:.83rem;">Kein Verlauf</p>'}
+        </div>`).join('') || '<p style="color:var(--gray);font-size:.83rem;">' + t({so:'Wax taariikh ah lama helin', en:'No history', am:'ምንም ታሪክ የለም', de:'Kein Verlauf'}) + '</p>'}
     </div>
   `;
   openModal('detailModal');
@@ -425,8 +499,14 @@ document.getElementById('btnNewCase').addEventListener('click', () => {
 document.getElementById('btnSaveCase').addEventListener('click', async () => {
   const suspect = document.getElementById('ncSuspect').value.trim();
   const crime = document.getElementById('ncCrime').value;
+  const loc = readLocation({
+    zoneSel: document.getElementById('ncZone'),
+    woredaSel: document.getElementById('ncWoreda'),
+    citySel: document.getElementById('ncCity'),
+    kebeleFieldId: 'ncKebele'
+  });
   if(!suspect || !crime){
-    document.getElementById('newCaseMsg').innerHTML = '<div class="msg err">Bitte Verdächtiger und Tatbestand ausfüllen.</div>';
+    document.getElementById('newCaseMsg').innerHTML = '<div class="msg err">' + t({so:'Fadlan Shakisan iyo Dambiga buuxi.', en:'Please fill in Suspect and Crime.', am:'እባክዎ ተጠርጣሪ እና ወንጀል ይሙሉ።', de:'Bitte Verdächtiger und Tatbestand ausfüllen.'}) + '</div>';
     return;
   }
   const { error } = await supabase.from('cases').insert({
@@ -435,15 +515,15 @@ document.getElementById('btnSaveCase').addEventListener('click', async () => {
     crime_type: crime,
     description: document.getElementById('ncDesc').value.trim() || null,
     incident_date: document.getElementById('ncDate').value || null,
-    kebele: document.getElementById('ncKebele').value || null,
+    kebele: loc.full || null,
     created_by: (await supabase.auth.getUser()).data.user.id
   });
   if(error){
-    document.getElementById('newCaseMsg').innerHTML = '<div class="msg err">Fehler: '+error.message+'</div>';
+    document.getElementById('newCaseMsg').innerHTML = '<div class="msg err">' + t({so:'Khalad:', en:'Error:', am:'ስህተት:', de:'Fehler:'}) + ' ' + error.message + '</div>';
     return;
   }
   closeModal('newCaseModal');
-  ['ncSuspect','ncNid','ncCrime','ncDesc','ncDate','ncKebele'].forEach(id => document.getElementById(id).value = '');
+  ['ncSuspect','ncNid','ncCrime','ncDesc','ncDate'].forEach(id => document.getElementById(id).value = '');
   await loadCases();
 });
 

@@ -30,21 +30,39 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--blue-dark);color:va
 .msg.ok{background:#eaf5ee;color:#1a7a3c;}
 .foot{text-align:center;margin-top:16px;font-size:.82rem;color:var(--gray);}
 .foot a{color:var(--blue);}
+.lang-sw{display:flex;gap:6px;justify-content:center;margin-bottom:14px;}
+.lb{background:none;border:1px solid rgba(255,255,255,.25);color:rgba(255,255,255,.7);padding:3px 10px;border-radius:4px;cursor:pointer;font-size:.72rem;font-family:inherit;font-weight:600;}
+.lb.on,.lb:hover{background:var(--sand);border-color:var(--sand);color:var(--blue-dark);}
+
+.so{display:block!important;}.en{display:none!important;}.am{display:none!important;}.de{display:none!important;}
+span.so{display:inline!important;}span.en{display:none!important;}span.am{display:none!important;}span.de{display:none!important;}
+body.lang-en .so{display:none!important;}body.lang-en .en{display:block!important;}
+body.lang-en span.so{display:none!important;}body.lang-en span.en{display:inline!important;}
+body.lang-am .so{display:none!important;}body.lang-am .am{display:block!important;}
+body.lang-am span.so{display:none!important;}body.lang-am span.am{display:inline!important;}
+body.lang-de .so{display:none!important;}body.lang-de .de{display:block!important;}
+body.lang-de span.so{display:none!important;}body.lang-de span.de{display:inline!important;}
 </style>
 </head>
 <body>
 <div class="card">
   <div class="top">
-    <h1>Mitarbeiter-Registrierung</h1>
-    <p>Xarunta Jigjiga · Konto wird nach Prüfung freigeschaltet</p>
+    <div class="lang-sw">
+      <button class="lb on" id="btn-so">SO</button>
+      <button class="lb" id="btn-en">EN</button>
+      <button class="lb" id="btn-am">አማ</button>
+      <button class="lb" id="btn-de">DE</button>
+    </div>
+    <h1><span class="so">Diiwaangelinta Shaqaalaha</span><span class="en">Staff Registration</span><span class="am">የሰራተኛ ምዝገባ</span><span class="de">Mitarbeiter-Registrierung</span></h1>
+    <p><span class="so">Xarunta Jigjiga · Akoonku wuu furmi doonaa marka la hubiyo</span><span class="en">Xarunta Jigjiga · Account will be activated after review</span><span class="am">ጅጅጋ ማዕከል · መለያው ከተረጋገጠ በኋላ ይከፈታል</span><span class="de">Xarunta Jigjiga · Konto wird nach Prüfung freigeschaltet</span></p>
   </div>
   <div class="body">
     <div id="msg"></div>
-    <div class="fg"><label>Vollständiger Name *</label><input type="text" id="fullName" placeholder="z.B. Fatuma Hassan Ali"></div>
-    <div class="fg"><label>Staff-ID *</label><input type="text" id="staffId" placeholder="z.B. KB-STAFF-001"></div>
-    <div class="fg"><label>Abteilung *</label>
+    <div class="fg"><label><span class="so">Magaca Buuxa *</span><span class="en">Full Name *</span><span class="am">ሙሉ ስም *</span><span class="de">Vollständiger Name *</span></label><input type="text" id="fullName" placeholder="z.B. Fatuma Hassan Ali"></div>
+    <div class="fg"><label><span class="so">Aqoonsiga Shaqaalaha *</span><span class="en">Staff ID *</span><span class="am">የሰራተኛ መታወቂያ *</span><span class="de">Personal-ID *</span></label><input type="text" id="staffId" placeholder="z.B. KB-STAFF-001"></div>
+    <div class="fg"><label><span class="so">Waaxda *</span><span class="en">Department *</span><span class="am">ክፍል *</span><span class="de">Abteilung *</span></label>
       <select id="organ">
-        <option value="">-- Auswählen --</option>
+        <option value="" data-so="-- Dooro --" data-en="-- Select --" data-am="-- ይምረጡ --" data-de="-- Auswählen --">-- Auswählen --</option>
         <option value="staff">Kebele / Schule / Gesundheit / GovPay</option>
         <option value="police">Booliska (Police)</option>
         <option value="prosecution">Xeer Ilaaliyaha (Prosecution)</option>
@@ -52,15 +70,31 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--blue-dark);color:va
         <option value="corrections">Xabsiga (Corrections)</option>
       </select>
     </div>
-    <div class="fg"><label>Passwort *</label><input type="password" id="pw" placeholder="Mindestens 6 Zeichen"></div>
-    <div class="fg"><label>Passwort wiederholen *</label><input type="password" id="pw2" placeholder="Nochmal eingeben"></div>
-    <button class="btn" id="btnRegister">Konto anlegen</button>
-    <div class="foot">Schon registriert? <a href="staff-login.html">Zum Login</a></div>
+    <div class="fg"><label><span class="so">Furaha Sirta ah *</span><span class="en">Password *</span><span class="am">የይለፍ ቃል *</span><span class="de">Passwort *</span></label><input type="password" id="pw" placeholder="z.B. mind. 6 Zeichen"></div>
+    <div class="fg"><label><span class="so">Ku celi Furaha Sirta ah *</span><span class="en">Repeat Password *</span><span class="am">የይለፍ ቃል ይድገሙ *</span><span class="de">Passwort wiederholen *</span></label><input type="password" id="pw2" placeholder="z.B. nochmal eingeben"></div>
+    <button class="btn" id="btnRegister"><span class="so">Akoon Samee</span><span class="en">Create Account</span><span class="am">መለያ ይፍጠሩ</span><span class="de">Konto anlegen</span></button>
+    <div class="foot"><span class="so">Horey ma u diiwaangashay?</span><span class="en">Already registered?</span><span class="am">አስቀድመው ተመዝግበዋል?</span><span class="de">Schon registriert?</span> <a href="staff-login.html"><span class="so">Gal</span><span class="en">Login</span><span class="am">ይግቡ</span><span class="de">Zum Login</span></a></div>
   </div>
 </div>
 
 <script type="module">
 import { supabase } from './src/supabase-config.js';
+import { initLangSwitcher, t } from './src/i18n.js';
+
+function applyOrganPlaceholder() {
+  const opt = document.querySelector('#organ option[value=""]');
+  const lang = localStorage.getItem('jl') || 'so';
+  opt.textContent = opt.dataset[lang] || opt.dataset.so;
+}
+
+['so','en','am','de'].forEach(l => {
+  document.getElementById('btn-' + l).addEventListener('click', (e) => {
+    window.setLang(l, e.target);
+    applyOrganPlaceholder();
+  });
+});
+initLangSwitcher();
+applyOrganPlaceholder();
 
 document.getElementById('btnRegister').addEventListener('click', async () => {
   const msg = document.getElementById('msg');
@@ -73,15 +107,15 @@ document.getElementById('btnRegister').addEventListener('click', async () => {
   const pw2 = document.getElementById('pw2').value;
 
   if (!fullName || !staffId || !organ || !pw) {
-    msg.innerHTML = '<div class="msg err">Bitte alle Pflichtfelder ausfüllen.</div>';
+    msg.innerHTML = '<div class="msg err">' + t({so:'Fadlan buuxi dhammaan meelaha waajibka ah.', en:'Please fill in all required fields.', am:'እባክዎ ሁሉንም አስፈላጊ መስኮች ይሙሉ።', de:'Bitte alle Pflichtfelder ausfüllen.'}) + '</div>';
     return;
   }
   if (pw.length < 6) {
-    msg.innerHTML = '<div class="msg err">Passwort muss mindestens 6 Zeichen haben.</div>';
+    msg.innerHTML = '<div class="msg err">' + t({so:'Furaha sirta ah waa inuu ka koobnaadaa ugu yaraan 6 xaraf.', en:'Password must be at least 6 characters.', am:'የይለፍ ቃል ቢያንስ 6 ፊደላት ሊኖረው ይገባል።', de:'Passwort muss mindestens 6 Zeichen haben.'}) + '</div>';
     return;
   }
   if (pw !== pw2) {
-    msg.innerHTML = '<div class="msg err">Passwörter stimmen nicht überein.</div>';
+    msg.innerHTML = '<div class="msg err">' + t({so:'Furaha sirta ah ma isku mid aha.', en:'Passwords do not match.', am:'የይለፍ ቃሎቹ አይመሳሰሉም።', de:'Passwörter stimmen nicht überein.'}) + '</div>';
     return;
   }
 
@@ -89,7 +123,7 @@ document.getElementById('btnRegister').addEventListener('click', async () => {
 
   const { error: signUpError } = await supabase.auth.signUp({ email, password: pw });
   if (signUpError) {
-    msg.innerHTML = '<div class="msg err">Fehler: ' + signUpError.message + '</div>';
+    msg.innerHTML = '<div class="msg err">' + t({so:'Khalad:', en:'Error:', am:'ስህተት:', de:'Fehler:'}) + ' ' + signUpError.message + '</div>';
     return;
   }
 
@@ -97,11 +131,11 @@ document.getElementById('btnRegister').addEventListener('click', async () => {
     email, staff_id: staffId, organ, full_name: fullName, status: 'pending'
   });
   if (profileError) {
-    msg.innerHTML = '<div class="msg err">Konto erstellt, aber Profil-Fehler: ' + profileError.message + '</div>';
+    msg.innerHTML = '<div class="msg err">' + t({so:'Akoonka waa la sameeyay, laakiin khalad profile ah:', en:'Account created, but profile error:', am:'መለያ ተፈጥሯል፣ ነገር ግን የመገለጫ ስህተት:', de:'Konto erstellt, aber Profil-Fehler:'}) + ' ' + profileError.message + '</div>';
     return;
   }
 
-  msg.innerHTML = '<div class="msg ok">✅ Konto angelegt! Ein Admin muss dich noch freischalten, bevor du dich einloggen kannst.</div>';
+  msg.innerHTML = '<div class="msg ok">✅ ' + t({so:'Akoonka waa la sameeyay! Admin ayaa kugu furi doona ka hor intaanad soo gelin.', en:'Account created! An admin must approve you before you can log in.', am:'መለያ ተፈጥሯል! ከመግባትዎ በፊት አስተዳዳሪ ማጽደቅ አለበት።', de:'Konto angelegt! Ein Admin muss dich noch freischalten, bevor du dich einloggen kannst.'}) + '</div>';
   ['fullName','staffId','pw','pw2'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('organ').value = '';
 });

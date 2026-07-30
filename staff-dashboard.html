@@ -95,20 +95,40 @@ tbody tr:hover{background:var(--blue-pale);}
 .tl-item .n{font-size:.79rem;color:var(--gray);margin-top:2px;}
 .tl-item .t{font-size:.66rem;color:var(--gray);margin-top:2px;font-family:'IBM Plex Mono',monospace;}
 
+.lang-sw{display:flex;gap:6px;}
+.lb{background:none;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.65);padding:3px 10px;border-radius:4px;cursor:pointer;font-size:.72rem;font-family:inherit;font-weight:600;}
+.lb.on,.lb:hover{background:var(--sand);border-color:var(--sand);color:var(--blue-dark);}
+
+.so{display:block!important;}.en{display:none!important;}.am{display:none!important;}.de{display:none!important;}
+span.so{display:inline!important;}span.en{display:none!important;}span.am{display:none!important;}span.de{display:none!important;}
+body.lang-en .so{display:none!important;}body.lang-en .en{display:block!important;}
+body.lang-en span.so{display:none!important;}body.lang-en span.en{display:inline!important;}
+body.lang-am .so{display:none!important;}body.lang-am .am{display:block!important;}
+body.lang-am span.so{display:none!important;}body.lang-am span.am{display:inline!important;}
+body.lang-de .so{display:none!important;}body.lang-de .de{display:block!important;}
+body.lang-de span.so{display:none!important;}body.lang-de span.de{display:inline!important;}
+
 @media(max-width:860px){.stats{grid-template-columns:repeat(2,1fr);}.detail-grid{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
 
-<div id="guard">Wird geprüft, ob du eingeloggt bist…</div>
+<div id="guard"><span class="so">Waa la hubinayaa haddii aad gashay…</span><span class="en">Checking whether you're logged in…</span><span class="am">ገብተዋል ወይ እየተረጋገጠ ነው…</span><span class="de">Wird geprüft, ob du eingeloggt bist…</span></div>
 
 <div id="app" class="hidden">
   <header>
     <div class="hd">
-      <div class="logo"><h1>Xarunta Jigjiga — Mitarbeiter-Dashboard</h1><span>Internes System</span></div>
+      <div class="logo"><h1>Xarunta Jigjiga — Mitarbeiter-Dashboard</h1><span><span class="so">Nidaamka Gudaha</span><span class="en">Internal System</span><span class="am">የውስጥ ስርዓት</span><span class="de">Internes System</span></span></div>
       <div class="who">
+        <div class="lang-sw">
+          <button class="lb on" id="btn-so">SO</button>
+          <button class="lb" id="btn-en">EN</button>
+          <button class="lb" id="btn-am">አማ</button>
+          <button class="lb" id="btn-de">DE</button>
+        </div>
+        <a href="index.html" style="color:rgba(255,255,255,.6);text-decoration:none;font-size:.8rem;">🏠 <span class="so">Xarunta Guud</span><span class="en">Main Portal</span><span class="am">ዋና ፖርታል</span><span class="de">Hauptportal</span></a>
         <div class="who-name"><div class="n" id="whoName">—</div><div class="o" id="whoOrgan">—</div></div>
-        <button class="logout-btn" id="btnLogout">Logout</button>
+        <button class="logout-btn" id="btnLogout"><span class="so">Ka bax</span><span class="en">Logout</span><span class="am">ውጣ</span><span class="de">Logout</span></button>
       </div>
     </div>
   </header>
@@ -116,33 +136,45 @@ tbody tr:hover{background:var(--blue-pale);}
   <div class="main">
     <div class="tabs" id="tabs">
       <div class="tab on" data-tab="kebele">🏛️ Kebele</div>
-      <div class="tab" data-tab="school">🎓 Schule</div>
-      <div class="tab" data-tab="health">🏥 Gesundheit</div>
+      <div class="tab" data-tab="school">🎓 <span class="so">Dugsiga</span><span class="en">School</span><span class="am">ት/ቤት</span><span class="de">Schule</span></div>
+      <div class="tab" data-tab="health">🏥 <span class="so">Caafimaadka</span><span class="en">Health</span><span class="am">ጤና</span><span class="de">Gesundheit</span></div>
       <div class="tab" data-tab="govpay">💳 GovPay</div>
-      <div class="tab hidden" data-tab="staffmgmt" id="tabStaffMgmt">👥 Mitarbeiterverwaltung</div>
+      <div class="tab hidden" data-tab="staffmgmt" id="tabStaffMgmt">👥 <span class="so">Maaraynta Shaqaalaha</span><span class="en">Staff Management</span><span class="am">የሰራተኛ አስተዳደር</span><span class="de">Mitarbeiterverwaltung</span></div>
     </div>
 
     <div class="tabpanel on" id="panel-kebele">
       <div class="stats" id="stats-kebele"></div>
-      <div class="toolbar"><input type="text" placeholder="Suche…" class="req-search" data-service="kebele"><select class="req-filter" data-service="kebele"><option value="">Alle Status</option><option value="pending">Ausstehend</option><option value="in_progress">In Bearbeitung</option><option value="completed">Erledigt</option><option value="rejected">Abgelehnt</option></select></div>
-      <div class="tablewrap"><table><thead><tr><th>Nr.</th><th>Antragsteller</th><th>Art</th><th>Datum</th><th>Status</th></tr></thead><tbody class="req-rows" data-service="kebele"><tr class="empty-row"><td colspan="5">Lade…</td></tr></tbody></table></div>
+      <div class="toolbar"><input type="text" placeholder="Suche…" class="req-search" data-service="kebele"><select class="req-filter" data-service="kebele">STATUS_FILTER_OPTIONS</select></div>
+      <div class="tablewrap"><table><thead></thead><tbody class="req-rows" data-service="kebele"><tr class="empty-row"><td colspan="5">…</td></tr></tbody></table></div>
     </div>
     <div class="tabpanel" id="panel-school">
       <div class="stats" id="stats-school"></div>
-      <div class="toolbar"><input type="text" placeholder="Suche…" class="req-search" data-service="school"><select class="req-filter" data-service="school"><option value="">Alle Status</option><option value="pending">Ausstehend</option><option value="in_progress">In Bearbeitung</option><option value="completed">Erledigt</option><option value="rejected">Abgelehnt</option></select></div>
-      <div class="tablewrap"><table><thead><tr><th>Nr.</th><th>Antragsteller</th><th>Art</th><th>Datum</th><th>Status</th></tr></thead><tbody class="req-rows" data-service="school"><tr class="empty-row"><td colspan="5">Lade…</td></tr></tbody></table></div>
+      <div class="toolbar"><input type="text" placeholder="Suche…" class="req-search" data-service="school"><select class="req-filter" data-service="school">STATUS_FILTER_OPTIONS</select></div>
+      <div class="tablewrap"><table><thead></thead><tbody class="req-rows" data-service="school"><tr class="empty-row"><td colspan="5">…</td></tr></tbody></table></div>
     </div>
     <div class="tabpanel" id="panel-health">
       <div class="stats" id="stats-health"></div>
-      <div class="toolbar"><input type="text" placeholder="Suche…" class="req-search" data-service="health"><select class="req-filter" data-service="health"><option value="">Alle Status</option><option value="pending">Ausstehend</option><option value="in_progress">In Bearbeitung</option><option value="completed">Erledigt</option><option value="rejected">Abgelehnt</option></select></div>
-      <div class="tablewrap"><table><thead><tr><th>Nr.</th><th>Antragsteller</th><th>Art</th><th>Datum</th><th>Status</th></tr></thead><tbody class="req-rows" data-service="health"><tr class="empty-row"><td colspan="5">Lade…</td></tr></tbody></table></div>
+      <div class="toolbar"><input type="text" placeholder="Suche…" class="req-search" data-service="health"><select class="req-filter" data-service="health">STATUS_FILTER_OPTIONS</select></div>
+      <div class="tablewrap"><table><thead></thead><tbody class="req-rows" data-service="health"><tr class="empty-row"><td colspan="5">…</td></tr></tbody></table></div>
     </div>
     <div class="tabpanel" id="panel-govpay">
       <div class="stats" id="stats-govpay"></div>
-      <div class="tablewrap"><table><thead><tr><th>Referenz</th><th>Bürger</th><th>Dienst</th><th>Betrag</th><th>Methode</th><th>Status</th></tr></thead><tbody id="pay-rows"><tr class="empty-row"><td colspan="6">Lade…</td></tr></tbody></table></div>
+      <div class="tablewrap"><table><thead><tr>
+        <th><span class="so">Tixraaca</span><span class="en">Reference</span><span class="am">ማጣቀሻ</span><span class="de">Referenz</span></th>
+        <th><span class="so">Muwaadinka</span><span class="en">Citizen</span><span class="am">ዜጋ</span><span class="de">Bürger</span></th>
+        <th><span class="so">Adeegga</span><span class="en">Service</span><span class="am">አገልግሎት</span><span class="de">Dienst</span></th>
+        <th><span class="so">Qiimaha</span><span class="en">Amount</span><span class="am">መጠን</span><span class="de">Betrag</span></th>
+        <th><span class="so">Habka</span><span class="en">Method</span><span class="am">ዘዴ</span><span class="de">Methode</span></th>
+        <th>Status</th>
+      </tr></thead><tbody id="pay-rows"><tr class="empty-row"><td colspan="6">…</td></tr></tbody></table></div>
     </div>
     <div class="tabpanel" id="panel-staffmgmt">
-      <div class="tablewrap"><table><thead><tr><th>Staff-ID</th><th>Name</th><th>Abteilung</th><th>Status</th><th></th></tr></thead><tbody id="staff-rows"><tr class="empty-row"><td colspan="5">Lade…</td></tr></tbody></table></div>
+      <div class="tablewrap"><table><thead><tr>
+        <th>Staff-ID</th>
+        <th><span class="so">Magaca</span><span class="en">Name</span><span class="am">ስም</span><span class="de">Name</span></th>
+        <th><span class="so">Waaxda</span><span class="en">Department</span><span class="am">ክፍል</span><span class="de">Abteilung</span></th>
+        <th>Status</th><th></th>
+      </tr></thead><tbody id="staff-rows"><tr class="empty-row"><td colspan="5">…</td></tr></tbody></table></div>
     </div>
   </div>
 </div>
@@ -159,17 +191,75 @@ tbody tr:hover{background:var(--blue-pale);}
 
 <script type="module">
 import { supabase } from './src/supabase-config.js';
+import { initLangSwitcher, t } from './src/i18n.js';
 
 let profile = null;
 let allRequests = [];
 let allPayments = [];
 let activeReq = null;
 
-const STATUS_LABEL = { pending:'Ausstehend', in_progress:'In Bearbeitung', completed:'Erledigt', rejected:'Abgelehnt', confirmed:'Bestätigt', failed:'Fehlgeschlagen' };
-const SERVICE_LABEL = { kebele:'Kebele', school:'Schule', health:'Gesundheit' };
-const ORGAN_LABEL = { police:'Booliska (Police)', prosecution:'Xeer Ilaaliyaha', court:'Maxkamadda', corrections:'Xabsiga', staff:'Mitarbeiter', admin:'Admin' };
+const STATUS_LABEL = {
+  pending:{so:'Sugaya', en:'Pending', am:'በመጠባበቅ ላይ', de:'Ausstehend'},
+  in_progress:{so:'La Shaqaynayo', en:'In Progress', am:'በሂደት ላይ', de:'In Bearbeitung'},
+  completed:{so:'La Dhammeeyay', en:'Completed', am:'ተጠናቅቋል', de:'Erledigt'},
+  rejected:{so:'La Diiday', en:'Rejected', am:'ውድቅ ተደርጓል', de:'Abgelehnt'},
+  confirmed:{so:'La Xaqiijiyay', en:'Confirmed', am:'ተረጋግጧል', de:'Bestätigt'},
+  failed:{so:'Ku Guuldareystay', en:'Failed', am:'አልተሳካም', de:'Fehlgeschlagen'}
+};
+const SERVICE_LABEL = { kebele:{so:'Kebele',en:'Kebele',am:'ቀበሌ',de:'Kebele'}, school:{so:'Dugsiga',en:'School',am:'ት/ቤት',de:'Schule'}, health:{so:'Caafimaadka',en:'Health',am:'ጤና',de:'Gesundheit'} };
+const ORGAN_LABEL = {
+  police:{so:'Booliska (Police)', en:'Police', am:'ፖሊስ', de:'Booliska (Police)'},
+  prosecution:{so:'Xeer Ilaaliyaha', en:'Prosecution', am:'ዓቃቤ ህግ', de:'Xeer Ilaaliyaha'},
+  court:{so:'Maxkamadda', en:'Court', am:'ፍርድ ቤት', de:'Maxkamadda'},
+  corrections:{so:'Xabsiga', en:'Corrections', am:'እስር ቤት', de:'Xabsiga'},
+  staff:{so:'Shaqaale', en:'Staff', am:'ሰራተኛ', de:'Mitarbeiter'},
+  admin:{so:'Admin', en:'Admin', am:'አስተዳዳሪ', de:'Admin'}
+};
+function statusLabel(s){ return STATUS_LABEL[s] ? t(STATUS_LABEL[s]) : s; }
+function serviceLabel(s){ return SERVICE_LABEL[s] ? t(SERVICE_LABEL[s]) : s; }
+function organLabel(o){ return ORGAN_LABEL[o] ? t(ORGAN_LABEL[o]) : (o || '—'); }
 
 function esc(s){ return (s||'').toString().replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+function statusFilterOptionsHtml(){
+  return `<option value="">${t({so:'Dhammaan Xaaladaha',en:'All Statuses',am:'ሁሉም ሁኔታዎች',de:'Alle Status'})}</option>
+    <option value="pending">${statusLabel('pending')}</option>
+    <option value="in_progress">${statusLabel('in_progress')}</option>
+    <option value="completed">${statusLabel('completed')}</option>
+    <option value="rejected">${statusLabel('rejected')}</option>`;
+}
+function reqTableHeadHtml(){
+  return `<tr>
+    <th>${t({so:'Lr.',en:'No.',am:'ቁ.',de:'Nr.'})}</th>
+    <th>${t({so:'Codsadaha',en:'Applicant',am:'አመልካች',de:'Antragsteller'})}</th>
+    <th>${t({so:'Nooca',en:'Type',am:'ዓይነት',de:'Art'})}</th>
+    <th>${t({so:'Taariikhda',en:'Date',am:'ቀን',de:'Datum'})}</th>
+    <th>Status</th>
+  </tr>`;
+}
+function refreshStaticTexts(){
+  document.querySelectorAll('.req-filter').forEach(sel => {
+    const cur = sel.value;
+    sel.innerHTML = statusFilterOptionsHtml();
+    sel.value = cur;
+  });
+  document.querySelectorAll('.tablewrap thead').forEach(thead => {
+    if(thead.closest('#panel-govpay') || thead.closest('#panel-staffmgmt')) return;
+    thead.innerHTML = reqTableHeadHtml();
+  });
+}
+
+['so','en','am','de'].forEach(l => {
+  document.getElementById('btn-' + l).addEventListener('click', (e) => {
+    window.setLang(l, e.target);
+    refreshStaticTexts();
+    ['kebele','school','health'].forEach(s => { renderStats(s); renderRequests(s); });
+    loadPayments();
+    if(profile && profile.organ === 'admin') loadStaff();
+  });
+});
+initLangSwitcher();
+refreshStaticTexts();
 
 async function init(){
   const { data: { session } } = await supabase.auth.getSession();
@@ -178,8 +268,8 @@ async function init(){
   const { data: p, error } = await supabase.from('users').select('*').eq('email', session.user.email).maybeSingle();
   if(error || !p || p.status === 'pending'){
     document.getElementById('guard').textContent = p && p.status === 'pending'
-      ? 'Dein Konto wartet noch auf Freischaltung durch einen Admin.'
-      : 'Kein Profil gefunden. Bitte neu einloggen.';
+      ? t({so:'Akoonkaaga waxa uu weli sugayaa in Admin ku furo.', en:'Your account is still waiting for admin approval.', am:'መለያዎ አሁንም በአስተዳዳሪ ማጽደቅ እየተጠባበቀ ነው።', de:'Dein Konto wartet noch auf Freischaltung durch einen Admin.'})
+      : t({so:'Profile lama helin. Fadlan mar kale gal.', en:'No profile found. Please log in again.', am:'መገለጫ አልተገኘም። እባክዎ እንደገና ይግቡ።', de:'Kein Profil gefunden. Bitte neu einloggen.'});
     await supabase.auth.signOut();
     return;
   }
@@ -188,7 +278,7 @@ async function init(){
   document.getElementById('guard').classList.add('hidden');
   document.getElementById('app').classList.remove('hidden');
   document.getElementById('whoName').textContent = profile.full_name;
-  document.getElementById('whoOrgan').textContent = ORGAN_LABEL[profile.organ] || profile.organ;
+  document.getElementById('whoOrgan').textContent = organLabel(profile.organ);
 
   if(profile.organ === 'admin'){
     document.getElementById('tabStaffMgmt').classList.remove('hidden');
@@ -221,7 +311,7 @@ function renderStats(service){
   const order = ['pending','in_progress','completed','rejected'];
   box.innerHTML = order.map(s => {
     const n = rows.filter(r => r.status === s).length;
-    return '<div class="stat"><span class="n">'+n+'</span><span class="l">'+STATUS_LABEL[s]+'</span></div>';
+    return '<div class="stat"><span class="n">'+n+'</span><span class="l">'+statusLabel(s)+'</span></div>';
   }).join('');
 }
 
@@ -232,14 +322,14 @@ function renderRequests(service){
     && (!filter || r.status === filter)
     && (!search || (r.request_number||'').toLowerCase().includes(search) || (r.full_name||'').toLowerCase().includes(search)));
   const tbody = document.querySelector('.req-rows[data-service="'+service+'"]');
-  if(rows.length === 0){ tbody.innerHTML = '<tr class="empty-row"><td colspan="5">Keine Anträge gefunden</td></tr>'; return; }
+  if(rows.length === 0){ tbody.innerHTML = '<tr class="empty-row"><td colspan="5">' + t({so:'Wax codsi ah lama helin', en:'No requests found', am:'ምንም ጥያቄ አልተገኘም', de:'Keine Anträge gefunden'}) + '</td></tr>'; return; }
   tbody.innerHTML = rows.map(r => `
     <tr onclick="openReq('${r.id}')">
       <td class="mono">${r.request_number||'—'}</td>
       <td>${esc(r.full_name)}</td>
       <td>${esc(r.request_type)}</td>
       <td class="mono">${new Date(r.created_at).toLocaleDateString('de-DE')}</td>
-      <td><span class="pill ${r.status}">${STATUS_LABEL[r.status]}</span></td>
+      <td><span class="pill ${r.status}">${statusLabel(r.status)}</span></td>
     </tr>`).join('');
 }
 
@@ -247,36 +337,36 @@ window.openReq = async function(id){
   activeReq = allRequests.find(r => r.id === id);
   if(!activeReq) return;
   document.getElementById('dTitle').textContent = activeReq.request_number;
-  document.getElementById('dSub').textContent = SERVICE_LABEL[activeReq.service] + ' · ' + activeReq.request_type;
+  document.getElementById('dSub').textContent = serviceLabel(activeReq.service) + ' · ' + activeReq.request_type;
 
   const { data: events } = await supabase.from('service_events').select('*').eq('request_id', id).order('created_at', { ascending:true });
 
   let actionsHtml = '';
   if(activeReq.status !== 'completed' && activeReq.status !== 'rejected'){
     actionsHtml = `<div class="actions-box">
-      <textarea id="reqNote" placeholder="Notiz (optional)…"></textarea>
+      <textarea id="reqNote" placeholder="${t({so:'Fiiro (ikhtiyaari)…', en:'Note (optional)…', am:'ማስታወሻ (አማራጭ)…', de:'Notiz (optional)…'})}"></textarea>
       <div class="btn-row">
-        ${activeReq.status === 'pending' ? '<button class="btn" onclick="updateReq(\'in_progress\')">In Bearbeitung nehmen</button>' : ''}
-        <button class="btn" onclick="updateReq('completed')">Als erledigt markieren</button>
-        <button class="btn red" onclick="updateReq('rejected')">Ablehnen</button>
+        ${activeReq.status === 'pending' ? '<button class="btn" onclick="updateReq(\'in_progress\')">' + t({so:'La Shaqee', en:'Take In Progress', am:'ወደ ሂደት ውሰድ', de:'In Bearbeitung nehmen'}) + '</button>' : ''}
+        <button class="btn" onclick="updateReq('completed')">${t({so:'U Calaamadee La Dhammeeyay', en:'Mark as Completed', am:'እንደተጠናቀቀ ምልክት አድርግ', de:'Als erledigt markieren'})}</button>
+        <button class="btn red" onclick="updateReq('rejected')">${t({so:'Diid', en:'Reject', am:'ውድቅ አድርግ', de:'Ablehnen'})}</button>
       </div>
     </div>`;
   }
 
   document.getElementById('detailBody').innerHTML = `
     <div class="detail-grid">
-      <div class="detail-item"><div class="k">Antragsteller</div><div class="v">${esc(activeReq.full_name)}</div></div>
-      <div class="detail-item"><div class="k">Telefon</div><div class="v">${esc(activeReq.phone)||'—'}</div></div>
-      <div class="detail-item"><div class="k">Nationale ID</div><div class="v">${esc(activeReq.national_id)||'—'}</div></div>
+      <div class="detail-item"><div class="k">${t({so:'Codsadaha', en:'Applicant', am:'አመልካች', de:'Antragsteller'})}</div><div class="v">${esc(activeReq.full_name)}</div></div>
+      <div class="detail-item"><div class="k">${t({so:'Telefoon', en:'Phone', am:'ስልክ', de:'Telefon'})}</div><div class="v">${esc(activeReq.phone)||'—'}</div></div>
+      <div class="detail-item"><div class="k">${t({so:'Aqoonsiga Qaranka', en:'National ID', am:'ብሔራዊ መታወቂያ', de:'Nationale ID'})}</div><div class="v">${esc(activeReq.national_id)||'—'}</div></div>
       <div class="detail-item"><div class="k">Kebele/Ort</div><div class="v">${esc(activeReq.kebele)||'—'}</div></div>
-      ${activeReq.details && activeReq.details.child_name ? '<div class="detail-item"><div class="k">Kind</div><div class="v">'+esc(activeReq.details.child_name)+(activeReq.details.grade?' ('+esc(activeReq.details.grade)+')':'')+'</div></div>' : ''}
-      ${activeReq.details && activeReq.details.preferred_date ? '<div class="detail-item"><div class="k">Wunschtermin</div><div class="v">'+esc(activeReq.details.preferred_date)+'</div></div>' : ''}
-      <div class="detail-item full"><div class="k">Details</div><div class="v" style="font-weight:400;">${esc(activeReq.details && activeReq.details.description) || '—'}</div></div>
+      ${activeReq.details && activeReq.details.child_name ? '<div class="detail-item"><div class="k">'+t({so:'Ilmaha',en:'Child',am:'ልጅ',de:'Kind'})+'</div><div class="v">'+esc(activeReq.details.child_name)+(activeReq.details.grade?' ('+esc(activeReq.details.grade)+')':'')+'</div></div>' : ''}
+      ${activeReq.details && activeReq.details.preferred_date ? '<div class="detail-item"><div class="k">'+t({so:'Taariikhda La Rabo',en:'Preferred Date',am:'የተመረጠ ቀን',de:'Wunschtermin'})+'</div><div class="v">'+esc(activeReq.details.preferred_date)+'</div></div>' : ''}
+      <div class="detail-item full"><div class="k">${t({so:'Faahfaahin', en:'Details', am:'ዝርዝሮች', de:'Details'})}</div><div class="v" style="font-weight:400;">${esc(activeReq.details && activeReq.details.description) || '—'}</div></div>
     </div>
     ${actionsHtml}
-    <h4 style="font-size:.85rem;margin-bottom:10px;">Verlauf</h4>
+    <h4 style="font-size:.85rem;margin-bottom:10px;">${t({so:'Taariikhda', en:'Timeline', am:'ታሪክ', de:'Verlauf'})}</h4>
     <div class="timeline">${(events||[]).map(e => `
-      <div class="tl-item"><div class="a">${esc(e.action)}</div>${e.note?'<div class="n">'+esc(e.note)+'</div>':''}<div class="t">${new Date(e.created_at).toLocaleString('de-DE')}</div></div>`).join('') || '<p style="color:var(--gray);font-size:.83rem;">Kein Verlauf</p>'}</div>
+      <div class="tl-item"><div class="a">${esc(e.action)}</div>${e.note?'<div class="n">'+esc(e.note)+'</div>':''}<div class="t">${new Date(e.created_at).toLocaleString('de-DE')}</div></div>`).join('') || '<p style="color:var(--gray);font-size:.83rem;">' + t({so:'Wax taariikh ah lama helin', en:'No history', am:'ምንም ታሪክ የለም', de:'Kein Verlauf'}) + '</p>'}</div>
   `;
   document.getElementById('detailModal').classList.add('open');
 };
@@ -298,10 +388,10 @@ async function loadPayments(){
   const order = ['pending','confirmed','failed'];
   document.getElementById('stats-govpay').innerHTML = order.map(s => {
     const n = allPayments.filter(p => p.status === s).length;
-    return '<div class="stat"><span class="n">'+n+'</span><span class="l">'+STATUS_LABEL[s]+'</span></div>';
+    return '<div class="stat"><span class="n">'+n+'</span><span class="l">'+statusLabel(s)+'</span></div>';
   }).join('');
   const tbody = document.getElementById('pay-rows');
-  if(allPayments.length === 0){ tbody.innerHTML = '<tr class="empty-row"><td colspan="6">Keine Zahlungen</td></tr>'; return; }
+  if(allPayments.length === 0){ tbody.innerHTML = '<tr class="empty-row"><td colspan="6">' + t({so:'Wax lacag bixin ah lama helin', en:'No payments found', am:'ምንም ክፍያ አልተገኘም', de:'Keine Zahlungen'}) + '</td></tr>'; return; }
   tbody.innerHTML = allPayments.map(p => `
     <tr onclick="openPay('${p.id}')">
       <td class="mono">${esc(p.reference)}</td>
@@ -309,7 +399,7 @@ async function loadPayments(){
       <td>${esc(p.service)}</td>
       <td class="mono">${p.amount||0} ETB</td>
       <td>${esc(p.payment_method)}</td>
-      <td><span class="pill ${p.status}">${STATUS_LABEL[p.status]||p.status}</span></td>
+      <td><span class="pill ${p.status}">${statusLabel(p.status)}</span></td>
     </tr>`).join('');
 }
 
@@ -321,16 +411,16 @@ window.openPay = async function(id){
   let actionsHtml = '';
   if(pay.status === 'pending'){
     actionsHtml = `<div class="actions-box"><div class="btn-row">
-      <button class="btn" onclick="updatePay('${pay.id}','confirmed')">Als bezahlt bestätigen</button>
-      <button class="btn red" onclick="updatePay('${pay.id}','failed')">Als fehlgeschlagen markieren</button>
+      <button class="btn" onclick="updatePay('${pay.id}','confirmed')">${t({so:'U Xaqiiji In La Bixiyay', en:'Confirm as Paid', am:'እንደተከፈለ አረጋግጥ', de:'Als bezahlt bestätigen'})}</button>
+      <button class="btn red" onclick="updatePay('${pay.id}','failed')">${t({so:'U Calaamadee Ku Guuldareystay', en:'Mark as Failed', am:'እንዳልተሳካ ምልክት አድርግ', de:'Als fehlgeschlagen markieren'})}</button>
     </div></div>`;
   }
   document.getElementById('detailBody').innerHTML = `
     <div class="detail-grid">
-      <div class="detail-item"><div class="k">Bürger</div><div class="v">${esc(pay.citizen_name)}</div></div>
-      <div class="detail-item"><div class="k">Telefon</div><div class="v">${esc(pay.phone)||'—'}</div></div>
+      <div class="detail-item"><div class="k">${t({so:'Muwaadinka', en:'Citizen', am:'ዜጋ', de:'Bürger'})}</div><div class="v">${esc(pay.citizen_name)}</div></div>
+      <div class="detail-item"><div class="k">${t({so:'Telefoon', en:'Phone', am:'ስልክ', de:'Telefon'})}</div><div class="v">${esc(pay.phone)||'—'}</div></div>
       <div class="detail-item"><div class="k">Kebele</div><div class="v">${esc(pay.kebele)||'—'}</div></div>
-      <div class="detail-item"><div class="k">Methode</div><div class="v">${esc(pay.payment_method)}</div></div>
+      <div class="detail-item"><div class="k">${t({so:'Habka', en:'Method', am:'ዘዴ', de:'Methode'})}</div><div class="v">${esc(pay.payment_method)}</div></div>
     </div>${actionsHtml}
   `;
   document.getElementById('detailModal').classList.add('open');
@@ -347,14 +437,14 @@ async function loadStaff(){
   const { data, error } = await supabase.from('users').select('*').order('created_at', { ascending:false });
   if(error){ console.error(error); return; }
   const tbody = document.getElementById('staff-rows');
-  if(!data || data.length === 0){ tbody.innerHTML = '<tr class="empty-row"><td colspan="5">Keine Mitarbeiter</td></tr>'; return; }
+  if(!data || data.length === 0){ tbody.innerHTML = '<tr class="empty-row"><td colspan="5">' + t({so:'Wax shaqaale ah lama helin', en:'No staff found', am:'ምንም ሰራተኛ አልተገኘም', de:'Keine Mitarbeiter'}) + '</td></tr>'; return; }
   tbody.innerHTML = data.map(u => `
     <tr>
       <td class="mono">${esc(u.staff_id)}</td>
       <td>${esc(u.full_name)}</td>
-      <td>${ORGAN_LABEL[u.organ]||u.organ}</td>
-      <td><span class="pill ${u.status==='pending'?'pending':'completed'}">${u.status==='pending'?'Wartet':'Freigeschaltet'}</span></td>
-      <td>${u.status==='pending' ? '<button class="btn" onclick="approveStaff(\''+u.id+'\')">Freischalten</button>' : ''}</td>
+      <td>${organLabel(u.organ)}</td>
+      <td><span class="pill ${u.status==='pending'?'pending':'completed'}">${u.status==='pending' ? t({so:'Sugaya',en:'Waiting',am:'በመጠባበቅ',de:'Wartet'}) : t({so:'La Furay',en:'Approved',am:'ጸድቋል',de:'Freigeschaltet'})}</span></td>
+      <td>${u.status==='pending' ? '<button class="btn" onclick="approveStaff(\''+u.id+'\')">'+t({so:'Fur',en:'Approve',am:'አጽድቅ',de:'Freischalten'})+'</button>' : ''}</td>
     </tr>`).join('');
 }
 

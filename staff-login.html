@@ -29,25 +29,49 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--blue-dark);color:va
 .msg.err{background:#f9ecec;color:#8b1a1a;}
 .foot{text-align:center;margin-top:16px;font-size:.82rem;color:var(--gray);}
 .foot a{color:var(--blue);}
+.lang-sw{display:flex;gap:6px;justify-content:center;margin-bottom:14px;}
+.lb{background:none;border:1px solid rgba(255,255,255,.25);color:rgba(255,255,255,.7);padding:3px 10px;border-radius:4px;cursor:pointer;font-size:.72rem;font-family:inherit;font-weight:600;}
+.lb.on,.lb:hover{background:var(--sand);border-color:var(--sand);color:var(--blue-dark);}
+
+.so{display:block!important;}.en{display:none!important;}.am{display:none!important;}.de{display:none!important;}
+span.so{display:inline!important;}span.en{display:none!important;}span.am{display:none!important;}span.de{display:none!important;}
+body.lang-en .so{display:none!important;}body.lang-en .en{display:block!important;}
+body.lang-en span.so{display:none!important;}body.lang-en span.en{display:inline!important;}
+body.lang-am .so{display:none!important;}body.lang-am .am{display:block!important;}
+body.lang-am span.so{display:none!important;}body.lang-am span.am{display:inline!important;}
+body.lang-de .so{display:none!important;}body.lang-de .de{display:block!important;}
+body.lang-de span.so{display:none!important;}body.lang-de span.de{display:inline!important;}
 </style>
 </head>
 <body>
 <div class="card">
   <div class="top">
-    <h1>Mitarbeiter-Login</h1>
-    <p>Kebele · Schule · Gesundheitszentrum · GovPay</p>
+    <div class="lang-sw">
+      <button class="lb on" id="btn-so">SO</button>
+      <button class="lb" id="btn-en">EN</button>
+      <button class="lb" id="btn-am">አማ</button>
+      <button class="lb" id="btn-de">DE</button>
+    </div>
+    <h1><span class="so">Gal Shaqaalaha</span><span class="en">Staff Login</span><span class="am">የሰራተኛ መግቢያ</span><span class="de">Mitarbeiter-Login</span></h1>
+    <p>Kebele · <span class="so">Dugsiga</span><span class="en">School</span><span class="am">ት/ቤት</span><span class="de">Schule</span> · <span class="so">Caafimaadka</span><span class="en">Health Center</span><span class="am">ጤና ማዕከል</span><span class="de">Gesundheitszentrum</span> · GovPay</p>
   </div>
   <div class="body">
     <div id="msg"></div>
     <div class="fg"><label>Staff-ID</label><input type="text" id="staffId" placeholder="z.B. KB-STAFF-001"></div>
-    <div class="fg"><label>Passwort</label><input type="password" id="pw" placeholder="••••••••"></div>
-    <button class="btn" id="btnLogin">Einloggen</button>
-    <div class="foot">Noch kein Konto? <a href="register.html">Registrieren</a></div>
+    <div class="fg"><label><span class="so">Furaha Sirta ah</span><span class="en">Password</span><span class="am">የይለፍ ቃል</span><span class="de">Passwort</span></label><input type="password" id="pw" placeholder="••••••••"></div>
+    <button class="btn" id="btnLogin"><span class="so">Gal</span><span class="en">Login</span><span class="am">ግባ</span><span class="de">Einloggen</span></button>
+    <div class="foot"><span class="so">Weli akoon ma lihid?</span><span class="en">No account yet?</span><span class="am">ገና መለያ የለዎትም?</span><span class="de">Noch kein Konto?</span> <a href="register.html"><span class="so">Diiwaangeli</span><span class="en">Register</span><span class="am">ይመዝገቡ</span><span class="de">Registrieren</span></a></div>
   </div>
 </div>
 
 <script type="module">
 import { login } from './src/auth.js';
+import { initLangSwitcher, t } from './src/i18n.js';
+
+['so','en','am','de'].forEach(l => {
+  document.getElementById('btn-' + l).addEventListener('click', (e) => window.setLang(l, e.target));
+});
+initLangSwitcher();
 
 document.getElementById('btnLogin').addEventListener('click', async () => {
   const msg = document.getElementById('msg');
@@ -55,7 +79,7 @@ document.getElementById('btnLogin').addEventListener('click', async () => {
   const staffId = document.getElementById('staffId').value.trim();
   const pw = document.getElementById('pw').value;
   if (!staffId || !pw) {
-    msg.innerHTML = '<div class="msg err">Bitte Staff-ID und Passwort eingeben.</div>';
+    msg.innerHTML = '<div class="msg err">' + t({so:'Fadlan Staff-ID iyo furaha sirta ah geli.', en:'Please enter Staff ID and password.', am:'እባክዎ የሰራተኛ መታወቂያ እና የይለፍ ቃል ያስገቡ።', de:'Bitte Staff-ID und Passwort eingeben.'}) + '</div>';
     return;
   }
 
