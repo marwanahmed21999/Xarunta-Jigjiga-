@@ -74,3 +74,60 @@ export function readLocation({ zoneSel, woredaSel, citySel, kebeleFieldId }) {
   const full = [zoneName, woredaName, cityName, kebeleName].filter(Boolean).join(' / ');
   return { zoneName, woredaName, cityName, kebeleName, complete, full };
 }
+
+/**
+ * Gobolka -> Degmo -> Magaalo -> Einrichtung (echte Schule/Gesundheitszentrum statt Kebele)
+ * institutionType: 'school' | 'health'
+ */
+export function wireInstitutionCascade({ zoneSel, woredaSel, citySel, institutionWrap, institutionFieldId, institutionType, institutionLabelHtml = '' }) {
+  function resetInstitution(msg) {
+    institutionWrap.innerHTML = institutionLabelHtml + `<select id="${institutionFieldId}" disabled><option value="">${msg}</option></select>`;
+  }
+
+  loadZones(zoneSel);
+  resetInstitution('-- zuerst Stadt wählen --');
+
+  zoneSel.addEventListener('change', async (e) => {
+    resetSelect(woredaSel, '-- zuerst Zone wählen --');
+    resetSelect(citySel, '-- zuerst Woreda wählen --');
+    resetInstitution('-- zuerst Stadt wählen --');
+    if (!e.target.value) return;
+    const data = await loadChildren(e.target.value, 'woreda');
+    woredaSel.innerHTML = '<option value="">-- Woreda wählen --</option>' + data.map(l => `<option value="${l.id}">${l.name}</option>`).join('');
+    woredaSel.disabled = false;
+  });
+
+  woredaSel.addEventListener('change', async (e) => {
+    resetSelect(citySel, '-- zuerst Woreda wählen --');
+    resetInstitution('-- zuerst Stadt wählen --');
+    if (!e.target.value) return;
+    const data = await loadChildren(e.target.value, 'city');
+    citySel.innerHTML = '<option value="">-- Stadt wählen --</option>' + data.map(l => `<option value="${l.id}">${l.name}</option>`).join('');
+    citySel.disabled = false;
+  });
+
+  citySel.addEventListener('change', async (e) => {
+    if (!e.target.value) { resetInstitution('-- zuerst Stadt wählen --'); return; }
+    const { data, error } = await supabase.from('institutions').select('id,name,is_verified').eq('city_location_id', e.target.value).eq('type', institutionType).order('name');
+    if (error || !data || data.length === 0) {
+      resetInstitution('Für diese Stadt noch keine Einrichtung erfasst');
+      return;
+    }
+    const hasUnverified = data.some(i => !i.is_verified);
+    institutionWrap.innerHTML = institutionLabelHtml +
+      `<select id="${institutionFieldId}"><option value="">-- Einrichtung wählen --</option>` +
+      data.map(i => `<option value="${i.id}" data-name="${i.name}">${i.name}${i.is_verified ? '' : ' *'}</option>`).join('') +
+      '</select>' +
+      (hasUnverified ? '<small style="color:var(--gray,#8a94a6);display:block;margin-top:4px;">* Name noch nicht offiziell bestätigt</small>' : '');
+  });
+}
+
+export function readInstitution(institutionFieldId) {
+  const el = document.getElementById(institutionFieldId);
+  const opt = el && el.tagName === 'SELECT' ? el.selectedOptions[0] : null;
+  return {
+    id: el ? el.value : '',
+    name: opt ? opt.dataset.name : '',
+    complete: !!(el && el.value)
+  };
+}

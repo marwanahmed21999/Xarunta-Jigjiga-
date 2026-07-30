@@ -335,7 +335,7 @@ body.lang-am span.so{display:none!important;}body.lang-am span.am{display:inline
       <div class="fg"><label>Gobolka / Zone *</label><select id="selZone"><option value="">Lädt…</option></select></div>
       <div class="fg"><label>Degmo / Woreda *</label><select id="selWoreda" disabled><option value="">-- zuerst Zone wählen --</option></select></div>
       <div class="fg"><label>Magaalo / Stadt *</label><select id="selCity" disabled><option value="">-- zuerst Woreda wählen --</option></select></div>
-      <div class="fg" id="kebeleWrap"><label>Kebele *</label><select id="selKebele" disabled><option value="">-- zuerst Stadt wählen --</option></select></div>
+      <div class="fg" id="institutionWrap"><label>Schule *</label><select id="selInstitution" disabled><option value="">-- zuerst Stadt wählen --</option></select></div>
       <div class="fg full"><label>Art des Antrags *</label>
         <select id="reqType">
           <option value="">Bitte wählen...</option>
@@ -394,16 +394,19 @@ function setLang(l,btn){
 </script>
 
 <script type="module">
-import { supabase } from './src/supabase-config.js';
-import { wireLocationCascade, readLocation } from './src/location-picker.js';
+import { supabase } from '../src/supabase-config.js';
+import { wireInstitutionCascade, readInstitution } from '../src/location-picker.js?v=2';
 
-wireLocationCascade({
-  zoneSel: document.getElementById('selZone'),
-  woredaSel: document.getElementById('selWoreda'),
-  citySel: document.getElementById('selCity'),
-  kebeleWrap: document.getElementById('kebeleWrap'),
-  kebeleFieldId: 'selKebele',
-  kebeleLabelHtml: '<label>Kebele *</label>'
+const zoneSel = document.getElementById('selZone');
+const woredaSel = document.getElementById('selWoreda');
+const citySel = document.getElementById('selCity');
+
+wireInstitutionCascade({
+  zoneSel, woredaSel, citySel,
+  institutionWrap: document.getElementById('institutionWrap'),
+  institutionFieldId: 'selInstitution',
+  institutionType: 'school',
+  institutionLabelHtml: '<label>Schule *</label>'
 });
 
 document.getElementById('btnSubmitReq').addEventListener('click', async () => {
@@ -422,19 +425,17 @@ document.getElementById('btnSubmitReq').addEventListener('click', async () => {
   const grade = document.getElementById('reqGrade').value.trim();
   const request_type = document.getElementById('reqType').value;
   const description = document.getElementById('reqDesc').value.trim();
-  const loc = readLocation({
-    zoneSel: document.getElementById('selZone'),
-    woredaSel: document.getElementById('selWoreda'),
-    citySel: document.getElementById('selCity'),
-    kebeleFieldId: 'selKebele'
-  });
+  const zoneName = zoneSel.selectedOptions[0] ? zoneSel.selectedOptions[0].textContent : '';
+  const woredaName = woredaSel.selectedOptions[0] ? woredaSel.selectedOptions[0].textContent : '';
+  const cityName = citySel.selectedOptions[0] ? citySel.selectedOptions[0].textContent : '';
+  const inst = readInstitution('selInstitution');
 
   if (!full_name || !phone || !child_name || !request_type) {
     msg.innerHTML = '<p style="color:#ff9a9a;margin-bottom:14px;">Bitte Elternname, Telefonnummer, Name des Kindes und Art des Antrags ausfüllen.</p>';
     return;
   }
-  if (!loc.complete) {
-    msg.innerHTML = '<p style="color:#ff9a9a;margin-bottom:14px;">Bitte Zone, Woreda, Stadt und Kebele vollständig auswählen.</p>';
+  if (!zoneSel.value || !woredaSel.value || !citySel.value || !inst.complete) {
+    msg.innerHTML = '<p style="color:#ff9a9a;margin-bottom:14px;">Bitte Zone, Woreda, Stadt und Schule vollständig auswählen.</p>';
     return;
   }
 
@@ -444,8 +445,8 @@ document.getElementById('btnSubmitReq').addEventListener('click', async () => {
     p_full_name: full_name,
     p_national_id: national_id,
     p_phone: phone,
-    p_kebele: loc.full,
-    p_details: { child_name, grade, description: description || null, zone: loc.zoneName, woreda: loc.woredaName, city: loc.cityName, kebele: loc.kebeleName }
+    p_kebele: [zoneName, woredaName, cityName, inst.name].join(' / '),
+    p_details: { child_name, grade, description: description || null, zone: zoneName, woreda: woredaName, city: cityName, institution: inst.name }
   });
 
   if (error) {
