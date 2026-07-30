@@ -306,6 +306,16 @@ async function init(){
   await loadRequests();
   await loadPayments();
   if(profile.organ === 'admin') await loadStaff();
+
+  // Live-Aktualisierung: bei Änderungen sicher neu laden statt den Payload selbst zu verwenden (RLS bleibt in Kraft).
+  supabase
+    .channel('service-requests-realtime')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'service_requests' }, () => { loadRequests(); })
+    .subscribe();
+  supabase
+    .channel('payments-realtime')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'payments' }, () => { loadPayments(); })
+    .subscribe();
 }
 
 async function loadRequests(){

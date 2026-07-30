@@ -382,6 +382,13 @@ async function init(){
   document.getElementById('btnNewCase').style.display = (profile.organ === 'police' || profile.organ === 'admin') ? '' : 'none';
 
   await loadCases();
+
+  // Live-Aktualisierung: bei jeder Änderung an "cases" (egal durch wen) neu laden.
+  // Der Payload selbst wird nicht verwendet, nur als Anstoß zum sicheren Neu-Abruf (RLS bleibt in Kraft).
+  supabase
+    .channel('cases-realtime')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'cases' }, () => { loadCases(); })
+    .subscribe();
 }
 
 async function loadCases(){
