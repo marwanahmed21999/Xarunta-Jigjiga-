@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="so">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GovPay Jigjiga | Xarunta Lacag Bixinta</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#1a4fa0;--blue-light:#2c6fda;--blue-dark:#0d2d6b;--blue-pale:#e8f0fb;--blue-mid:#1e5ab8;
+  --green:#1a7a3c;--green-pale:#eaf5ee;
+  --red:#8b1a1a;--red-pale:#f9ecec;
+  --sand:#c9963a;--sand-light:#e8b85a;--sand-pale:#fdf6e8;
+  --white:#f7f9fd;--ink:#0d1b3e;--gray:#5a6880;--border:#c8d4e8;
+  --shadow:0 4px 24px rgba(13,27,62,0.10);--shadow-lg:0 12px 48px rgba(13,27,62,0.16);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'IBM Plex Sans',sans-serif;background:var(--white);color:var(--ink);overflow-x:hidden;}
+
+/* SOMALI FLAG STRIP */
+.flag-sr{height:8px;position:relative;display:flex;}
+.fs-g{flex:1;background:#1a7a3c;}
+.fs-w{flex:1;background:#fff;}
+.fs-r{flex:1;background:#8b1a1a;}
+.fs-tri{position:absolute;top:0;left:0;width:0;height:0;border-style:solid;border-width:8px 0 0 20px;border-color:transparent transparent transparent var(--blue);}
+
+.topbar{background:var(--blue-dark);color:rgba(255,255,255,0.72);font-size:0.76rem;padding:7px 0;}
+.tb{max-width:1200px;margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
+.tb a{color:var(--sand-light);text-decoration:none;}
+.lang-sw{display:flex;gap:6px;}
+.lb{background:none;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.65);padding:2px 9px;border-radius:3px;cursor:pointer;font-size:0.72rem;font-family:'IBM Plex Sans',sans-serif;transition:all .2s;}
+.lb.on,.lb:hover{background:var(--sand);border-color:var(--sand);color:var(--blue-dark);}
+
+header{background:#fff;border-bottom:3px solid var(--blue);position:sticky;top:0;z-index:100;box-shadow:var(--shadow);}
+.hd{max-width:1200px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:72px;gap:20px;}
+.logo{display:flex;align-items:center;gap:14px;text-decoration:none;}
+.flag-em{width:54px;height:38px;border-radius:5px;overflow:hidden;position:relative;flex-shrink:0;box-shadow:0 2px 8px rgba(13,27,62,0.2);}
+.fe-g{position:absolute;top:0;left:0;right:0;height:33.33%;background:#1a7a3c;}
+.fe-w{position:absolute;top:33.33%;left:0;right:0;height:33.33%;background:#fff;}
+.fe-r{position:absolute;top:66.66%;left:0;right:0;height:33.33%;background:#8b1a1a;}
+.fe-t{position:absolute;top:0;left:0;width:0;height:0;border-style:solid;border-width:19px 0 19px 22px;border-color:transparent transparent transparent var(--blue);}
+.fe-s{position:absolute;top:50%;left:6px;transform:translateY(-50%);color:#fff;font-size:10px;}
+.logo-tx h1{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--blue-dark);line-height:1.2;}
+.logo-tx span{font-size:0.68rem;color:var(--gray);letter-spacing:0.08em;text-transform:uppercase;}
+nav{display:flex;align-items:center;gap:2px;}
+nav a{color:var(--ink);text-decoration:none;padding:8px 13px;font-size:0.86rem;font-weight:500;border-radius:6px;transition:all .2s;}
+nav a:hover{background:var(--blue-pale);color:var(--blue);}
+.nav-cta{background:var(--blue)!important;color:#fff!important;font-weight:600!important;}
+.nav-cta:hover{background:var(--blue-light)!important;}
+
+/* HERO */
+.hero{background:var(--blue-dark);padding:80px 24px 0;position:relative;overflow:hidden;min-height:560px;display:flex;align-items:stretch;}
+.hero-pattern{position:absolute;inset:0;
+  background-image:repeating-linear-gradient(60deg,rgba(255,255,255,0.025) 0,rgba(255,255,255,0.025) 1px,transparent 1px,transparent 44px),
+  repeating-linear-gradient(-60deg,rgba(255,255,255,0.025) 0,rgba(255,255,255,0.025) 1px,transparent 1px,transparent 44px);}
+.hero-tri{position:absolute;bottom:0;right:0;width:0;height:0;border-style:solid;border-width:0 0 560px 400px;border-color:transparent transparent rgba(44,111,218,0.12) transparent;}
+.hero-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 420px;gap:60px;align-items:end;position:relative;z-index:1;width:100%;}
+.hero-text{padding-bottom:70px;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(201,150,58,0.15);border:1px solid rgba(201,150,58,0.3);color:var(--sand-light);font-size:0.71rem;font-weight:700;padding:5px 14px;border-radius:20px;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:22px;}
+.badge-pulse{width:6px;height:6px;border-radius:50%;background:var(--sand);animation:pulse 2s infinite;flex-shrink:0;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
+.hero h2{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,4vw,3.4rem);font-weight:900;color:#fff;line-height:1.08;margin-bottom:20px;}
+.hero h2 em{font-style:italic;color:var(--sand-light);}
+.hero p{font-size:.98rem;color:rgba(255,255,255,.66);line-height:1.8;margin-bottom:34px;font-weight:300;max-width:480px;}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:38px;}
+.btn-sand{background:var(--sand);color:var(--blue-dark);padding:13px 26px;border-radius:8px;font-weight:700;text-decoration:none;font-size:.92rem;transition:all .2s;box-shadow:0 4px 16px rgba(201,150,58,.3);}
+.btn-sand:hover{background:var(--sand-light);transform:translateY(-2px);}
+.btn-ghost{border:1.5px solid rgba(255,255,255,.3);color:rgba(255,255,255,.85);padding:13px 26px;border-radius:8px;font-weight:500;text-decoration:none;font-size:.92rem;transition:all .2s;}
+.btn-ghost:hover{border-color:rgba(255,255,255,.6);background:rgba(255,255,255,.07);}
+.hero-trust{display:flex;gap:22px;flex-wrap:wrap;}
+.ht{display:flex;align-items:center;gap:7px;font-size:.78rem;color:rgba(255,255,255,.45);}
+.ht::before{content:'✓';color:var(--sand);font-weight:700;}
+
+/* STATS CARDS */
+.hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.hs{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:22px 20px;transition:background .2s;}
+.hs:hover{background:rgba(255,255,255,.12);}
+.hs:nth-child(1){border-top:3px solid var(--blue-light);}
+.hs:nth-child(2){border-top:3px solid #fff;}
+.hs:nth-child(3){border-top:3px solid #8b1a1a;}
+.hs:nth-child(4){border-top:3px solid var(--sand);}
+.hs .n{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:900;color:var(--sand-light);display:block;line-height:1;}
+.hs .l{font-size:.72rem;color:rgba(255,255,255,.5);margin-top:5px;display:block;text-transform:uppercase;letter-spacing:.08em;}
+
+/* CULTURAL BAND = Somali flag colors */
+.cband{height:6px;display:flex;}
+.cb-g{flex:1;background:#1a7a3c;}
+.cb-w{flex:1;background:#e0e0e0;}
+.cb-r{flex:1;background:#8b1a1a;}
+
+/* SERVICES */
+.svc-sec{padding:72px 24px;background:var(--white);}
+.si{max-width:1200px;margin:0 auto;}
+.st{font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--blue);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.st::before{content:'';width:22px;height:2px;background:var(--blue);}
+.sh{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3vw,2.4rem);color:var(--ink);margin-bottom:10px;font-weight:700;}
+.ss{color:var(--gray);font-size:.97rem;margin-bottom:44px;font-weight:300;max-width:560px;}
+.svc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:2px;background:var(--border);border-radius:16px;overflow:hidden;}
+.sc{background:#fff;padding:30px 24px;cursor:pointer;transition:all .25s;text-decoration:none;color:var(--ink);display:block;position:relative;}
+.sc::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--blue);transform:scaleX(0);transition:transform .3s;transform-origin:left;}
+.sc:hover::after{transform:scaleX(1);}
+.sc:hover{background:var(--blue-pale);}
+.sc-ico{width:52px;height:52px;border-radius:12px;background:var(--blue-pale);display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:16px;transition:background .2s;}
+.sc:hover .sc-ico{background:var(--blue);color:#fff;}
+.sc h3{font-size:.95rem;font-weight:600;margin-bottom:7px;color:var(--blue-dark);}
+.sc p{font-size:.78rem;color:var(--gray);line-height:1.6;}
+.sc-badge{display:inline-block;margin-top:12px;font-size:.63rem;font-weight:700;padding:2px 8px;border-radius:3px;text-transform:uppercase;letter-spacing:.06em;background:var(--sand-pale);color:var(--sand);}
+
+/* NEWS + SIDEBAR */
+.news-sec{max-width:1200px;margin:0 auto;padding:0 24px 72px;display:grid;grid-template-columns:1fr 340px;gap:48px;align-items:start;}
+.news-list{display:flex;flex-direction:column;border-radius:14px;overflow:hidden;border:1px solid var(--border);}
+.ni{background:#fff;padding:24px 26px;display:grid;grid-template-columns:60px 1fr;gap:18px;align-items:start;text-decoration:none;color:var(--ink);border-bottom:1px solid var(--border);transition:background .2s;}
+.ni:last-child{border-bottom:none;}
+.ni:hover{background:var(--blue-pale);}
+.nd{background:var(--blue);color:#fff;border-radius:8px;text-align:center;padding:10px 6px;flex-shrink:0;}
+.nd .day{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:900;display:block;line-height:1;}
+.nd .mo{font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;opacity:.8;}
+.nc h3{font-size:.95rem;font-weight:600;margin-bottom:6px;}
+.nc p{font-size:.81rem;color:var(--gray);line-height:1.6;}
+.tag{display:inline-block;font-size:.62rem;font-weight:700;padding:2px 7px;border-radius:3px;margin-top:9px;text-transform:uppercase;letter-spacing:.06em;}
+.t-blue{background:var(--blue-pale);color:var(--blue);}
+.t-red{background:var(--red-pale);color:var(--red);}
+.t-sand{background:var(--sand-pale);color:var(--sand);}
+.t-green{background:var(--green-pale);color:var(--green);}
+
+/* SIDEBAR */
+.sidebar{display:flex;flex-direction:column;gap:18px;}
+.sdc{background:#fff;border-radius:14px;padding:22px 20px;border:1px solid var(--border);}
+.sdc h3{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;margin-bottom:12px;padding-bottom:10px;border-bottom:2px solid var(--blue-pale);color:var(--blue-dark);}
+.cr{display:flex;gap:10px;align-items:flex-start;margin-bottom:12px;font-size:.84rem;}
+.cr-ic{font-size:1rem;flex-shrink:0;}
+.cr strong{display:block;font-size:.67rem;text-transform:uppercase;letter-spacing:.07em;color:var(--gray);}
+.hr{display:flex;justify-content:space-between;font-size:.83rem;padding:8px 0;border-bottom:1px solid var(--border);}
+.hr:last-child{border-bottom:none;}
+.hr .hd2{color:var(--gray);}
+.hr .ht{font-weight:600;color:var(--blue);}
+.hr .hc{font-weight:600;color:var(--red);}
+.tb-card{background:linear-gradient(135deg,var(--blue-dark),var(--blue));border-radius:14px;padding:22px 20px;color:#fff;}
+.tb-card h3{color:var(--sand-light);font-family:'Playfair Display',serif;font-size:1rem;margin-bottom:10px;}
+.tb-card p{font-size:.82rem;color:rgba(255,255,255,.75);line-height:1.6;margin-bottom:14px;}
+.tb-btn{display:block;background:var(--sand);color:var(--blue-dark);text-align:center;padding:11px;border-radius:8px;font-weight:700;text-decoration:none;font-size:.88rem;transition:all .2s;}
+.tb-btn:hover{background:var(--sand-light);}
+
+/* FORM SECTION */
+.form-sec{background:var(--blue-dark);padding:72px 24px;position:relative;overflow:hidden;}
+.form-sec::before{content:'';position:absolute;top:0;right:0;width:400px;height:100%;background:linear-gradient(to left,rgba(44,111,218,.1),transparent);}
+.form-inner{max-width:780px;margin:0 auto;position:relative;}
+.form-inner .st{color:var(--sand-light);} .form-inner .st::before{background:var(--sand);}
+.form-inner .sh{color:#fff;}
+.form-inner .ss{color:rgba(255,255,255,.58);}
+.fg{margin-bottom:15px;}
+.fg label{display:block;font-size:.73rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--sand-light);margin-bottom:7px;}
+.fg input,.fg select,.fg textarea{width:100%;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.15);color:#fff;padding:12px 16px;border-radius:8px;font-size:.9rem;font-family:'IBM Plex Sans',sans-serif;outline:none;transition:all .2s;}
+.fg input::placeholder,.fg textarea::placeholder{color:rgba(255,255,255,.28);}
+.fg input:focus,.fg select:focus{border-color:var(--sand);background:rgba(255,255,255,.12);}
+.fg select option{background:var(--blue-dark);color:#fff;}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.fgrid .full{grid-column:1/-1;}
+.sub-btn{width:100%;background:var(--sand);color:var(--blue-dark);border:none;padding:15px;border-radius:10px;font-size:.97rem;font-weight:700;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;transition:all .2s;margin-top:6px;}
+.sub-btn:hover{background:var(--sand-light);transform:translateY(-2px);}
+
+footer{background:var(--ink);color:rgba(255,255,255,.55);padding:54px 24px 24px;}
+.ft{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:44px;padding-bottom:38px;border-bottom:1px solid rgba(255,255,255,.08);}
+.ft-brand .ftl{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.ft-brand .ftl h3{font-family:'Playfair Display',serif;color:#fff;font-size:1.1rem;}
+.ft-brand p{font-size:.83rem;line-height:1.8;font-weight:300;}
+.ft-col h4{color:var(--sand-light);font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;margin-bottom:13px;font-weight:700;}
+.ft-col a{display:block;color:rgba(255,255,255,.5);text-decoration:none;font-size:.82rem;margin-bottom:9px;transition:color .2s;}
+.ft-col a:hover{color:var(--sand-light);}
+.ft-bottom{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;padding-top:20px;font-size:.76rem;flex-wrap:wrap;gap:8px;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.hero h2{animation:fadeUp .7s ease both}
+.hero p{animation:fadeUp .7s .1s ease both}
+.hero-btns{animation:fadeUp .7s .2s ease both}
+.hero-stats{animation:fadeUp .7s .3s ease both}
+
+@media(max-width:960px){.hero-inner{grid-template-columns:1fr;}.news-sec{grid-template-columns:1fr;}.ft{grid-template-columns:1fr 1fr;}nav{display:none;}}
+@media(max-width:600px){.svc-grid{grid-template-columns:1fr 1fr;}.fgrid{grid-template-columns:1fr;}.fgrid .full{grid-column:1;}.hero-stats{grid-template-columns:1fr 1fr;}.ft{grid-template-columns:1fr;}}
+
+.so { display:block !important; }
+.en { display:none !important; }
+.am { display:none !important; }
+span.so { display:inline !important; }
+span.en { display:none !important; }
+span.am { display:none !important; }
+body.lang-en .so { display:none !important; }
+body.lang-en .en { display:block !important; }
+body.lang-en span.so { display:none !important; }
+body.lang-en span.en { display:inline !important; }
+body.lang-en span.am { display:none !important; }
+body.lang-am .so { display:none !important; }
+body.lang-am .am { display:block !important; }
+body.lang-am span.so { display:none !important; }
+body.lang-am span.am { display:inline !important; }
+body.lang-am span.en { display:none !important; }
+
+.so{display:block!important;}.en{display:none!important;}.am{display:none!important;}
+span.so{display:inline!important;}span.en{display:none!important;}span.am{display:none!important;}
+body.lang-en .so{display:none!important;}body.lang-en .en{display:block!important;}
+body.lang-en span.so{display:none!important;}body.lang-en span.en{display:inline!important;}body.lang-en span.am{display:none!important;}
+body.lang-am .so{display:none!important;}body.lang-am .am{display:block!important;}
+body.lang-am span.so{display:none!important;}body.lang-am span.am{display:inline!important;}body.lang-am span.en{display:none!important;}
+
+</style>
+</head>
+<body>
+
+<div class="flag-sr"><div class="fs-g"></div><div class="fs-w"></div><div class="fs-r"></div><div class="fs-tri"></div></div>
+
+<div style="background:var(--blue-dark);color:rgba(255,255,255,.65);font-size:.74rem;padding:7px 0;text-align:center;border-bottom:1px solid rgba(255,255,255,.1);">🔒 SSL-Verschlüsselung &nbsp;·&nbsp; Direkt ans Staatskonto &nbsp;·&nbsp; SMS-Beleg in Sekunden &nbsp;·&nbsp; 0 Mittelsmänner</div>
+<div class="topbar">
+  <div class="tb">
+    <span>🇪🇹 Dawlad Deegaanka Soomaalida &nbsp;›&nbsp; <a href="#">Jigjiga</a> &nbsp;›&nbsp; GovPay Portal</span>
+    <div class="lang-sw">
+      <button class="lb on" id="btn-so" onclick="setLang('so',this)">SO</button>
+      <button class="lb" id="btn-en" onclick="setLang('en',this)">EN</button>
+      <button class="lb" id="btn-am" onclick="setLang('am',this)">አማ</button>
+    </div>
+  </div>
+</div>
+
+<header>
+  <div class="hd">
+    <a class="logo" href="#">
+      <div class="flag-em">
+        <div class="fe-g"></div><div class="fe-w"></div><div class="fe-r"></div>
+        <div class="fe-t"></div><div class="fe-s">★</div>
+      </div>
+      <div class="logo-tx">
+        <h1>GovPay Jigjiga</h1>
+        <span>Xarunta Lacag Bixinta · Somali Regional State</span>
+      </div>
+    </a>
+    <nav>
+      <a href="#">🏠 Start</a><a href="#">📋 Dienste</a>
+      <a href="#">👥 Verwaltung</a><a href="#">📰 News</a>
+      <a href="#zahlen" class="nav-cta">💳 Jetzt zahlen</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-pattern"></div><div class="hero-tri"></div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-badge"><div class="badge-pulse"></div>Kein Mittelsmann · Anti-Korruption · Somali Region</div>
+      <h2>Zahle direkt<br>an die<br><em>Regierung.</em></h2>
+      <p>GovPay ist das offizielle Zahlungsportal der Somali Region. Steuern, Gebühren und Abgaben sicher per Telebirr, CBE Birr, HelloCash oder M-Pesa – mit sofortigem Beleg. Kein Mittelsmann.</p>
+      <div class="hero-btns">
+        <a href="#zahlen" class="btn-sand">💳 Jetzt zahlen</a>
+        <a href="#wie" class="btn-ghost">Wie es geht →</a>
+      </div>
+      <div class="hero-trust">
+        <div class="ht">Offiziell & verifiziert</div>
+        <div class="ht">24/7 Online-Service</div>
+        <div class="ht">Telebirr-Zahlung</div>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="hs"><span class="n">0</span><span class="l">Mittelsmänner</span></div>
+      <div class="hs"><span class="n">5</span><span class="l">Zahlungsmethoden</span></div>
+      <div class="hs"><span class="n">30 Sek</span><span class="l">Bis zum Beleg</span></div>
+      <div class="hs"><span class="n">24/7</span><span class="l">Verfügbar</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="cband"><div class="cb-g"></div><div class="cb-w"></div><div class="cb-r"></div></div>
+
+<section class="svc-sec" id="dienste">
+  <div class="si">
+    <div class="st">Was Sie bezahlen können</div>
+    <h2 class="sh">Alle Zahlungsarten</h2>
+    <p class="ss">Wählen Sie den Dienst – das System findet automatisch den fälligen Betrag.</p>
+    <div class="svc-grid">
+      <a href="#zahlen" class="sc"><div class="sc-ico">🪪</div><h3>ID-Karte</h3><p>Verlängerung, Erstausstellung — 450 ETB</p><span class="sc-badge">Telebirr ✓</span></a>
+      <a href="#zahlen" class="sc"><div class="sc-ico">🏠</div><h3>Wohnsitzanmeldung</h3><p>Ummeldung & Neuanmeldung — 200 ETB</p><span class="sc-badge">Telebirr ✓</span></a>
+      <a href="#zahlen" class="sc"><div class="sc-ico">💰</div><h3>Steuern & Abgaben</h3><p>Direkt ans Regierungskonto — variabel</p><span class="sc-badge">CBE Birr ✓</span></a>
+      <a href="#zahlen" class="sc"><div class="sc-ico">🏗️</div><h3>Baugenehmigung</h3><p>Antragsgebühr — 800 ETB</p><span class="sc-badge">HelloCash ✓</span></a>
+      <a href="#zahlen" class="sc"><div class="sc-ico">🌱</div><h3>Landnutzungsrecht</h3><p>Parzellenzuweisung — 1.200 ETB</p><span class="sc-badge">M-Pesa ✓</span></a>
+      <a href="#zahlen" class="sc"><div class="sc-ico">🏫</div><h3>Schulgebühren</h3><p>Kebele-Schulen — 500 ETB</p><span class="sc-badge">Alle Methoden ✓</span></a>
+      <a href="#zahlen" class="sc"><div class="sc-ico">👶</div><h3>Geburtsurkunde</h3><p>Registrierungsgebühr — 150 ETB</p><span class="sc-badge">Telebirr ✓</span></a>
+      <a href="#zahlen" class="sc"><div class="sc-ico">💒</div><h3>Heiratsurkunde</h3><p>Standesamtliche Gebühr — 300 ETB</p><span class="sc-badge">Alle Methoden ✓</span></a>
+    </div>
+  </div>
+</section>
+
+<div class="news-sec">
+  <div>
+    <div class="st">Aktuell</div>
+    <h2 class="sh">Bekanntmachungen</h2>
+    <p class="ss" style="margin-bottom:26px;">Wichtige Informationen für alle Einwohner von Kebele 01.</p>
+    <div class="news-list">
+      <a href="#" class="ni"><div class="nd"><span class="day">15</span><span class="mo">Jun</span></div><div class="nc"><h3>Neue Öffnungszeiten ab Juli 2025</h3><p>Ab 1. Juli öffnet die Verwaltung Mo–Fr 8:00–17:00 Uhr. Samstags Notdienst 9:00–13:00 Uhr.</p><span class="tag t-blue">Information</span></div></a>
+      <a href="#" class="ni"><div class="nd" style="background:var(--red)"><span class="day">10</span><span class="mo">Jun</span></div><div class="nc"><h3>⚠️ Wasserversorgung: Wartung am 18. Juni</h3><p>Stadtteile Dembel und Koronati unterbrochen 8:00–14:00. Bitte Vorräte anlegen.</p><span class="tag t-red">Dringend</span></div></a>
+      <a href="#" class="ni"><div class="nd" style="background:var(--sand)"><span class="day">05</span><span class="mo">Jun</span></div><div class="nc"><h3>Gemeindeversammlung – 20. Juni, 10:00 Uhr</h3><p>Öffentliche Stadtplanung – alle Einwohner herzlich eingeladen.</p><span class="tag t-sand">Veranstaltung</span></div></a>
+      <a href="#" class="ni"><div class="nd" style="background:var(--green)"><span class="day">01</span><span class="mo">Jun</span></div><div class="nc"><h3>Kostenlose Kindergesundheit im Juni</h3><p>Vorsorgeuntersuchungen für Kinder unter 5 – Termine online buchen.</p><span class="tag t-green">Gesundheit</span></div></a>
+    </div>
+  </div>
+  <div class="sidebar">
+    <div class="sdc">
+      <h3>📞 Kontakt</h3>
+      <div class="cr"><span class="cr-ic">📍</span><div><strong>Adresse</strong><span>Kebele 01 Jigjiga, Hauptstraße 12<br>Somali Regional State</span></div></div>
+      <div class="cr"><span class="cr-ic">📞</span><div><strong>Telefon</strong><span>+251 25 775 0001</span></div></div>
+      <div class="cr"><span class="cr-ic">📱</span><div><strong>Telebirr / WhatsApp</strong><span>+251 91 234 5678</span></div></div>
+      <div class="cr"><span class="cr-ic">✉️</span><div><strong>E-Mail</strong><span>kebele01@jigjiga.gov.et</span></div></div>
+    </div>
+    <div class="sdc">
+      <h3>🕐 Öffnungszeiten</h3>
+      <div class="hr"><span class="hd2">Mo – Fr</span><span class="ht">8:00 – 17:00</span></div>
+      <div class="hr"><span class="hd2">Samstag</span><span class="ht">9:00 – 13:00</span></div>
+      <div class="hr"><span class="hd2">Sonntag</span><span class="hc">Geschlossen</span></div>
+      <p style="margin-top:12px;font-size:.78rem;color:var(--gray);">💡 Online-Dienste 24/7 verfügbar</p>
+    </div>
+    <div class="tb-card">
+      <h3>📱 Telebirr Zahlung</h3>
+      <p>Zahlen Sie Gebühren direkt über Telebirr – sicher, schnell und ohne Schlange.</p>
+      <a href="#antrag" class="tb-btn">💸 Jetzt zahlen</a>
+    </div>
+  </div>
+</div>
+
+<section class="form-sec" id="zahlen">
+  <div class="form-inner">
+    <div class="st">Online Service</div>
+    <h2 class="sh" style="color:#fff;margin-bottom:8px;">Zahlung starten</h2>
+    <p class="ss">Felder ausfüllen – fertig in unter 1 Minute. Beleg kommt sofort per SMS.</p>
+    <div class="fgrid" style="margin-top:26px;">
+      <div class="fg"><label>Vollständiger Name *</label><input type="text" placeholder="z.B. Fatuma Hassan Ali"></div>
+      <div class="fg"><label>Telefonnummer *</label><input type="tel" placeholder="+251 9x xxx xxxx"></div>
+      <div class="fg"><label>Nationale ID</label><input type="text" placeholder="Ihre ID-Nummer"></div>
+      <div class="fg"><label>Art des Antrags *</label>
+        <select>
+          <option>Bitte wählen...</option>
+          <option>🪪 ID-Karte / Reisepass</option><option>🏠 Wohnsitzanmeldung</option>
+          <option>👶 Geburtsurkunde</option><option>💒 Heiratsurkunde</option>
+          <option>🏗️ Baugenehmigung</option><option>🌱 Landnutzung</option>
+          <option>💰 Steuern</option><option>📢 Beschwerde</option>
+        </select>
+      </div>
+      <div class="fg full"><label>Beschreibung</label><textarea rows="3" placeholder="Beschreiben Sie Ihr Anliegen..."></textarea></div>
+    </div>
+    <button class="sub-btn" onclick="alert('✅ Antrag eingereicht!\n\nReferenz: KB01-'+Math.floor(10000+Math.random()*90000)+'\n\nWir melden uns in 48 Stunden!')">🔒 Sicher zahlen</button>
+  </div>
+</section>
+
+<footer>
+  <div class="ft">
+    <div class="ft-brand">
+      <div class="ftl">
+        <div class="flag-em" style="width:42px;height:30px;"><div class="fe-g"></div><div class="fe-w"></div><div class="fe-r"></div><div class="fe-t" style="border-width:15px 0 15px 16px;"></div><div class="fe-s" style="font-size:8px;left:4px;">★</div></div>
+        <h3>GovPay Jigjiga</h3>
+      </div>
+      <p>Die lokale Verwaltung setzt sich für transparente, effiziente und bürgernahe Dienste ein – für alle Einwohner der Somali Region.</p>
+    </div>
+    <div class="ft-col"><h4>Dienste</h4><a href="#">ID & Dokumente</a><a href="#">Wohnen & Bau</a><a href="#">Familie</a><a href="#">Steuern</a><a href="#">Landnutzung</a></div>
+    <div class="ft-col"><h4>Verwaltung</h4><a href="#">Über uns</a><a href="#">Kebele-Rat</a><a href="#">Berichte</a><a href="#">Stellen</a></div>
+    <div class="ft-col"><h4>Kontakt</h4><a href="#">📍 Standort</a><a href="#">📞 +251 25 775 0001</a><a href="#">✉️ E-Mail</a><a href="#">💬 Feedback</a></div>
+  </div>
+  <div class="ft-bottom">
+    <span>© 2025 Dawlad Deegaanka Soomaalida · GovPay Jigjiga</span>
+    <span>Datenschutz · Barrierefreiheit</span>
+  </div>
+</footer>
+<div class="flag-sr"><div class="fs-g"></div><div class="fs-w"></div><div class="fs-r"></div><div class="fs-tri"></div></div>
+
+<script>
+function setLang(l,btn){
+  document.body.className=l==='so'?'':'lang-'+l;
+  document.querySelectorAll('.lb').forEach(b=>b.classList.remove('on'));
+  if(btn)btn.classList.add('on');
+  document.documentElement.lang=l;
+  localStorage.setItem('jl',l);
+  if(typeof renderK==='function')renderK(typeof kebeles!=='undefined'?kebeles:[]);
+}
+(function(){
+  const s=localStorage.getItem('jl');
+  if(s&&s!=='so'){
+    const b=document.getElementById('btn-'+s);
+    if(b)setLang(s,b);
+  } else {
+    document.body.className='';
+    document.documentElement.lang='so';
+    const b=document.getElementById('btn-so');
+    if(b){document.querySelectorAll('.lb').forEach(x=>x.classList.remove('on'));b.classList.add('on');}
+  }
+})();
+</script>
+
+</body>
+</html>
