@@ -330,7 +330,11 @@ body.lang-am span.so{display:none!important;}body.lang-am span.am{display:inline
       <div class="fg"><label>Vollständiger Name *</label><input type="text" id="reqName" placeholder="z.B. Fatuma Hassan Ali"></div>
       <div class="fg"><label>Telefonnummer *</label><input type="tel" id="reqPhone" placeholder="+251 9x xxx xxxx"></div>
       <div class="fg"><label>Nationale ID</label><input type="text" id="reqNid" placeholder="Ihre ID-Nummer"></div>
-      <div class="fg"><label>Art des Antrags *</label>
+      <div class="fg"><label>Gobolka / Zone *</label><select id="selZone"><option value="">Lädt…</option></select></div>
+      <div class="fg"><label>Degmo / Woreda *</label><select id="selWoreda" disabled><option value="">-- zuerst Zone wählen --</option></select></div>
+      <div class="fg"><label>Magaalo / Stadt *</label><select id="selCity" disabled><option value="">-- zuerst Woreda wählen --</option></select></div>
+      <div class="fg" id="kebeleWrap"><label>Kebele *</label><select id="selKebele" disabled><option value="">-- zuerst Stadt wählen --</option></select></div>
+      <div class="fg full"><label>Art des Antrags *</label>
         <select id="reqType">
           <option value="">Bitte wählen...</option>
           <option>🪪 ID-Karte / Reisepass</option><option>🏠 Wohnsitzanmeldung</option>
@@ -391,6 +395,16 @@ function setLang(l,btn){
 
 <script type="module">
 import { supabase } from './src/supabase-config.js';
+import { wireLocationCascade, readLocation } from './src/location-picker.js';
+
+wireLocationCascade({
+  zoneSel: document.getElementById('selZone'),
+  woredaSel: document.getElementById('selWoreda'),
+  citySel: document.getElementById('selCity'),
+  kebeleWrap: document.getElementById('kebeleWrap'),
+  kebeleFieldId: 'selKebele',
+  kebeleLabelHtml: '<label>Kebele *</label>'
+});
 
 document.getElementById('btnSubmitReq').addEventListener('click', async () => {
   const msg = document.getElementById('reqMsg');
@@ -408,8 +422,19 @@ document.getElementById('btnSubmitReq').addEventListener('click', async () => {
   const request_type = document.getElementById('reqType').value;
   const description = document.getElementById('reqDesc').value.trim();
 
+  const loc = readLocation({
+    zoneSel: document.getElementById('selZone'),
+    woredaSel: document.getElementById('selWoreda'),
+    citySel: document.getElementById('selCity'),
+    kebeleFieldId: 'selKebele'
+  });
+
   if (!full_name || !phone || !request_type) {
     msg.innerHTML = '<p style="color:#ff9a9a;margin-bottom:14px;">Bitte Name, Telefonnummer und Art des Antrags ausfüllen.</p>';
+    return;
+  }
+  if (!loc.complete) {
+    msg.innerHTML = '<p style="color:#ff9a9a;margin-bottom:14px;">Bitte Zone, Woreda, Stadt und Kebele vollständig auswählen.</p>';
     return;
   }
 
@@ -419,8 +444,8 @@ document.getElementById('btnSubmitReq').addEventListener('click', async () => {
     p_full_name: full_name,
     p_national_id: national_id,
     p_phone: phone,
-    p_kebele: 'Kebele 01 Jigjiga',
-    p_details: description ? { description } : null
+    p_kebele: loc.full,
+    p_details: { description: description || null, zone: loc.zoneName, woreda: loc.woredaName, city: loc.cityName, kebele: loc.kebeleName }
   });
 
   if (error) {

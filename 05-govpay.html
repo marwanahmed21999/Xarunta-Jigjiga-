@@ -331,14 +331,10 @@ body.lang-am span.so{display:none!important;}body.lang-am span.am{display:inline
       <div class="fg"><label>Vollständiger Name *</label><input type="text" id="payName" placeholder="z.B. Fatuma Hassan Ali"></div>
       <div class="fg"><label>Telefonnummer *</label><input type="tel" id="payPhone" placeholder="+251 9x xxx xxxx"></div>
       <div class="fg"><label>Nationale ID</label><input type="text" id="payNid" placeholder="Ihre ID-Nummer"></div>
-      <div class="fg"><label>Kebele / Zone</label>
-        <select id="payKebele">
-          <option value="">-- Auswählen --</option>
-          <option>Jigjiga Zone</option><option>Shinile Zone</option><option>Korahe Zone</option>
-          <option>Jarar Zone</option><option>Shabelle Zone</option><option>Dollo Zone</option>
-          <option>Nogob Zone</option><option>Siti Zone</option><option>Liben Zone</option>
-        </select>
-      </div>
+      <div class="fg"><label>Gobolka / Zone *</label><select id="payZone"><option value="">Lädt…</option></select></div>
+      <div class="fg"><label>Degmo / Woreda *</label><select id="payWoreda" disabled><option value="">-- zuerst Zone wählen --</option></select></div>
+      <div class="fg"><label>Magaalo / Stadt *</label><select id="payCity" disabled><option value="">-- zuerst Woreda wählen --</option></select></div>
+      <div class="fg" id="payKebeleWrap"><label>Kebele *</label><select id="payKebele" disabled><option value="">-- zuerst Stadt wählen --</option></select></div>
       <div class="fg full"><label>Dienst *</label>
         <select id="payService">
           <option value="">Bitte wählen...</option>
@@ -411,6 +407,16 @@ function setLang(l,btn){
 
 <script type="module">
 import { supabase } from './src/supabase-config.js';
+import { wireLocationCascade, readLocation } from './src/location-picker.js';
+
+wireLocationCascade({
+  zoneSel: document.getElementById('payZone'),
+  woredaSel: document.getElementById('payWoreda'),
+  citySel: document.getElementById('payCity'),
+  kebeleWrap: document.getElementById('payKebeleWrap'),
+  kebeleFieldId: 'payKebele',
+  kebeleLabelHtml: '<label>Kebele *</label>'
+});
 
 document.getElementById('payService').addEventListener('change', (e) => {
   const opt = e.target.selectedOptions[0];
@@ -430,7 +436,12 @@ document.getElementById('btnSubmitPay').addEventListener('click', async () => {
   const citizen_name = document.getElementById('payName').value.trim();
   const phone = document.getElementById('payPhone').value.trim();
   const citizen_id = document.getElementById('payNid').value.trim() || null;
-  const kebele = document.getElementById('payKebele').value || null;
+  const loc = readLocation({
+    zoneSel: document.getElementById('payZone'),
+    woredaSel: document.getElementById('payWoreda'),
+    citySel: document.getElementById('payCity'),
+    kebeleFieldId: 'payKebele'
+  });
   const serviceOpt = document.getElementById('payService').selectedOptions[0];
   const service = serviceOpt ? serviceOpt.textContent.trim() : '';
   const amount = parseFloat(document.getElementById('payAmount').value);
@@ -440,11 +451,15 @@ document.getElementById('btnSubmitPay').addEventListener('click', async () => {
     msg.innerHTML = '<p style="color:#ff9a9a;margin-bottom:14px;">Bitte alle Pflichtfelder (*) inkl. Betrag ausfüllen.</p>';
     return;
   }
+  if (!loc.complete) {
+    msg.innerHTML = '<p style="color:#ff9a9a;margin-bottom:14px;">Bitte Zone, Woreda, Stadt und Kebele vollständig auswählen.</p>';
+    return;
+  }
 
   const { data: reference, error } = await supabase.rpc('submit_payment', {
     p_amount: amount,
     p_service: service,
-    p_kebele: kebele,
+    p_kebele: loc.full,
     p_citizen_name: citizen_name,
     p_citizen_id: citizen_id,
     p_phone: phone,

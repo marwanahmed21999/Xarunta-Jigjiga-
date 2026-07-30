@@ -478,14 +478,10 @@ footer{background:var(--ink);color:rgba(255,255,255,.5);padding:52px 24px 22px;}
       <div class="rf-title"><span class="so">📢 Warbixin Qarsoodi ah</span><span class="en">📢 Anonymous Report</span><span class="am">📢 ስም-አልባ ሪፖርት</span></div>
       <div class="rf-sub"><span class="so">Magacaagu ma muuqan doono – xog kasta waa qarsoodi</span><span class="en">Your identity is protected – all data is confidential</span><span class="am">ማንነትዎ ይጠበቃል – ሁሉም ውሂብ ሚስጥራዊ ነው</span></div>
       <div class="fgrid2">
-        <div class="rfg"><label><span class="so">Gobolka *</span><span class="en">Region *</span><span class="am">ክልል *</span></label>
-          <select id="repRegion">
-            <option value="">-- <span class="so">Dooro</span><span class="en">Select</span> --</option>
-            <option>Jigjiga Zone</option><option>Shinile Zone</option><option>Korahe Zone</option>
-            <option>Jarar Zone</option><option>Shabelle Zone</option><option>Dollo Zone</option>
-            <option>Nogob Zone</option><option>Siti Zone</option><option>Liben Zone</option>
-          </select>
-        </div>
+        <div class="rfg"><label><span class="so">Gobolka *</span><span class="en">Zone *</span><span class="am">ዞን *</span></label><select id="repZone"><option value="">Lädt…</option></select></div>
+        <div class="rfg"><label><span class="so">Degmo *</span><span class="en">Woreda *</span><span class="am">ወረዳ *</span></label><select id="repWoreda" disabled><option value="">--</option></select></div>
+        <div class="rfg"><label><span class="so">Magaalo *</span><span class="en">City *</span><span class="am">ከተማ *</span></label><select id="repCity" disabled><option value="">--</option></select></div>
+        <div class="rfg" id="repKebeleWrap"><label><span class="so">Kebele *</span><span class="en">Kebele *</span><span class="am">ቀበሌ *</span></label><select id="repKebele" disabled><option value="">--</option></select></div>
         <div class="rfg"><label><span class="so">Orgaanka *</span><span class="en">Which Organ *</span><span class="am">አካሉ *</span></label>
           <select id="repOrgan">
             <option value="">-- <span class="so">Dooro</span><span class="en">Select</span> --</option>
@@ -638,6 +634,16 @@ document.getElementById('successModal').addEventListener('click',function(e){if(
 <script type="module">
 import { login } from './src/auth.js';
 import { supabase } from './src/supabase-config.js';
+import { wireLocationCascade, readLocation } from './src/location-picker.js';
+
+wireLocationCascade({
+  zoneSel: document.getElementById('repZone'),
+  woredaSel: document.getElementById('repWoreda'),
+  citySel: document.getElementById('repCity'),
+  kebeleWrap: document.getElementById('repKebeleWrap'),
+  kebeleFieldId: 'repKebele',
+  kebeleLabelHtml: '<label><span class="so">Kebele *</span><span class="en">Kebele *</span><span class="am">ቀበሌ *</span></label>'
+});
 
 (async () => {
   const { data, error } = await supabase.rpc('public_dashboard_stats');
@@ -661,14 +667,20 @@ window.doLogin = async function doLogin(){
 };
 
 window.submitReport = async function submitReport(){
-  const region = document.getElementById('repRegion').value;
+  const loc = readLocation({
+    zoneSel: document.getElementById('repZone'),
+    woredaSel: document.getElementById('repWoreda'),
+    citySel: document.getElementById('repCity'),
+    kebeleFieldId: 'repKebele'
+  });
+  const region = loc.full;
   const organ = document.getElementById('repOrgan').value;
   const violation = document.getElementById('repViolation').value;
   const description = document.getElementById('repDescription').value.trim();
   const incidentDate = document.getElementById('repDate').value || null;
   const phone = document.getElementById('repPhone').value.trim() || null;
 
-  if(!region || !organ || !violation || !description){ alert('Bitte alle Pflichtfelder (*) ausfüllen.'); return; }
+  if(!loc.complete || !organ || !violation || !description){ alert('Bitte alle Pflichtfelder (*) ausfüllen, inkl. Zone/Woreda/Stadt/Kebele.'); return; }
 
   const reference = 'SR-'+new Date().getFullYear()+'-'+Math.floor(10000+Math.random()*90000);
 
