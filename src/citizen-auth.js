@@ -80,4 +80,11 @@ async function myPayments() {
   return error ? [] : data;
 }
 
-export { signUp, signIn, signOut, currentCitizen, attachServiceRequest, attachPayment, myServiceRequests, myPayments };
+// Zugriffsprotokoll: zeigt dem Bürger, welches Amt wann auf einen seiner Anträge/Zahlungen zugegriffen hat
+async function accessLogFor(tableName, recordId) {
+  const { data, error } = await supabase.from('access_log').select('*')
+    .eq('table_name', tableName).eq('record_id', recordId).order('created_at', { ascending: false });
+  return error ? [] : data;
+}
+
+export { signUp, signIn, signOut, currentCitizen, attachServiceRequest, attachPayment, myServiceRequests, myPayments, accessLogFor };

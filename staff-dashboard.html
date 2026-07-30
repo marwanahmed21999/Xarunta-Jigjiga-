@@ -190,8 +190,8 @@ body.lang-de span.so{display:none!important;}body.lang-de span.de{display:inline
 </div>
 
 <script type="module">
-import { supabase } from '../src/supabase-config.js';
-import { initLangSwitcher, t } from '../src/i18n.js';
+import { supabase } from './src/supabase-config.js';
+import { initLangSwitcher, t } from './src/i18n.js';
 
 let profile = null;
 let allRequests = [];
@@ -356,6 +356,7 @@ function renderRequests(service){
 window.openReq = async function(id){
   activeReq = allRequests.find(r => r.id === id);
   if(!activeReq) return;
+  supabase.rpc('log_access', { p_table: 'service_requests', p_record_id: id });
   document.getElementById('dTitle').textContent = activeReq.request_number;
   document.getElementById('dSub').textContent = serviceLabel(activeReq.service) + ' · ' + activeReq.request_type;
 
@@ -426,6 +427,7 @@ async function loadPayments(){
 window.openPay = async function(id){
   const pay = allPayments.find(p => p.id === id);
   if(!pay) return;
+  supabase.rpc('log_access', { p_table: 'payments', p_record_id: id });
   document.getElementById('dTitle').textContent = pay.reference;
   document.getElementById('dSub').textContent = pay.service + ' · ' + pay.amount + ' ETB';
   let actionsHtml = '';

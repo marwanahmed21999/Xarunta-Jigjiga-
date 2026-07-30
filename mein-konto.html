@@ -239,7 +239,23 @@ body.lang-de span.so{display:none!important;}body.lang-de span.de{display:inline
 import { supabase } from './src/supabase-config.js';
 import { initLangSwitcher, t } from './src/i18n.js';
 import { printDocument } from './src/print-document.js';
-import { signUp, signIn, signOut, currentCitizen, myServiceRequests, myPayments } from './src/citizen-auth.js';
+import { signUp, signIn, signOut, currentCitizen, myServiceRequests, myPayments, accessLogFor } from './src/citizen-auth.js';
+
+const ORGAN_LABEL = {
+  staff:{so:'Shaqaale', en:'Staff Member', am:'ሰራተኛ', de:'Mitarbeiter'},
+  admin:{so:'Admin', en:'Admin', am:'አስተዳዳሪ', de:'Admin'}
+};
+function organLabel(o){ return ORGAN_LABEL[o] ? t(ORGAN_LABEL[o]) : (o || '—'); }
+
+function renderAccessLog(entries){
+  if(!entries || entries.length === 0){
+    return '<p style="color:var(--gray);font-size:.8rem;">' + t({so:'Wali qofna wax kama eegin.', en:'No one has accessed this yet.', am:'እስካሁን ማንም አላየውም።', de:'Bisher hat niemand darauf zugegriffen.'}) + '</p>';
+  }
+  return '<div class="timeline-log">' + entries.map(e => `
+    <div style="font-size:.8rem;color:var(--ink);padding:6px 0;border-top:1px solid var(--border);">
+      <strong>${organLabel(e.organ)}</strong> — <span class="mono" style="color:var(--gray);">${new Date(e.created_at).toLocaleString('de-DE')}</span>
+    </div>`).join('') + '</div>';
+}
 
 const STATUS_LABEL = {
   pending:{so:'Sugaya', en:'Pending', am:'በመጠባበቅ ላይ', de:'Ausstehend'},
@@ -347,7 +363,7 @@ function renderPayments(){
   `).join('');
 }
 
-window.showRequest = function(i){
+window.showRequest = async function(i){
   const r = requests[i];
   document.getElementById('dTitle').textContent = r.request_number;
   document.getElementById('dSub').textContent = r.request_type + ' · ' + statusLabel(r.status);
@@ -358,8 +374,12 @@ window.showRequest = function(i){
       <div class="detail-item full"><div class="k">${t({so:'Faahfaahin',en:'Description',am:'መግለጫ',de:'Beschreibung'})}</div><div class="v">${(r.details && r.details.description) || '—'}</div></div>
     </div>
     <button class="btn gold" onclick='printReq(${i})'>🖨️ ${t({so:'Daabac',en:'Print',am:'አትም',de:'Drucken'})}</button>
+    <div class="sec-title" style="font-size:.95rem;margin:20px 0 4px;">🔍 <span class="so">Kuwa Wax ka Eegay</span><span class="en">Access Log</span><span class="am">የመዳረሻ ምዝግብ</span><span class="de">Zugriffsprotokoll</span></div>
+    <div id="accessLogBox">…</div>
   `;
   document.getElementById('detailModal').classList.add('open');
+  const log = await accessLogFor('service_requests', r.id);
+  document.getElementById('accessLogBox').innerHTML = renderAccessLog(log);
 };
 window.printReq = function(i){
   const r = requests[i];
@@ -376,7 +396,7 @@ window.printReq = function(i){
     ]
   });
 };
-window.showPayment = function(i){
+window.showPayment = async function(i){
   const p = payments[i];
   document.getElementById('dTitle').textContent = p.reference;
   document.getElementById('dSub').textContent = p.service + ' · ' + statusLabel(p.status);
@@ -386,8 +406,12 @@ window.showPayment = function(i){
       <div class="detail-item"><div class="k">${t({so:'Habka Bixinta',en:'Payment Method',am:'የክፍያ ዘዴ',de:'Zahlungsmethode'})}</div><div class="v">${p.payment_method || '—'}</div></div>
     </div>
     <button class="btn gold" onclick='printPay(${i})'>🖨️ ${t({so:'Daabac',en:'Print',am:'አትም',de:'Drucken'})}</button>
+    <div class="sec-title" style="font-size:.95rem;margin:20px 0 4px;">🔍 <span class="so">Kuwa Wax ka Eegay</span><span class="en">Access Log</span><span class="am">የመዳረሻ ምዝግብ</span><span class="de">Zugriffsprotokoll</span></div>
+    <div id="accessLogBox">…</div>
   `;
   document.getElementById('detailModal').classList.add('open');
+  const log = await accessLogFor('payments', p.id);
+  document.getElementById('accessLogBox').innerHTML = renderAccessLog(log);
 };
 window.printPay = function(i){
   const p = payments[i];
