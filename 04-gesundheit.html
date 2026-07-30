@@ -234,7 +234,7 @@ body.lang-am span.so{display:none!important;}body.lang-am span.am{display:inline
     </a>
     <nav>
       <a href="#">🏠 Start</a><a href="#">📋 Dienste</a>
-      <a href="#">👥 Verwaltung</a><a href="#">📰 News</a>
+      <a href="#">👥 Verwaltung</a><a href="mein-konto.html">👤 Mein Konto</a>
       <a href="#termin" class="nav-cta">📅 Termin buchen</a>
     </nav>
   </div>
@@ -395,9 +395,10 @@ function setLang(l,btn){
 </script>
 
 <script type="module">
-import { supabase } from '../src/supabase-config.js';
-import { wireInstitutionCascade, readInstitution } from '../src/location-picker.js?v=2';
-import { printDocument } from '../src/print-document.js';
+import { supabase } from './src/supabase-config.js';
+import { wireInstitutionCascade, readInstitution } from './src/location-picker.js?v=2';
+import { printDocument } from './src/print-document.js';
+import { attachServiceRequest } from './src/citizen-auth.js';
 
 const zoneSel = document.getElementById('selZone');
 const woredaSel = document.getElementById('selWoreda');
@@ -455,8 +456,10 @@ document.getElementById('btnSubmitReq').addEventListener('click', async () => {
     return;
   }
 
+  await attachServiceRequest(requestNumber);
+
   window.__lastReq = { full_name, phone, national_id, preferred_date, request_type, description, institution: inst.name, requestNumber };
-  msg.innerHTML = '<p style="color:var(--sand-light);margin-bottom:14px;">✅ Termin angefragt! Referenz: <strong>' + requestNumber + '</strong> — Bestätigung folgt telefonisch.<br><button class="sub-btn" style="margin-top:10px;padding:9px 18px;font-size:.85rem;width:auto;" onclick="printHealthRequest()">🖨️ Bestätigung ausdrucken</button></p>';
+  msg.innerHTML = '<p style="color:var(--sand-light);margin-bottom:14px;">✅ Termin angefragt! Referenz: <strong>' + requestNumber + '</strong> — Bestätigung folgt telefonisch.<br><button class="sub-btn" style="margin-top:10px;padding:9px 18px;font-size:.85rem;width:auto;" onclick="printHealthRequest()">🖨️ Bestätigung ausdrucken</button> <a href="mein-konto.html" style="color:var(--sand-light);font-size:.85rem;margin-left:10px;">📁 Im eigenen Konto verfolgen</a></p>';
   ['reqName','reqPhone','reqNid','reqDate','reqDesc'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('reqType').value = '';
 });

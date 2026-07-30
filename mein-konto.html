@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="so">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mein Konto | Xarunta Deegaanka Soomaalida</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:#0a1628; --navy-mid:#112240; --navy-light:#1a3a6e;
+  --blue:#1a4fa0; --blue-light:#2c6fda; --blue-pale:#e8f0fb;
+  --gold:#c9963a; --gold-light:#e8b85a; --gold-pale:#fdf6e8;
+  --green:#1a7a3c; --green-light:#25a050; --green-pale:#eaf5ee;
+  --red:#8b1a1a; --red-light:#c0392b; --red-pale:#f9ecec;
+  --sand:#a9761f; --sand-pale:#f6ecd8;
+  --gray:#5a6880; --gray-pale:#eef1f7; --border:#c8d4e8;
+  --white:#f7f9fd; --ink:#0d1b3e;
+  --shadow:0 4px 24px rgba(13,27,62,.12); --shadow-lg:0 12px 48px rgba(13,27,62,.2);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'IBM Plex Sans',sans-serif;background:var(--white);color:var(--ink);min-height:100vh;}
+.hidden{display:none!important;}
+#guard{display:flex;align-items:center;justify-content:center;min-height:100vh;color:var(--gray);font-size:.9rem;}
+
+header{background:var(--navy);border-bottom:3px solid var(--gold);position:sticky;top:0;z-index:100;}
+.hd{max-width:960px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:68px;gap:16px;flex-wrap:wrap;}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.logo-shield{width:38px;height:44px;background:var(--gold);clip-path:polygon(50% 0%,100% 15%,100% 60%,50% 100%,0% 60%,0% 15%);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.logo-tx h1{font-family:'Playfair Display',serif;font-size:.95rem;font-weight:700;color:#fff;}
+.logo-tx span{font-size:.65rem;color:rgba(255,255,255,.5);letter-spacing:.08em;text-transform:uppercase;}
+.who{display:flex;align-items:center;gap:12px;}
+.who-name{text-align:right;}
+.who-name .n{font-size:.85rem;font-weight:600;color:#fff;}
+.who-name .o{font-size:.7rem;color:rgba(255,255,255,.5);}
+.logout-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#fff;padding:8px 16px;border-radius:8px;font-size:.8rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s;}
+.logout-btn:hover{background:rgba(255,255,255,.15);}
+
+.main{max-width:960px;margin:0 auto;padding:28px 24px 80px;}
+.pagehead{margin-bottom:22px;}
+.pagehead h2{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--ink);margin-bottom:4px;}
+.pagehead p{color:var(--gray);font-size:.88rem;}
+.sec-title{font-family:'Playfair Display',serif;font-size:1.15rem;margin:30px 0 12px;color:var(--ink);}
+
+.btn{background:var(--navy);color:#fff;border:none;padding:11px 20px;border-radius:8px;font-size:.86rem;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;}
+.btn:hover{background:var(--navy-light);}
+.btn.gold{background:var(--gold);color:var(--navy);}
+.btn.gold:hover{background:var(--gold-light);}
+.btn.ghost{background:transparent;border:1.5px solid var(--border);color:var(--ink);}
+.btn.ghost:hover{background:var(--gray-pale);}
+.btn.small{padding:7px 14px;font-size:.78rem;}
+.btn{width:100%;margin-top:6px;}
+
+.tablewrap{background:#fff;border:1px solid var(--border);border-radius:14px;overflow:auto;box-shadow:var(--shadow);}
+table{width:100%;border-collapse:collapse;font-size:.85rem;min-width:560px;}
+thead th{text-align:left;padding:12px 16px;background:var(--gray-pale);color:var(--gray);font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;font-weight:700;white-space:nowrap;}
+tbody td{padding:13px 16px;border-top:1px solid var(--border);vertical-align:middle;}
+tbody tr{cursor:pointer;transition:background .15s;}
+tbody tr:hover{background:var(--blue-pale);}
+.mono{font-family:'IBM Plex Mono',monospace;font-size:.82rem;color:var(--gray);}
+.empty-row td{text-align:center;color:var(--gray);padding:32px;font-style:italic;}
+
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:.7rem;font-weight:700;padding:4px 11px;border-radius:20px;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;}
+.pill::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor;}
+.pill.pending{background:var(--sand-pale);color:var(--sand);}
+.pill.in_progress{background:var(--blue-pale);color:var(--blue);}
+.pill.completed{background:var(--green-pale);color:var(--green);}
+.pill.confirmed{background:var(--green-pale);color:var(--green);}
+.pill.rejected{background:var(--red-pale);color:var(--red);}
+.pill.failed{background:var(--red-pale);color:var(--red);}
+
+.authwrap{max-width:420px;margin:60px auto;padding:0 20px;}
+.card{background:#fff;border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);padding:30px 28px;}
+.card h2{font-family:'Playfair Display',serif;font-size:1.3rem;margin-bottom:6px;}
+.card p.sub{color:var(--gray);font-size:.85rem;margin-bottom:20px;}
+.tabs{display:flex;gap:6px;margin-bottom:20px;background:var(--gray-pale);border-radius:10px;padding:4px;}
+.tabs button{flex:1;background:none;border:none;padding:9px;border-radius:8px;font-family:inherit;font-size:.82rem;font-weight:700;color:var(--gray);cursor:pointer;}
+.tabs button.on{background:#fff;color:var(--ink);box-shadow:var(--shadow);}
+.fg{margin-bottom:14px;}
+.fg label{display:block;font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gray);margin-bottom:6px;}
+.fg input{width:100%;border:1.5px solid var(--border);padding:11px 14px;border-radius:8px;font-size:.87rem;font-family:inherit;outline:none;}
+.fg input:focus{border-color:var(--blue);}
+.msg{padding:12px 16px;border-radius:8px;font-size:.82rem;margin-bottom:14px;}
+.msg.err{background:var(--red-pale);color:var(--red);}
+.msg.ok{background:var(--green-pale);color:var(--green);}
+
+.ov{display:none;position:fixed;inset:0;background:rgba(10,22,40,.8);z-index:1000;align-items:flex-start;justify-content:center;overflow-y:auto;padding:40px 20px;backdrop-filter:blur(4px);}
+.ov.open{display:flex;}
+.modal{background:#fff;border-radius:18px;width:100%;max-width:520px;box-shadow:var(--shadow-lg);}
+.modal-top{background:var(--navy-mid);padding:22px 28px;border-radius:18px 18px 0 0;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;}
+.modal-top h3{font-family:'Playfair Display',serif;color:#fff;font-size:1.1rem;}
+.modal-top p{color:rgba(255,255,255,.5);font-size:.78rem;margin-top:3px;}
+.modal-close{background:rgba(255,255,255,.1);border:none;color:#fff;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:.9rem;flex-shrink:0;}
+.modal-body{padding:24px 28px;max-height:70vh;overflow-y:auto;}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;}
+.detail-item{background:var(--gray-pale);border-radius:8px;padding:10px 13px;}
+.detail-item .k{font-size:.65rem;color:var(--gray);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px;}
+.detail-item .v{font-size:.87rem;font-weight:600;color:var(--ink);}
+.detail-item.full{grid-column:1/-1;}
+
+.lang-sw{display:flex;gap:6px;}
+.lb{background:none;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.65);padding:3px 10px;border-radius:4px;cursor:pointer;font-size:.72rem;font-family:inherit;font-weight:600;}
+.lb.on,.lb:hover{background:var(--gold);border-color:var(--gold);color:var(--navy);}
+
+.so{display:block!important;}.en{display:none!important;}.am{display:none!important;}.de{display:none!important;}
+span.so{display:inline!important;}span.en{display:none!important;}span.am{display:none!important;}span.de{display:none!important;}
+body.lang-en .so{display:none!important;}body.lang-en .en{display:block!important;}
+body.lang-en span.so{display:none!important;}body.lang-en span.en{display:inline!important;}
+body.lang-am .so{display:none!important;}body.lang-am .am{display:block!important;}
+body.lang-am span.so{display:none!important;}body.lang-am span.am{display:inline!important;}
+body.lang-de .so{display:none!important;}body.lang-de .de{display:block!important;}
+body.lang-de span.so{display:none!important;}body.lang-de span.de{display:inline!important;}
+
+@media(max-width:640px){.detail-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<div id="guard"><span class="so">Waa la hubinayaa…</span><span class="en">Checking…</span><span class="am">በመረጋገጥ ላይ…</span><span class="de">Wird geprüft…</span></div>
+
+<!-- AUTH SCREEN -->
+<div id="authScreen" class="hidden">
+  <header>
+    <div class="hd">
+      <a class="logo" href="index.html">
+        <div class="logo-shield">🏛️</div>
+        <div class="logo-tx">
+          <h1>Xarunta Deegaanka Soomaalida</h1>
+          <span><span class="so">Konteexda Muwaadinka</span><span class="en">Citizen Account</span><span class="am">የዜጋ መለያ</span><span class="de">Bürgerkonto</span></span>
+        </div>
+      </a>
+      <div class="lang-sw">
+        <button class="lb on" id="btn-so">SO</button>
+        <button class="lb" id="btn-en">EN</button>
+        <button class="lb" id="btn-am">አማ</button>
+        <button class="lb" id="btn-de">DE</button>
+      </div>
+    </div>
+  </header>
+  <div class="authwrap">
+    <div class="card">
+      <h2><span class="so">Konteexdaada</span><span class="en">Your Account</span><span class="am">የእርስዎ መለያ</span><span class="de">Dein Konto</span></h2>
+      <p class="sub"><span class="so">Raac dhammaan codsiyadaada iyo lacag-bixintaada meel keliya</span><span class="en">Track all your requests and payments in one place</span><span class="am">ሁሉንም ጥያቄዎችዎን እና ክፍያዎችዎን በአንድ ቦታ ይከታተሉ</span><span class="de">Behalte alle deine Anträge und Zahlungen an einem Ort im Blick</span></p>
+      <div class="tabs">
+        <button class="on" id="tabLogin"><span class="so">Gal</span><span class="en">Login</span><span class="am">ግባ</span><span class="de">Anmelden</span></button>
+        <button id="tabRegister"><span class="so">Diiwaan Geli</span><span class="en">Register</span><span class="am">ተመዝገብ</span><span class="de">Registrieren</span></button>
+      </div>
+      <div id="authMsg"></div>
+
+      <div id="loginForm">
+        <div class="fg"><label>E-Mail</label><input type="email" id="liEmail" autocomplete="email"></div>
+        <div class="fg"><label><span class="so">Furaha Sirta ah</span><span class="en">Password</span><span class="am">የይለፍ ቃል</span><span class="de">Passwort</span></label><input type="password" id="liPassword" autocomplete="current-password"></div>
+        <button class="btn gold" id="btnLogin"><span class="so">Gal</span><span class="en">Login</span><span class="am">ግባ</span><span class="de">Anmelden</span></button>
+      </div>
+
+      <div id="registerForm" class="hidden">
+        <div class="fg"><label><span class="so">Magaca Buuxa</span><span class="en">Full Name</span><span class="am">ሙሉ ስም</span><span class="de">Vollständiger Name</span></label><input type="text" id="reFullName"></div>
+        <div class="fg"><label><span class="so">Telefoonka</span><span class="en">Phone</span><span class="am">ስልክ</span><span class="de">Telefon</span></label><input type="tel" id="rePhone"></div>
+        <div class="fg"><label>E-Mail</label><input type="email" id="reEmail" autocomplete="email"></div>
+        <div class="fg"><label><span class="so">Furaha Sirta ah</span><span class="en">Password</span><span class="am">የይለፍ ቃል</span><span class="de">Passwort</span></label><input type="password" id="rePassword" autocomplete="new-password" placeholder="min. 6 Zeichen"></div>
+        <button class="btn gold" id="btnRegister"><span class="so">Diiwaan Geli</span><span class="en">Register</span><span class="am">ተመዝገብ</span><span class="de">Registrieren</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app" class="hidden">
+  <header>
+    <div class="hd">
+      <a class="logo" href="index.html">
+        <div class="logo-shield">🏛️</div>
+        <div class="logo-tx">
+          <h1>Xarunta Deegaanka Soomaalida</h1>
+          <span><span class="so">Konteexda Muwaadinka</span><span class="en">Citizen Account</span><span class="am">የዜጋ መለያ</span><span class="de">Bürgerkonto</span></span>
+        </div>
+      </a>
+      <div class="who">
+        <div class="lang-sw">
+          <button class="lb on" id="btn2-so">SO</button>
+          <button class="lb" id="btn2-en">EN</button>
+          <button class="lb" id="btn2-am">አማ</button>
+          <button class="lb" id="btn2-de">DE</button>
+        </div>
+        <div class="who-name">
+          <div class="n" id="whoName">—</div>
+          <div class="o"><span class="so">Muwaadin</span><span class="en">Citizen</span><span class="am">ዜጋ</span><span class="de">Bürger</span></div>
+        </div>
+        <button class="logout-btn" id="btnLogout"><span class="so">Ka bax</span><span class="en">Logout</span><span class="am">ውጣ</span><span class="de">Logout</span></button>
+      </div>
+    </div>
+  </header>
+
+  <div class="main">
+    <div class="pagehead">
+      <h2><span class="so">Konteexdaada</span><span class="en">Your Account</span><span class="am">የእርስዎ መለያ</span><span class="de">Dein Konto</span></h2>
+      <p><span class="so">Dhammaan codsiyadaada iyo lacag-bixintaada</span><span class="en">All your requests and payments</span><span class="am">ሁሉም ጥያቄዎችዎ እና ክፍያዎችዎ</span><span class="de">Alle deine Anträge und Zahlungen</span></p>
+    </div>
+
+    <div class="sec-title"><span class="so">Codsiyada (Kebele/Dugsi/Caafimaad)</span><span class="en">Requests (Kebele/School/Health)</span><span class="am">ጥያቄዎች (ቀበሌ/ት/ቤት/ጤና)</span><span class="de">Anträge (Kebele/Schule/Gesundheit)</span></div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr>
+          <th><span class="so">Lambarka</span><span class="en">Reference</span><span class="am">ቁጥር</span><span class="de">Referenz</span></th>
+          <th><span class="so">Nooca</span><span class="en">Type</span><span class="am">አይነት</span><span class="de">Art</span></th>
+          <th><span class="so">Taariikhda</span><span class="en">Date</span><span class="am">ቀን</span><span class="de">Datum</span></th>
+          <th>Status</th>
+        </tr></thead>
+        <tbody id="reqRows"><tr class="empty-row"><td colspan="4">…</td></tr></tbody>
+      </table>
+    </div>
+
+    <div class="sec-title"><span class="so">Lacag-bixinta (GovPay)</span><span class="en">Payments (GovPay)</span><span class="am">ክፍያዎች (GovPay)</span><span class="de">Zahlungen (GovPay)</span></div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr>
+          <th><span class="so">Reference</span><span class="en">Reference</span><span class="am">ቁጥር</span><span class="de">Referenz</span></th>
+          <th><span class="so">Adeegga</span><span class="en">Service</span><span class="am">አገልግሎት</span><span class="de">Dienst</span></th>
+          <th><span class="so">Qadarka</span><span class="en">Amount</span><span class="am">መጠን</span><span class="de">Betrag</span></th>
+          <th>Status</th>
+        </tr></thead>
+        <tbody id="payRows"><tr class="empty-row"><td colspan="4">…</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- DETAIL MODAL -->
+<div class="ov" id="detailModal">
+  <div class="modal">
+    <div class="modal-top">
+      <div><h3 id="dTitle">—</h3><p id="dSub">—</p></div>
+      <button class="modal-close" onclick="document.getElementById('detailModal').classList.remove('open')">✕</button>
+    </div>
+    <div class="modal-body" id="detailBody">—</div>
+  </div>
+</div>
+
+<script type="module">
+import { supabase } from './src/supabase-config.js';
+import { initLangSwitcher, t } from './src/i18n.js';
+import { printDocument } from './src/print-document.js';
+import { signUp, signIn, signOut, currentCitizen, myServiceRequests, myPayments } from './src/citizen-auth.js';
+
+const STATUS_LABEL = {
+  pending:{so:'Sugaya', en:'Pending', am:'በመጠባበቅ ላይ', de:'Ausstehend'},
+  in_progress:{so:'La Shaqaynayo', en:'In Progress', am:'በሂደት ላይ', de:'In Bearbeitung'},
+  completed:{so:'La Dhammeeyay', en:'Completed', am:'ተጠናቅቋል', de:'Erledigt'},
+  rejected:{so:'La Diiday', en:'Rejected', am:'ውድቅ ተደርጓል', de:'Abgelehnt'},
+  confirmed:{so:'La Xaqiijiyay', en:'Confirmed', am:'ተረጋግጧል', de:'Bestätigt'},
+  failed:{so:'Guuldareystay', en:'Failed', am:'አልተሳካም', de:'Fehlgeschlagen'}
+};
+function statusLabel(s){ return STATUS_LABEL[s] ? t(STATUS_LABEL[s]) : (s || '—'); }
+
+let requests = [];
+let payments = [];
+
+function syncLangButtons(){
+  const lang = localStorage.getItem('jl') || 'so';
+  ['so','en','am','de'].forEach(l => {
+    document.getElementById('btn-'+l).classList.toggle('on', l === lang);
+    document.getElementById('btn2-'+l).classList.toggle('on', l === lang);
+  });
+}
+['so','en','am','de'].forEach(l => {
+  ['btn-'+l, 'btn2-'+l].forEach(id => {
+    document.getElementById(id).addEventListener('click', (e) => {
+      window.setLang(l, e.target.closest('button'));
+      syncLangButtons();
+      renderRequests(); renderPayments();
+    });
+  });
+});
+initLangSwitcher();
+syncLangButtons();
+
+document.getElementById('tabLogin').addEventListener('click', () => {
+  document.getElementById('tabLogin').classList.add('on');
+  document.getElementById('tabRegister').classList.remove('on');
+  document.getElementById('loginForm').classList.remove('hidden');
+  document.getElementById('registerForm').classList.add('hidden');
+  document.getElementById('authMsg').innerHTML = '';
+});
+document.getElementById('tabRegister').addEventListener('click', () => {
+  document.getElementById('tabRegister').classList.add('on');
+  document.getElementById('tabLogin').classList.remove('on');
+  document.getElementById('registerForm').classList.remove('hidden');
+  document.getElementById('loginForm').classList.add('hidden');
+  document.getElementById('authMsg').innerHTML = '';
+});
+
+document.getElementById('btnLogin').addEventListener('click', async () => {
+  const email = document.getElementById('liEmail').value.trim();
+  const password = document.getElementById('liPassword').value;
+  const msg = document.getElementById('authMsg');
+  if(!email || !password){ msg.innerHTML = '<div class="msg err">' + t({so:'Fadlan buuxi dhammaan.', en:'Please fill in all fields.', am:'እባክዎ ሁሉንም ይሙሉ።', de:'Bitte alle Felder ausfüllen.'}) + '</div>'; return; }
+  const res = await signIn(email, password);
+  if(!res.success){ msg.innerHTML = '<div class="msg err">❌ ' + res.error + '</div>'; return; }
+  boot();
+});
+
+document.getElementById('btnRegister').addEventListener('click', async () => {
+  const fullName = document.getElementById('reFullName').value.trim();
+  const phone = document.getElementById('rePhone').value.trim();
+  const email = document.getElementById('reEmail').value.trim();
+  const password = document.getElementById('rePassword').value;
+  const msg = document.getElementById('authMsg');
+  if(!fullName || !email || !password || password.length < 6){
+    msg.innerHTML = '<div class="msg err">' + t({so:'Fadlan buuxi dhammaan (furaha sirta ah ugu yaraan 6 xaraf).', en:'Please fill in all fields (password min. 6 characters).', am:'እባክዎ ሁሉንም ይሙሉ (የይለፍ ቃል ቢያንስ 6 ፊደላት)።', de:'Bitte alle Felder ausfüllen (Passwort mind. 6 Zeichen).'}) + '</div>';
+    return;
+  }
+  const res = await signUp(email, password, fullName, phone);
+  if(!res.success){ msg.innerHTML = '<div class="msg err">❌ ' + res.error + '</div>'; return; }
+  if(res.needsEmailConfirm){
+    msg.innerHTML = '<div class="msg ok">✅ ' + t({so:'Diiwaan gelintu waa guulaysatay! Fadlan hubi email-kaaga, kadibna soo gal.', en:'Registered! Please confirm your email, then log in.', am:'ተመዝግቧል! እባክዎ ኢሜይልዎን ያረጋግጡ፣ ከዚያ ይግቡ።', de:'Registriert! Bitte bestätige deine E-Mail und logge dich danach ein.'}) + '</div>';
+    return;
+  }
+  boot();
+});
+
+document.getElementById('btnLogout').addEventListener('click', async () => {
+  await signOut();
+  window.location.reload();
+});
+
+function renderRequests(){
+  const rows = document.getElementById('reqRows');
+  if(requests.length === 0){ rows.innerHTML = '<tr class="empty-row"><td colspan="4">' + t({so:'Wali codsi ma jiro', en:'No requests yet', am:'እስካሁን ጥያቄ የለም', de:'Noch keine Anträge'}) + '</td></tr>'; return; }
+  rows.innerHTML = requests.map((r,i) => `
+    <tr onclick="showRequest(${i})">
+      <td class="mono">${r.request_number || '—'}</td>
+      <td>${r.request_type || '—'}</td>
+      <td class="mono">${new Date(r.created_at).toLocaleDateString('de-DE')}</td>
+      <td><span class="pill ${r.status}">${statusLabel(r.status)}</span></td>
+    </tr>
+  `).join('');
+}
+function renderPayments(){
+  const rows = document.getElementById('payRows');
+  if(payments.length === 0){ rows.innerHTML = '<tr class="empty-row"><td colspan="4">' + t({so:'Wali lacag-bixin ma jirto', en:'No payments yet', am:'እስካሁን ክፍያ የለም', de:'Noch keine Zahlungen'}) + '</td></tr>'; return; }
+  rows.innerHTML = payments.map((p,i) => `
+    <tr onclick="showPayment(${i})">
+      <td class="mono">${p.reference || '—'}</td>
+      <td>${p.service || '—'}</td>
+      <td class="mono">${p.amount} ETB</td>
+      <td><span class="pill ${p.status}">${statusLabel(p.status)}</span></td>
+    </tr>
+  `).join('');
+}
+
+window.showRequest = function(i){
+  const r = requests[i];
+  document.getElementById('dTitle').textContent = r.request_number;
+  document.getElementById('dSub').textContent = r.request_type + ' · ' + statusLabel(r.status);
+  document.getElementById('detailBody').innerHTML = `
+    <div class="detail-grid">
+      <div class="detail-item"><div class="k">${t({so:'Adeegga',en:'Service',am:'አገልግሎት',de:'Dienst'})}</div><div class="v">${r.service}</div></div>
+      <div class="detail-item"><div class="k">Kebele</div><div class="v">${r.kebele || '—'}</div></div>
+      <div class="detail-item full"><div class="k">${t({so:'Faahfaahin',en:'Description',am:'መግለጫ',de:'Beschreibung'})}</div><div class="v">${(r.details && r.details.description) || '—'}</div></div>
+    </div>
+    <button class="btn gold" onclick='printReq(${i})'>🖨️ ${t({so:'Daabac',en:'Print',am:'አትም',de:'Drucken'})}</button>
+  `;
+  document.getElementById('detailModal').classList.add('open');
+};
+window.printReq = function(i){
+  const r = requests[i];
+  printDocument({
+    title: 'Antragsbestätigung',
+    subtitle: r.service,
+    refLabel: 'Referenznummer',
+    refValue: r.request_number,
+    fields: [
+      { label: 'Art des Antrags', value: r.request_type },
+      { label: 'Standort', value: r.kebele },
+      { label: 'Status', value: statusLabel(r.status) },
+      { label: 'Eingereicht am', value: new Date(r.created_at).toLocaleString('de-DE') }
+    ]
+  });
+};
+window.showPayment = function(i){
+  const p = payments[i];
+  document.getElementById('dTitle').textContent = p.reference;
+  document.getElementById('dSub').textContent = p.service + ' · ' + statusLabel(p.status);
+  document.getElementById('detailBody').innerHTML = `
+    <div class="detail-grid">
+      <div class="detail-item"><div class="k">${t({so:'Qadarka',en:'Amount',am:'መጠን',de:'Betrag'})}</div><div class="v">${p.amount} ETB</div></div>
+      <div class="detail-item"><div class="k">${t({so:'Habka Bixinta',en:'Payment Method',am:'የክፍያ ዘዴ',de:'Zahlungsmethode'})}</div><div class="v">${p.payment_method || '—'}</div></div>
+    </div>
+    <button class="btn gold" onclick='printPay(${i})'>🖨️ ${t({so:'Daabac',en:'Print',am:'አትም',de:'Drucken'})}</button>
+  `;
+  document.getElementById('detailModal').classList.add('open');
+};
+window.printPay = function(i){
+  const p = payments[i];
+  printDocument({
+    title: 'Zahlungsbeleg — GovPay',
+    subtitle: p.service,
+    refLabel: 'Referenznummer',
+    refValue: p.reference,
+    fields: [
+      { label: 'Betrag', value: p.amount + ' ETB' },
+      { label: 'Zahlungsmethode', value: p.payment_method },
+      { label: 'Status', value: statusLabel(p.status) },
+      { label: 'Eingereicht am', value: new Date(p.created_at).toLocaleString('de-DE') }
+    ]
+  });
+};
+
+async function boot(){
+  const citizen = await currentCitizen();
+  if(!citizen){
+    document.getElementById('guard').classList.add('hidden');
+    document.getElementById('authScreen').classList.remove('hidden');
+    return;
+  }
+  document.getElementById('guard').classList.add('hidden');
+  document.getElementById('authScreen').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+  document.getElementById('whoName').textContent = citizen.profile.full_name;
+
+  requests = await myServiceRequests();
+  payments = await myPayments();
+  renderRequests();
+  renderPayments();
+}
+
+boot();
+</script>
+</body>
+</html>

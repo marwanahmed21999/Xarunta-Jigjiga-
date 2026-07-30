@@ -234,7 +234,7 @@ body.lang-am span.so{display:none!important;}body.lang-am span.am{display:inline
     </a>
     <nav>
       <a href="#">🏠 Start</a><a href="#">📋 Dienste</a>
-      <a href="#">👥 Verwaltung</a><a href="#">📰 News</a>
+      <a href="#">👥 Verwaltung</a><a href="mein-konto.html">👤 Mein Konto</a>
       <a href="#zahlen" class="nav-cta">💳 Jetzt zahlen</a>
     </nav>
   </div>
@@ -406,9 +406,10 @@ function setLang(l,btn){
 </script>
 
 <script type="module">
-import { supabase } from '../src/supabase-config.js';
-import { wireLocationCascade, readLocation } from '../src/location-picker.js';
-import { printDocument } from '../src/print-document.js';
+import { supabase } from './src/supabase-config.js';
+import { wireLocationCascade, readLocation } from './src/location-picker.js';
+import { printDocument } from './src/print-document.js';
+import { attachPayment } from './src/citizen-auth.js';
 
 wireLocationCascade({
   zoneSel: document.getElementById('payZone'),
@@ -472,8 +473,10 @@ document.getElementById('btnSubmitPay').addEventListener('click', async () => {
     return;
   }
 
+  await attachPayment(reference);
+
   window.__lastPay = { citizen_name, phone, citizen_id, service, amount, payment_method, location: loc.full, reference };
-  msg.innerHTML = '<p style="color:var(--sand-light);margin-bottom:14px;">✅ Zahlung eingeleitet! Referenz: <strong>' + reference + '</strong> — Bestätigung folgt per SMS.<br><small style="color:rgba(255,255,255,.5);">Hinweis: echte Telebirr/CBE-Anbindung folgt noch, Zahlung wird derzeit vom Personal manuell bestätigt.</small><br><button class="sub-btn" style="margin-top:10px;padding:9px 18px;font-size:.85rem;width:auto;" onclick="printPaymentReceipt()">🖨️ Beleg ausdrucken</button></p>';
+  msg.innerHTML = '<p style="color:var(--sand-light);margin-bottom:14px;">✅ Zahlung eingeleitet! Referenz: <strong>' + reference + '</strong> — Bestätigung folgt per SMS.<br><small style="color:rgba(255,255,255,.5);">Hinweis: echte Telebirr/CBE-Anbindung folgt noch, Zahlung wird derzeit vom Personal manuell bestätigt.</small><br><button class="sub-btn" style="margin-top:10px;padding:9px 18px;font-size:.85rem;width:auto;" onclick="printPaymentReceipt()">🖨️ Beleg ausdrucken</button> <a href="mein-konto.html" style="color:var(--sand-light);font-size:.85rem;margin-left:10px;">📁 Im eigenen Konto verfolgen</a></p>';
   ['payName','payPhone','payNid','payAmount'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('payKebele').value = '';
   document.getElementById('payService').value = '';

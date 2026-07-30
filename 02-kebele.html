@@ -233,7 +233,7 @@ body.lang-am span.so{display:none!important;}body.lang-am span.am{display:inline
     </a>
     <nav>
       <a href="#">🏠 Start</a><a href="#">📋 Dienste</a>
-      <a href="#">👥 Verwaltung</a><a href="#">📰 News</a>
+      <a href="#">👥 Verwaltung</a><a href="mein-konto.html">👤 Mein Konto</a>
       <a href="#antrag" class="nav-cta">📝 Antrag stellen</a>
     </nav>
   </div>
@@ -394,9 +394,10 @@ function setLang(l,btn){
 </script>
 
 <script type="module">
-import { supabase } from '../src/supabase-config.js';
-import { wireLocationCascade, readLocation } from '../src/location-picker.js';
-import { printDocument } from '../src/print-document.js';
+import { supabase } from './src/supabase-config.js';
+import { wireLocationCascade, readLocation } from './src/location-picker.js';
+import { printDocument } from './src/print-document.js';
+import { attachServiceRequest } from './src/citizen-auth.js';
 
 wireLocationCascade({
   zoneSel: document.getElementById('selZone'),
@@ -454,8 +455,10 @@ document.getElementById('btnSubmitReq').addEventListener('click', async () => {
     return;
   }
 
+  await attachServiceRequest(requestNumber);
+
   window.__lastReq = { full_name, phone, national_id, request_type, description, location: loc.full, requestNumber };
-  msg.innerHTML = '<p style="color:var(--sand-light);margin-bottom:14px;">✅ Antrag eingereicht! Referenz: <strong>' + requestNumber + '</strong> — wir melden uns in 48 Stunden.<br><button class="sub-btn" style="margin-top:10px;padding:9px 18px;font-size:.85rem;width:auto;" onclick="printKebeleRequest()">🖨️ Bestätigung ausdrucken</button></p>';
+  msg.innerHTML = '<p style="color:var(--sand-light);margin-bottom:14px;">✅ Antrag eingereicht! Referenz: <strong>' + requestNumber + '</strong> — wir melden uns in 48 Stunden.<br><button class="sub-btn" style="margin-top:10px;padding:9px 18px;font-size:.85rem;width:auto;" onclick="printKebeleRequest()">🖨️ Bestätigung ausdrucken</button> <a href="mein-konto.html" style="color:var(--sand-light);font-size:.85rem;margin-left:10px;">📁 Im eigenen Konto verfolgen</a></p>';
   ['reqName','reqPhone','reqNid','reqDesc'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('reqType').value = '';
 });
