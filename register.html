@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mitarbeiter-Registrierung | Xarunta Jigjiga</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#1a4fa0;--blue-dark:#0d2d6b;--blue-pale:#e8f0fb;
+  --sand:#c9963a;--sand-light:#e8b85a;
+  --white:#f7f9fd;--ink:#0d1b3e;--gray:#5a6880;--border:#c8d4e8;
+  --shadow:0 12px 48px rgba(13,27,62,.18);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'IBM Plex Sans',sans-serif;background:var(--blue-dark);color:var(--ink);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:32px 20px;}
+.card{background:#fff;border-radius:18px;max-width:460px;width:100%;box-shadow:var(--shadow);overflow:hidden;}
+.top{background:var(--blue-dark);padding:26px 32px;}
+.top h1{font-family:'Playfair Display',serif;color:#fff;font-size:1.3rem;margin-bottom:4px;}
+.top p{color:rgba(255,255,255,.55);font-size:.82rem;}
+.body{padding:26px 32px 32px;}
+.fg{margin-bottom:14px;}
+.fg label{display:block;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gray);margin-bottom:6px;}
+.fg input,.fg select{width:100%;border:1.5px solid var(--border);padding:11px 14px;border-radius:8px;font-size:.9rem;font-family:inherit;outline:none;}
+.fg input:focus,.fg select:focus{border-color:var(--blue);}
+.btn{width:100%;background:var(--blue-dark);color:#fff;border:none;padding:14px;border-radius:10px;font-size:.92rem;font-weight:700;cursor:pointer;font-family:inherit;margin-top:6px;}
+.btn:hover{background:var(--blue);}
+.msg{padding:12px 14px;border-radius:8px;font-size:.83rem;margin-bottom:14px;}
+.msg.err{background:#f9ecec;color:#8b1a1a;}
+.msg.ok{background:#eaf5ee;color:#1a7a3c;}
+.foot{text-align:center;margin-top:16px;font-size:.82rem;color:var(--gray);}
+.foot a{color:var(--blue);}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="top">
+    <h1>Mitarbeiter-Registrierung</h1>
+    <p>Xarunta Jigjiga · Konto wird nach Prüfung freigeschaltet</p>
+  </div>
+  <div class="body">
+    <div id="msg"></div>
+    <div class="fg"><label>Vollständiger Name *</label><input type="text" id="fullName" placeholder="z.B. Fatuma Hassan Ali"></div>
+    <div class="fg"><label>Staff-ID *</label><input type="text" id="staffId" placeholder="z.B. KB-STAFF-001"></div>
+    <div class="fg"><label>Abteilung *</label>
+      <select id="organ">
+        <option value="">-- Auswählen --</option>
+        <option value="staff">Kebele / Schule / Gesundheit / GovPay</option>
+        <option value="police">Booliska (Police)</option>
+        <option value="prosecution">Xeer Ilaaliyaha (Prosecution)</option>
+        <option value="court">Maxkamadda (Court)</option>
+        <option value="corrections">Xabsiga (Corrections)</option>
+      </select>
+    </div>
+    <div class="fg"><label>Passwort *</label><input type="password" id="pw" placeholder="Mindestens 6 Zeichen"></div>
+    <div class="fg"><label>Passwort wiederholen *</label><input type="password" id="pw2" placeholder="Nochmal eingeben"></div>
+    <button class="btn" id="btnRegister">Konto anlegen</button>
+    <div class="foot">Schon registriert? <a href="staff-login.html">Zum Login</a></div>
+  </div>
+</div>
+
+<script type="module">
+import { supabase } from './src/supabase-config.js';
+
+document.getElementById('btnRegister').addEventListener('click', async () => {
+  const msg = document.getElementById('msg');
+  msg.innerHTML = '';
+
+  const fullName = document.getElementById('fullName').value.trim();
+  const staffId = document.getElementById('staffId').value.trim();
+  const organ = document.getElementById('organ').value;
+  const pw = document.getElementById('pw').value;
+  const pw2 = document.getElementById('pw2').value;
+
+  if (!fullName || !staffId || !organ || !pw) {
+    msg.innerHTML = '<div class="msg err">Bitte alle Pflichtfelder ausfüllen.</div>';
+    return;
+  }
+  if (pw.length < 6) {
+    msg.innerHTML = '<div class="msg err">Passwort muss mindestens 6 Zeichen haben.</div>';
+    return;
+  }
+  if (pw !== pw2) {
+    msg.innerHTML = '<div class="msg err">Passwörter stimmen nicht überein.</div>';
+    return;
+  }
+
+  const email = staffId.toLowerCase() + '@jigjiga-portal.local';
+
+  const { error: signUpError } = await supabase.auth.signUp({ email, password: pw });
+  if (signUpError) {
+    msg.innerHTML = '<div class="msg err">Fehler: ' + signUpError.message + '</div>';
+    return;
+  }
+
+  const { error: profileError } = await supabase.from('users').insert({
+    email, staff_id: staffId, organ, full_name: fullName, status: 'pending'
+  });
+  if (profileError) {
+    msg.innerHTML = '<div class="msg err">Konto erstellt, aber Profil-Fehler: ' + profileError.message + '</div>';
+    return;
+  }
+
+  msg.innerHTML = '<div class="msg ok">✅ Konto angelegt! Ein Admin muss dich noch freischalten, bevor du dich einloggen kannst.</div>';
+  ['fullName','staffId','pw','pw2'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('organ').value = '';
+});
+</script>
+</body>
+</html>

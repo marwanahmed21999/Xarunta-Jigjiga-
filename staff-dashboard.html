@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mitarbeiter-Dashboard | Xarunta Jigjiga</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#1a4fa0;--blue-dark:#0d2d6b;--blue-light:#2c6fda;--blue-pale:#e8f0fb;
+  --sand:#c9963a;--sand-light:#e8b85a;--sand-pale:#fdf6e8;
+  --green:#1a7a3c;--green-pale:#eaf5ee;
+  --red:#8b1a1a;--red-pale:#f9ecec;
+  --gray:#5a6880;--gray-pale:#eef1f7;--border:#c8d4e8;
+  --white:#f7f9fd;--ink:#0d1b3e;
+  --shadow:0 4px 24px rgba(13,27,62,.12);--shadow-lg:0 12px 48px rgba(13,27,62,.2);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'IBM Plex Sans',sans-serif;background:var(--white);color:var(--ink);min-height:100vh;}
+.hidden{display:none!important;}
+#guard{display:flex;align-items:center;justify-content:center;min-height:100vh;color:var(--gray);font-size:.9rem;}
+
+header{background:var(--blue-dark);border-bottom:3px solid var(--sand);position:sticky;top:0;z-index:100;}
+.hd{max-width:1280px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:68px;gap:16px;flex-wrap:wrap;}
+.logo h1{font-family:'Playfair Display',serif;font-size:.95rem;font-weight:700;color:#fff;}
+.logo span{font-size:.65rem;color:rgba(255,255,255,.5);letter-spacing:.08em;text-transform:uppercase;}
+.who{display:flex;align-items:center;gap:12px;}
+.who-name{text-align:right;}
+.who-name .n{font-size:.85rem;font-weight:600;color:#fff;}
+.who-name .o{font-size:.7rem;color:rgba(255,255,255,.5);}
+.logout-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#fff;padding:8px 16px;border-radius:8px;font-size:.8rem;font-weight:600;cursor:pointer;font-family:inherit;}
+.logout-btn:hover{background:rgba(255,255,255,.15);}
+
+.main{max-width:1280px;margin:0 auto;padding:24px 24px 80px;}
+.tabs{display:flex;gap:6px;margin-bottom:22px;border-bottom:2px solid var(--border);flex-wrap:wrap;}
+.tab{padding:11px 18px;font-size:.86rem;font-weight:600;color:var(--gray);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;}
+.tab.on{color:var(--blue-dark);border-color:var(--sand);}
+.tabpanel{display:none;}
+.tabpanel.on{display:block;}
+
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
+.stat{background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px 16px;box-shadow:var(--shadow);}
+.stat .n{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;color:var(--blue-dark);display:block;font-variant-numeric:tabular-nums;}
+.stat .l{font-size:.66rem;color:var(--gray);text-transform:uppercase;letter-spacing:.05em;}
+
+.toolbar{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
+.toolbar input,.toolbar select{padding:9px 13px;border:1.5px solid var(--border);border-radius:8px;font-size:.85rem;font-family:inherit;}
+.toolbar input{flex:1;min-width:180px;}
+
+.tablewrap{background:#fff;border:1px solid var(--border);border-radius:14px;overflow:auto;box-shadow:var(--shadow);}
+table{width:100%;border-collapse:collapse;font-size:.85rem;min-width:680px;}
+thead th{text-align:left;padding:11px 15px;background:var(--gray-pale);color:var(--gray);font-size:.66rem;text-transform:uppercase;letter-spacing:.05em;font-weight:700;white-space:nowrap;}
+tbody td{padding:12px 15px;border-top:1px solid var(--border);}
+tbody tr{cursor:pointer;}
+tbody tr:hover{background:var(--blue-pale);}
+.mono{font-family:'IBM Plex Mono',monospace;font-size:.8rem;color:var(--gray);}
+.empty-row td{text-align:center;color:var(--gray);padding:36px;font-style:italic;}
+
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:.68rem;font-weight:700;padding:4px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.03em;white-space:nowrap;}
+.pill::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor;}
+.pill.pending{background:var(--sand-pale);color:var(--sand);}
+.pill.in_progress{background:var(--blue-pale);color:var(--blue);}
+.pill.completed{background:var(--green-pale);color:var(--green);}
+.pill.rejected{background:var(--red-pale);color:var(--red);}
+.pill.confirmed{background:var(--green-pale);color:var(--green);}
+.pill.failed{background:var(--red-pale);color:var(--red);}
+
+.btn{background:var(--blue-dark);color:#fff;border:none;padding:9px 16px;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;}
+.btn:hover{background:var(--blue);}
+.btn.ghost{background:transparent;border:1.5px solid var(--border);color:var(--ink);}
+.btn.ghost:hover{background:var(--gray-pale);}
+.btn.red{background:var(--red);}
+.btn.red:hover{background:#a52222;}
+
+.ov{display:none;position:fixed;inset:0;background:rgba(13,27,62,.75);z-index:1000;align-items:flex-start;justify-content:center;overflow-y:auto;padding:40px 20px;backdrop-filter:blur(4px);}
+.ov.open{display:flex;}
+.modal{background:#fff;border-radius:18px;width:100%;max-width:560px;box-shadow:var(--shadow-lg);}
+.modal-top{background:var(--blue-dark);padding:22px 28px;border-radius:18px 18px 0 0;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;}
+.modal-top h3{font-family:'Playfair Display',serif;color:#fff;font-size:1.1rem;}
+.modal-top p{color:rgba(255,255,255,.55);font-size:.78rem;margin-top:3px;}
+.modal-close{background:rgba(255,255,255,.1);border:none;color:#fff;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:.9rem;flex-shrink:0;}
+.modal-body{padding:24px 28px;max-height:70vh;overflow-y:auto;}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.detail-item{background:var(--gray-pale);border-radius:8px;padding:9px 12px;}
+.detail-item.full{grid-column:1/-1;}
+.detail-item .k{font-size:.64rem;color:var(--gray);text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px;}
+.detail-item .v{font-size:.85rem;font-weight:600;}
+.actions-box{background:var(--sand-pale);border:1px solid #ecd9a8;border-radius:10px;padding:14px;margin-bottom:16px;}
+.actions-box textarea{width:100%;border:1.5px solid var(--border);padding:9px 12px;border-radius:8px;font-size:.85rem;font-family:inherit;margin-bottom:10px;min-height:60px;}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;}
+.timeline{border-left:2px solid var(--border);margin-left:8px;}
+.tl-item{position:relative;padding:2px 0 14px 18px;}
+.tl-item::before{content:'';position:absolute;left:-6px;top:3px;width:9px;height:9px;border-radius:50%;background:var(--sand);border:2px solid #fff;box-shadow:0 0 0 1px var(--border);}
+.tl-item .a{font-size:.82rem;font-weight:600;}
+.tl-item .n{font-size:.79rem;color:var(--gray);margin-top:2px;}
+.tl-item .t{font-size:.66rem;color:var(--gray);margin-top:2px;font-family:'IBM Plex Mono',monospace;}
+
+@media(max-width:860px){.stats{grid-template-columns:repeat(2,1fr);}.detail-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<div id="guard">Wird geprüft, ob du eingeloggt bist…</div>
+
+<div id="app" class="hidden">
+  <header>
+    <div class="hd">
+      <div class="logo"><h1>Xarunta Jigjiga — Mitarbeiter-Dashboard</h1><span>Internes System</span></div>
+      <div class="who">
+        <div class="who-name"><div class="n" id="whoName">—</div><div class="o" id="whoOrgan">—</div></div>
+        <button class="logout-btn" id="btnLogout">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="main">
+    <div class="tabs" id="tabs">
+      <div class="tab on" data-tab="kebele">🏛️ Kebele</div>
+      <div class="tab" data-tab="school">🎓 Schule</div>
+      <div class="tab" data-tab="health">🏥 Gesundheit</div>
+      <div class="tab" data-tab="govpay">💳 GovPay</div>
+      <div class="tab hidden" data-tab="staffmgmt" id="tabStaffMgmt">👥 Mitarbeiterverwaltung</div>
+    </div>
+
+    <div class="tabpanel on" id="panel-kebele">
+      <div class="stats" id="stats-kebele"></div>
+      <div class="toolbar"><input type="text" placeholder="Suche…" class="req-search" data-service="kebele"><select class="req-filter" data-service="kebele"><option value="">Alle Status</option><option value="pending">Ausstehend</option><option value="in_progress">In Bearbeitung</option><option value="completed">Erledigt</option><option value="rejected">Abgelehnt</option></select></div>
+      <div class="tablewrap"><table><thead><tr><th>Nr.</th><th>Antragsteller</th><th>Art</th><th>Datum</th><th>Status</th></tr></thead><tbody class="req-rows" data-service="kebele"><tr class="empty-row"><td colspan="5">Lade…</td></tr></tbody></table></div>
+    </div>
+    <div class="tabpanel" id="panel-school">
+      <div class="stats" id="stats-school"></div>
+      <div class="toolbar"><input type="text" placeholder="Suche…" class="req-search" data-service="school"><select class="req-filter" data-service="school"><option value="">Alle Status</option><option value="pending">Ausstehend</option><option value="in_progress">In Bearbeitung</option><option value="completed">Erledigt</option><option value="rejected">Abgelehnt</option></select></div>
+      <div class="tablewrap"><table><thead><tr><th>Nr.</th><th>Antragsteller</th><th>Art</th><th>Datum</th><th>Status</th></tr></thead><tbody class="req-rows" data-service="school"><tr class="empty-row"><td colspan="5">Lade…</td></tr></tbody></table></div>
+    </div>
+    <div class="tabpanel" id="panel-health">
+      <div class="stats" id="stats-health"></div>
+      <div class="toolbar"><input type="text" placeholder="Suche…" class="req-search" data-service="health"><select class="req-filter" data-service="health"><option value="">Alle Status</option><option value="pending">Ausstehend</option><option value="in_progress">In Bearbeitung</option><option value="completed">Erledigt</option><option value="rejected">Abgelehnt</option></select></div>
+      <div class="tablewrap"><table><thead><tr><th>Nr.</th><th>Antragsteller</th><th>Art</th><th>Datum</th><th>Status</th></tr></thead><tbody class="req-rows" data-service="health"><tr class="empty-row"><td colspan="5">Lade…</td></tr></tbody></table></div>
+    </div>
+    <div class="tabpanel" id="panel-govpay">
+      <div class="stats" id="stats-govpay"></div>
+      <div class="tablewrap"><table><thead><tr><th>Referenz</th><th>Bürger</th><th>Dienst</th><th>Betrag</th><th>Methode</th><th>Status</th></tr></thead><tbody id="pay-rows"><tr class="empty-row"><td colspan="6">Lade…</td></tr></tbody></table></div>
+    </div>
+    <div class="tabpanel" id="panel-staffmgmt">
+      <div class="tablewrap"><table><thead><tr><th>Staff-ID</th><th>Name</th><th>Abteilung</th><th>Status</th><th></th></tr></thead><tbody id="staff-rows"><tr class="empty-row"><td colspan="5">Lade…</td></tr></tbody></table></div>
+    </div>
+  </div>
+</div>
+
+<div class="ov" id="detailModal">
+  <div class="modal">
+    <div class="modal-top">
+      <div><h3 id="dTitle">Antrag</h3><p id="dSub">—</p></div>
+      <button class="modal-close" onclick="document.getElementById('detailModal').classList.remove('open')">✕</button>
+    </div>
+    <div class="modal-body" id="detailBody">Lädt…</div>
+  </div>
+</div>
+
+<script type="module">
+import { supabase } from './src/supabase-config.js';
+
+let profile = null;
+let allRequests = [];
+let allPayments = [];
+let activeReq = null;
+
+const STATUS_LABEL = { pending:'Ausstehend', in_progress:'In Bearbeitung', completed:'Erledigt', rejected:'Abgelehnt', confirmed:'Bestätigt', failed:'Fehlgeschlagen' };
+const SERVICE_LABEL = { kebele:'Kebele', school:'Schule', health:'Gesundheit' };
+const ORGAN_LABEL = { police:'Booliska (Police)', prosecution:'Xeer Ilaaliyaha', court:'Maxkamadda', corrections:'Xabsiga', staff:'Mitarbeiter', admin:'Admin' };
+
+function esc(s){ return (s||'').toString().replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+async function init(){
+  const { data: { session } } = await supabase.auth.getSession();
+  if(!session){ window.location.href = 'staff-login.html'; return; }
+
+  const { data: p, error } = await supabase.from('users').select('*').eq('email', session.user.email).maybeSingle();
+  if(error || !p || p.status === 'pending'){
+    document.getElementById('guard').textContent = p && p.status === 'pending'
+      ? 'Dein Konto wartet noch auf Freischaltung durch einen Admin.'
+      : 'Kein Profil gefunden. Bitte neu einloggen.';
+    await supabase.auth.signOut();
+    return;
+  }
+  profile = p;
+
+  document.getElementById('guard').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+  document.getElementById('whoName').textContent = profile.full_name;
+  document.getElementById('whoOrgan').textContent = ORGAN_LABEL[profile.organ] || profile.organ;
+
+  if(profile.organ === 'admin'){
+    document.getElementById('tabStaffMgmt').classList.remove('hidden');
+  }
+
+  document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('on'));
+    document.querySelectorAll('.tabpanel').forEach(x => x.classList.remove('on'));
+    t.classList.add('on');
+    document.getElementById('panel-' + t.dataset.tab).classList.add('on');
+  }));
+
+  document.querySelectorAll('.req-search, .req-filter').forEach(el => el.addEventListener('input', () => renderRequests(el.dataset.service)));
+
+  await loadRequests();
+  await loadPayments();
+  if(profile.organ === 'admin') await loadStaff();
+}
+
+async function loadRequests(){
+  const { data, error } = await supabase.from('service_requests').select('*').order('created_at', { ascending:false });
+  if(error){ console.error(error); return; }
+  allRequests = data || [];
+  ['kebele','school','health'].forEach(s => { renderStats(s); renderRequests(s); });
+}
+
+function renderStats(service){
+  const box = document.getElementById('stats-' + service);
+  const rows = allRequests.filter(r => r.service === service);
+  const order = ['pending','in_progress','completed','rejected'];
+  box.innerHTML = order.map(s => {
+    const n = rows.filter(r => r.status === s).length;
+    return '<div class="stat"><span class="n">'+n+'</span><span class="l">'+STATUS_LABEL[s]+'</span></div>';
+  }).join('');
+}
+
+function renderRequests(service){
+  const search = document.querySelector('.req-search[data-service="'+service+'"]').value.trim().toLowerCase();
+  const filter = document.querySelector('.req-filter[data-service="'+service+'"]').value;
+  const rows = allRequests.filter(r => r.service === service
+    && (!filter || r.status === filter)
+    && (!search || (r.request_number||'').toLowerCase().includes(search) || (r.full_name||'').toLowerCase().includes(search)));
+  const tbody = document.querySelector('.req-rows[data-service="'+service+'"]');
+  if(rows.length === 0){ tbody.innerHTML = '<tr class="empty-row"><td colspan="5">Keine Anträge gefunden</td></tr>'; return; }
+  tbody.innerHTML = rows.map(r => `
+    <tr onclick="openReq('${r.id}')">
+      <td class="mono">${r.request_number||'—'}</td>
+      <td>${esc(r.full_name)}</td>
+      <td>${esc(r.request_type)}</td>
+      <td class="mono">${new Date(r.created_at).toLocaleDateString('de-DE')}</td>
+      <td><span class="pill ${r.status}">${STATUS_LABEL[r.status]}</span></td>
+    </tr>`).join('');
+}
+
+window.openReq = async function(id){
+  activeReq = allRequests.find(r => r.id === id);
+  if(!activeReq) return;
+  document.getElementById('dTitle').textContent = activeReq.request_number;
+  document.getElementById('dSub').textContent = SERVICE_LABEL[activeReq.service] + ' · ' + activeReq.request_type;
+
+  const { data: events } = await supabase.from('service_events').select('*').eq('request_id', id).order('created_at', { ascending:true });
+
+  let actionsHtml = '';
+  if(activeReq.status !== 'completed' && activeReq.status !== 'rejected'){
+    actionsHtml = `<div class="actions-box">
+      <textarea id="reqNote" placeholder="Notiz (optional)…"></textarea>
+      <div class="btn-row">
+        ${activeReq.status === 'pending' ? '<button class="btn" onclick="updateReq(\'in_progress\')">In Bearbeitung nehmen</button>' : ''}
+        <button class="btn" onclick="updateReq('completed')">Als erledigt markieren</button>
+        <button class="btn red" onclick="updateReq('rejected')">Ablehnen</button>
+      </div>
+    </div>`;
+  }
+
+  document.getElementById('detailBody').innerHTML = `
+    <div class="detail-grid">
+      <div class="detail-item"><div class="k">Antragsteller</div><div class="v">${esc(activeReq.full_name)}</div></div>
+      <div class="detail-item"><div class="k">Telefon</div><div class="v">${esc(activeReq.phone)||'—'}</div></div>
+      <div class="detail-item"><div class="k">Nationale ID</div><div class="v">${esc(activeReq.national_id)||'—'}</div></div>
+      <div class="detail-item"><div class="k">Kebele/Ort</div><div class="v">${esc(activeReq.kebele)||'—'}</div></div>
+      ${activeReq.details && activeReq.details.child_name ? '<div class="detail-item"><div class="k">Kind</div><div class="v">'+esc(activeReq.details.child_name)+(activeReq.details.grade?' ('+esc(activeReq.details.grade)+')':'')+'</div></div>' : ''}
+      ${activeReq.details && activeReq.details.preferred_date ? '<div class="detail-item"><div class="k">Wunschtermin</div><div class="v">'+esc(activeReq.details.preferred_date)+'</div></div>' : ''}
+      <div class="detail-item full"><div class="k">Details</div><div class="v" style="font-weight:400;">${esc(activeReq.details && activeReq.details.description) || '—'}</div></div>
+    </div>
+    ${actionsHtml}
+    <h4 style="font-size:.85rem;margin-bottom:10px;">Verlauf</h4>
+    <div class="timeline">${(events||[]).map(e => `
+      <div class="tl-item"><div class="a">${esc(e.action)}</div>${e.note?'<div class="n">'+esc(e.note)+'</div>':''}<div class="t">${new Date(e.created_at).toLocaleString('de-DE')}</div></div>`).join('') || '<p style="color:var(--gray);font-size:.83rem;">Kein Verlauf</p>'}</div>
+  `;
+  document.getElementById('detailModal').classList.add('open');
+};
+
+window.updateReq = async function(status){
+  const note = document.getElementById('reqNote');
+  const payload = { status };
+  if(note && note.value.trim()) payload.note = note.value.trim();
+  const { error } = await supabase.from('service_requests').update(payload).eq('id', activeReq.id);
+  if(error){ alert('❌ Fehler: ' + error.message); return; }
+  document.getElementById('detailModal').classList.remove('open');
+  await loadRequests();
+};
+
+async function loadPayments(){
+  const { data, error } = await supabase.from('payments').select('*').order('created_at', { ascending:false });
+  if(error){ console.error(error); return; }
+  allPayments = data || [];
+  const order = ['pending','confirmed','failed'];
+  document.getElementById('stats-govpay').innerHTML = order.map(s => {
+    const n = allPayments.filter(p => p.status === s).length;
+    return '<div class="stat"><span class="n">'+n+'</span><span class="l">'+STATUS_LABEL[s]+'</span></div>';
+  }).join('');
+  const tbody = document.getElementById('pay-rows');
+  if(allPayments.length === 0){ tbody.innerHTML = '<tr class="empty-row"><td colspan="6">Keine Zahlungen</td></tr>'; return; }
+  tbody.innerHTML = allPayments.map(p => `
+    <tr onclick="openPay('${p.id}')">
+      <td class="mono">${esc(p.reference)}</td>
+      <td>${esc(p.citizen_name)}</td>
+      <td>${esc(p.service)}</td>
+      <td class="mono">${p.amount||0} ETB</td>
+      <td>${esc(p.payment_method)}</td>
+      <td><span class="pill ${p.status}">${STATUS_LABEL[p.status]||p.status}</span></td>
+    </tr>`).join('');
+}
+
+window.openPay = async function(id){
+  const pay = allPayments.find(p => p.id === id);
+  if(!pay) return;
+  document.getElementById('dTitle').textContent = pay.reference;
+  document.getElementById('dSub').textContent = pay.service + ' · ' + pay.amount + ' ETB';
+  let actionsHtml = '';
+  if(pay.status === 'pending'){
+    actionsHtml = `<div class="actions-box"><div class="btn-row">
+      <button class="btn" onclick="updatePay('${pay.id}','confirmed')">Als bezahlt bestätigen</button>
+      <button class="btn red" onclick="updatePay('${pay.id}','failed')">Als fehlgeschlagen markieren</button>
+    </div></div>`;
+  }
+  document.getElementById('detailBody').innerHTML = `
+    <div class="detail-grid">
+      <div class="detail-item"><div class="k">Bürger</div><div class="v">${esc(pay.citizen_name)}</div></div>
+      <div class="detail-item"><div class="k">Telefon</div><div class="v">${esc(pay.phone)||'—'}</div></div>
+      <div class="detail-item"><div class="k">Kebele</div><div class="v">${esc(pay.kebele)||'—'}</div></div>
+      <div class="detail-item"><div class="k">Methode</div><div class="v">${esc(pay.payment_method)}</div></div>
+    </div>${actionsHtml}
+  `;
+  document.getElementById('detailModal').classList.add('open');
+};
+
+window.updatePay = async function(id, status){
+  const { error } = await supabase.from('payments').update({ status }).eq('id', id);
+  if(error){ alert('❌ Fehler: ' + error.message); return; }
+  document.getElementById('detailModal').classList.remove('open');
+  await loadPayments();
+};
+
+async function loadStaff(){
+  const { data, error } = await supabase.from('users').select('*').order('created_at', { ascending:false });
+  if(error){ console.error(error); return; }
+  const tbody = document.getElementById('staff-rows');
+  if(!data || data.length === 0){ tbody.innerHTML = '<tr class="empty-row"><td colspan="5">Keine Mitarbeiter</td></tr>'; return; }
+  tbody.innerHTML = data.map(u => `
+    <tr>
+      <td class="mono">${esc(u.staff_id)}</td>
+      <td>${esc(u.full_name)}</td>
+      <td>${ORGAN_LABEL[u.organ]||u.organ}</td>
+      <td><span class="pill ${u.status==='pending'?'pending':'completed'}">${u.status==='pending'?'Wartet':'Freigeschaltet'}</span></td>
+      <td>${u.status==='pending' ? '<button class="btn" onclick="approveStaff(\''+u.id+'\')">Freischalten</button>' : ''}</td>
+    </tr>`).join('');
+}
+
+window.approveStaff = async function(id){
+  const { error } = await supabase.from('users').update({ status:'approved' }).eq('id', id);
+  if(error){ alert('❌ Fehler: ' + error.message); return; }
+  await loadStaff();
+};
+
+document.getElementById('btnLogout').addEventListener('click', async () => {
+  await supabase.auth.signOut();
+  window.location.href = 'staff-login.html';
+});
+
+init();
+</script>
+</body>
+</html>

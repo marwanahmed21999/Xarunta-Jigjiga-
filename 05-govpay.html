@@ -326,22 +326,43 @@ body.lang-am span.so{display:none!important;}body.lang-am span.am{display:inline
     <div class="st">Online Service</div>
     <h2 class="sh" style="color:#fff;margin-bottom:8px;">Zahlung starten</h2>
     <p class="ss">Felder ausfüllen – fertig in unter 1 Minute. Beleg kommt sofort per SMS.</p>
+    <div id="payMsg"></div>
     <div class="fgrid" style="margin-top:26px;">
-      <div class="fg"><label>Vollständiger Name *</label><input type="text" placeholder="z.B. Fatuma Hassan Ali"></div>
-      <div class="fg"><label>Telefonnummer *</label><input type="tel" placeholder="+251 9x xxx xxxx"></div>
-      <div class="fg"><label>Nationale ID</label><input type="text" placeholder="Ihre ID-Nummer"></div>
-      <div class="fg"><label>Art des Antrags *</label>
-        <select>
-          <option>Bitte wählen...</option>
-          <option>🪪 ID-Karte / Reisepass</option><option>🏠 Wohnsitzanmeldung</option>
-          <option>👶 Geburtsurkunde</option><option>💒 Heiratsurkunde</option>
-          <option>🏗️ Baugenehmigung</option><option>🌱 Landnutzung</option>
-          <option>💰 Steuern</option><option>📢 Beschwerde</option>
+      <div class="fg"><label>Vollständiger Name *</label><input type="text" id="payName" placeholder="z.B. Fatuma Hassan Ali"></div>
+      <div class="fg"><label>Telefonnummer *</label><input type="tel" id="payPhone" placeholder="+251 9x xxx xxxx"></div>
+      <div class="fg"><label>Nationale ID</label><input type="text" id="payNid" placeholder="Ihre ID-Nummer"></div>
+      <div class="fg"><label>Kebele / Zone</label>
+        <select id="payKebele">
+          <option value="">-- Auswählen --</option>
+          <option>Jigjiga Zone</option><option>Shinile Zone</option><option>Korahe Zone</option>
+          <option>Jarar Zone</option><option>Shabelle Zone</option><option>Dollo Zone</option>
+          <option>Nogob Zone</option><option>Siti Zone</option><option>Liben Zone</option>
         </select>
       </div>
-      <div class="fg full"><label>Beschreibung</label><textarea rows="3" placeholder="Beschreiben Sie Ihr Anliegen..."></textarea></div>
+      <div class="fg full"><label>Dienst *</label>
+        <select id="payService">
+          <option value="">Bitte wählen...</option>
+          <option data-amount="450">🪪 ID-Karte — 450 ETB</option>
+          <option data-amount="200">🏠 Wohnsitzanmeldung — 200 ETB</option>
+          <option data-amount="">💰 Steuern & Abgaben — Betrag variabel</option>
+          <option data-amount="800">🏗️ Baugenehmigung — 800 ETB</option>
+          <option data-amount="1200">🌱 Landnutzungsrecht — 1.200 ETB</option>
+          <option data-amount="500">🏫 Schulgebühren — 500 ETB</option>
+          <option data-amount="150">👶 Geburtsurkunde — 150 ETB</option>
+          <option data-amount="300">💒 Heiratsurkunde — 300 ETB</option>
+        </select>
+      </div>
+      <div class="fg"><label>Betrag (ETB) *</label><input type="number" id="payAmount" placeholder="Betrag"></div>
+      <div class="fg"><label>Zahlungsmethode *</label>
+        <select id="payMethod">
+          <option value="">-- Auswählen --</option>
+          <option>Telebirr</option><option>CBE Birr</option><option>HelloCash</option>
+          <option>M-Pesa</option><option>Coopy Birr</option>
+        </select>
+      </div>
+      <div class="fg full" style="position:absolute;left:-9999px;" aria-hidden="true"><label>Firma</label><input type="text" id="payHoneypot" tabindex="-1" autocomplete="off"></div>
     </div>
-    <button class="sub-btn" onclick="alert('✅ Antrag eingereicht!\n\nReferenz: KB01-'+Math.floor(10000+Math.random()*90000)+'\n\nWir melden uns in 48 Stunden!')">🔒 Sicher zahlen</button>
+    <button class="sub-btn" id="btnSubmitPay">🔒 Sicher zahlen</button>
   </div>
 </section>
 
@@ -386,6 +407,61 @@ function setLang(l,btn){
     if(b){document.querySelectorAll('.lb').forEach(x=>x.classList.remove('on'));b.classList.add('on');}
   }
 })();
+</script>
+
+<script type="module">
+import { supabase } from './src/supabase-config.js';
+
+document.getElementById('payService').addEventListener('change', (e) => {
+  const opt = e.target.selectedOptions[0];
+  const amt = opt ? opt.dataset.amount : '';
+  document.getElementById('payAmount').value = amt || '';
+});
+
+document.getElementById('btnSubmitPay').addEventListener('click', async () => {
+  const msg = document.getElementById('payMsg');
+  msg.innerHTML = '';
+
+  if (document.getElementById('payHoneypot').value.trim() !== '') {
+    msg.innerHTML = '<p style="color:var(--sand-light);margin-bottom:14px;">✅ Zahlung eingeleitet!</p>';
+    return;
+  }
+
+  const citizen_name = document.getElementById('payName').value.trim();
+  const phone = document.getElementById('payPhone').value.trim();
+  const citizen_id = document.getElementById('payNid').value.trim() || null;
+  const kebele = document.getElementById('payKebele').value || null;
+  const serviceOpt = document.getElementById('payService').selectedOptions[0];
+  const service = serviceOpt ? serviceOpt.textContent.trim() : '';
+  const amount = parseFloat(document.getElementById('payAmount').value);
+  const payment_method = document.getElementById('payMethod').value;
+
+  if (!citizen_name || !phone || !service || !amount || !payment_method) {
+    msg.innerHTML = '<p style="color:#ff9a9a;margin-bottom:14px;">Bitte alle Pflichtfelder (*) inkl. Betrag ausfüllen.</p>';
+    return;
+  }
+
+  const { data: reference, error } = await supabase.rpc('submit_payment', {
+    p_amount: amount,
+    p_service: service,
+    p_kebele: kebele,
+    p_citizen_name: citizen_name,
+    p_citizen_id: citizen_id,
+    p_phone: phone,
+    p_payment_method: payment_method
+  });
+
+  if (error) {
+    msg.innerHTML = '<p style="color:#ff9a9a;margin-bottom:14px;">❌ Fehler: ' + error.message + '</p>';
+    return;
+  }
+
+  msg.innerHTML = '<p style="color:var(--sand-light);margin-bottom:14px;">✅ Zahlung eingeleitet! Referenz: <strong>' + reference + '</strong> — Bestätigung folgt per SMS.<br><small style="color:rgba(255,255,255,.5);">Hinweis: echte Telebirr/CBE-Anbindung folgt noch, Zahlung wird derzeit vom Personal manuell bestätigt.</small></p>';
+  ['payName','payPhone','payNid','payAmount'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('payKebele').value = '';
+  document.getElementById('payService').value = '';
+  document.getElementById('payMethod').value = '';
+});
 </script>
 
 </body>

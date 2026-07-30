@@ -325,22 +325,24 @@ body.lang-am span.so{display:none!important;}body.lang-am span.am{display:inline
     <div class="st">Online Service</div>
     <h2 class="sh" style="color:#fff;margin-bottom:8px;">Antrag online stellen</h2>
     <p class="ss">Ausfüllen und absenden – Antwort in 48 Stunden. Kein Bürobesuch nötig.</p>
+    <div id="reqMsg"></div>
     <div class="fgrid" style="margin-top:26px;">
-      <div class="fg"><label>Vollständiger Name *</label><input type="text" placeholder="z.B. Fatuma Hassan Ali"></div>
-      <div class="fg"><label>Telefonnummer *</label><input type="tel" placeholder="+251 9x xxx xxxx"></div>
-      <div class="fg"><label>Nationale ID</label><input type="text" placeholder="Ihre ID-Nummer"></div>
+      <div class="fg"><label>Vollständiger Name *</label><input type="text" id="reqName" placeholder="z.B. Fatuma Hassan Ali"></div>
+      <div class="fg"><label>Telefonnummer *</label><input type="tel" id="reqPhone" placeholder="+251 9x xxx xxxx"></div>
+      <div class="fg"><label>Nationale ID</label><input type="text" id="reqNid" placeholder="Ihre ID-Nummer"></div>
       <div class="fg"><label>Art des Antrags *</label>
-        <select>
-          <option>Bitte wählen...</option>
+        <select id="reqType">
+          <option value="">Bitte wählen...</option>
           <option>🪪 ID-Karte / Reisepass</option><option>🏠 Wohnsitzanmeldung</option>
           <option>👶 Geburtsurkunde</option><option>💒 Heiratsurkunde</option>
           <option>🏗️ Baugenehmigung</option><option>🌱 Landnutzung</option>
           <option>💰 Steuern</option><option>📢 Beschwerde</option>
         </select>
       </div>
-      <div class="fg full"><label>Beschreibung</label><textarea rows="3" placeholder="Beschreiben Sie Ihr Anliegen..."></textarea></div>
+      <div class="fg full"><label>Beschreibung</label><textarea rows="3" id="reqDesc" placeholder="Beschreiben Sie Ihr Anliegen..."></textarea></div>
+      <div class="fg full" style="position:absolute;left:-9999px;" aria-hidden="true"><label>Firma</label><input type="text" id="reqHoneypot" tabindex="-1" autocomplete="off"></div>
     </div>
-    <button class="sub-btn" onclick="alert('✅ Antrag eingereicht!\n\nReferenz: KB01-'+Math.floor(10000+Math.random()*90000)+'\n\nWir melden uns in 48 Stunden!')">📨 Antrag absenden</button>
+    <button class="sub-btn" id="btnSubmitReq">📨 Antrag absenden</button>
   </div>
 </section>
 
@@ -385,6 +387,51 @@ function setLang(l,btn){
     if(b){document.querySelectorAll('.lb').forEach(x=>x.classList.remove('on'));b.classList.add('on');}
   }
 })();
+</script>
+
+<script type="module">
+import { supabase } from './src/supabase-config.js';
+
+document.getElementById('btnSubmitReq').addEventListener('click', async () => {
+  const msg = document.getElementById('reqMsg');
+  msg.innerHTML = '';
+
+  // Honeypot: bots tend to fill every field, real users never see this one
+  if (document.getElementById('reqHoneypot').value.trim() !== '') {
+    msg.innerHTML = '<p style="color:var(--sand-light);margin-bottom:14px;">✅ Antrag eingereicht!</p>';
+    return;
+  }
+
+  const full_name = document.getElementById('reqName').value.trim();
+  const phone = document.getElementById('reqPhone').value.trim();
+  const national_id = document.getElementById('reqNid').value.trim() || null;
+  const request_type = document.getElementById('reqType').value;
+  const description = document.getElementById('reqDesc').value.trim();
+
+  if (!full_name || !phone || !request_type) {
+    msg.innerHTML = '<p style="color:#ff9a9a;margin-bottom:14px;">Bitte Name, Telefonnummer und Art des Antrags ausfüllen.</p>';
+    return;
+  }
+
+  const { data: requestNumber, error } = await supabase.rpc('submit_service_request', {
+    p_service: 'kebele',
+    p_request_type: request_type,
+    p_full_name: full_name,
+    p_national_id: national_id,
+    p_phone: phone,
+    p_kebele: 'Kebele 01 Jigjiga',
+    p_details: description ? { description } : null
+  });
+
+  if (error) {
+    msg.innerHTML = '<p style="color:#ff9a9a;margin-bottom:14px;">❌ Fehler: ' + error.message + '</p>';
+    return;
+  }
+
+  msg.innerHTML = '<p style="color:var(--sand-light);margin-bottom:14px;">✅ Antrag eingereicht! Referenz: <strong>' + requestNumber + '</strong> — wir melden uns in 48 Stunden.</p>';
+  ['reqName','reqPhone','reqNid','reqDesc'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('reqType').value = '';
+});
 </script>
 
 </body>
