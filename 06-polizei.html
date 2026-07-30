@@ -580,6 +580,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.5);padding:52px 24px 22px;}
     <h2><span class="so">Warbixinta Waa La Helay!</span><span class="en">Report Received!</span><span class="am">ሪፖርቱ ተቀብሏል!</span></h2>
     <p><span class="so">Warbixintaadu waxay gaartay hay'adda madaxbanaan ah. Waxaa la baari doonaa 48 saacadood gudahood.</span><span class="en">Your report has been received by the independent oversight body and will be reviewed within 48 hours.</span><span class="am">ሪፖርትዎ ወደ ነፃ ቁጥጥር አካል ደርሷል እና በ48 ሰዓት ውስጥ ይገምገማል።</span></p>
     <div class="ref-box" id="reportRef">REF: SR-2025-00000</div>
+    <button class="sm-btn" style="margin-right:8px;" onclick="printReportReceipt()">🖨️ <span class="so">Daabac</span><span class="en">Print</span><span class="am">አትም</span></button>
     <button class="sm-btn" onclick="document.getElementById('successModal').classList.remove('open')"><span class="so">Xidh</span><span class="en">Close</span><span class="am">ዝጋ</span></button>
   </div>
 </div>
@@ -632,9 +633,10 @@ document.getElementById('successModal').addEventListener('click',function(e){if(
 
 <!-- Echte Supabase-Anbindung: überschreibt die Demo-Funktionen oben -->
 <script type="module">
-import { login } from './src/auth.js';
-import { supabase } from './src/supabase-config.js';
-import { wireLocationCascade, readLocation } from './src/location-picker.js';
+import { login } from '../src/auth.js';
+import { supabase } from '../src/supabase-config.js';
+import { wireLocationCascade, readLocation } from '../src/location-picker.js';
+import { printDocument } from '../src/print-document.js';
 
 wireLocationCascade({
   zoneSel: document.getElementById('repZone'),
@@ -691,8 +693,29 @@ window.submitReport = async function submitReport(){
 
   if(error){ alert('❌ Fehler beim Speichern: ' + error.message); return; }
 
+  window.__lastReport = { region, organ, violation, description, incidentDate, phone, reference };
   document.getElementById('reportRef').textContent = 'REF: ' + reference;
   document.getElementById('successModal').classList.add('open');
+};
+
+window.printReportReceipt = function(){
+  const r = window.__lastReport;
+  if(!r) return;
+  printDocument({
+    title: 'Meldebestätigung — Anonymer Bericht',
+    subtitle: 'Nidaamka Xeerarka Soomaalida',
+    refLabel: 'Referenznummer',
+    refValue: r.reference,
+    fields: [
+      { label: 'Betroffenes Organ', value: r.organ },
+      { label: 'Art des Vorfalls', value: r.violation },
+      { label: 'Region', value: r.region },
+      { label: 'Datum des Vorfalls', value: r.incidentDate },
+      { label: 'Beschreibung', value: r.description },
+      { label: 'Status', value: 'Eingegangen' }
+    ],
+    note: 'Diese Meldung ist anonym — bewahren Sie diese Referenznummer auf, um den Bearbeitungsstatus später nachzufragen.'
+  });
 };
 </script>
 </body>

@@ -406,8 +406,9 @@ function setLang(l,btn){
 </script>
 
 <script type="module">
-import { supabase } from './src/supabase-config.js';
-import { wireLocationCascade, readLocation } from './src/location-picker.js';
+import { supabase } from '../src/supabase-config.js';
+import { wireLocationCascade, readLocation } from '../src/location-picker.js';
+import { printDocument } from '../src/print-document.js';
 
 wireLocationCascade({
   zoneSel: document.getElementById('payZone'),
@@ -471,12 +472,35 @@ document.getElementById('btnSubmitPay').addEventListener('click', async () => {
     return;
   }
 
-  msg.innerHTML = '<p style="color:var(--sand-light);margin-bottom:14px;">✅ Zahlung eingeleitet! Referenz: <strong>' + reference + '</strong> — Bestätigung folgt per SMS.<br><small style="color:rgba(255,255,255,.5);">Hinweis: echte Telebirr/CBE-Anbindung folgt noch, Zahlung wird derzeit vom Personal manuell bestätigt.</small></p>';
+  window.__lastPay = { citizen_name, phone, citizen_id, service, amount, payment_method, location: loc.full, reference };
+  msg.innerHTML = '<p style="color:var(--sand-light);margin-bottom:14px;">✅ Zahlung eingeleitet! Referenz: <strong>' + reference + '</strong> — Bestätigung folgt per SMS.<br><small style="color:rgba(255,255,255,.5);">Hinweis: echte Telebirr/CBE-Anbindung folgt noch, Zahlung wird derzeit vom Personal manuell bestätigt.</small><br><button class="sub-btn" style="margin-top:10px;padding:9px 18px;font-size:.85rem;width:auto;" onclick="printPaymentReceipt()">🖨️ Beleg ausdrucken</button></p>';
   ['payName','payPhone','payNid','payAmount'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('payKebele').value = '';
   document.getElementById('payService').value = '';
   document.getElementById('payMethod').value = '';
 });
+
+window.printPaymentReceipt = function(){
+  const r = window.__lastPay;
+  if(!r) return;
+  printDocument({
+    title: 'Zahlungsbeleg — GovPay',
+    subtitle: r.service,
+    refLabel: 'Referenznummer',
+    refValue: r.reference,
+    fields: [
+      { label: 'Bürger', value: r.citizen_name },
+      { label: 'Telefonnummer', value: r.phone },
+      { label: 'Nationale ID', value: r.citizen_id },
+      { label: 'Dienst', value: r.service },
+      { label: 'Betrag', value: r.amount + ' ETB' },
+      { label: 'Zahlungsmethode', value: r.payment_method },
+      { label: 'Standort', value: r.location },
+      { label: 'Status', value: 'Ausstehend (manuelle Bestätigung)' }
+    ],
+    note: 'Vorläufiger Beleg — echte Telebirr/CBE-Anbindung folgt noch, Bestätigung durch Personal.'
+  });
+};
 </script>
 
 </body>

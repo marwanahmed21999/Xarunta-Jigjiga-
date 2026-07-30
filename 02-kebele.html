@@ -394,8 +394,9 @@ function setLang(l,btn){
 </script>
 
 <script type="module">
-import { supabase } from './src/supabase-config.js';
-import { wireLocationCascade, readLocation } from './src/location-picker.js';
+import { supabase } from '../src/supabase-config.js';
+import { wireLocationCascade, readLocation } from '../src/location-picker.js';
+import { printDocument } from '../src/print-document.js';
 
 wireLocationCascade({
   zoneSel: document.getElementById('selZone'),
@@ -453,10 +454,32 @@ document.getElementById('btnSubmitReq').addEventListener('click', async () => {
     return;
   }
 
-  msg.innerHTML = '<p style="color:var(--sand-light);margin-bottom:14px;">✅ Antrag eingereicht! Referenz: <strong>' + requestNumber + '</strong> — wir melden uns in 48 Stunden.</p>';
+  window.__lastReq = { full_name, phone, national_id, request_type, description, location: loc.full, requestNumber };
+  msg.innerHTML = '<p style="color:var(--sand-light);margin-bottom:14px;">✅ Antrag eingereicht! Referenz: <strong>' + requestNumber + '</strong> — wir melden uns in 48 Stunden.<br><button class="sub-btn" style="margin-top:10px;padding:9px 18px;font-size:.85rem;width:auto;" onclick="printKebeleRequest()">🖨️ Bestätigung ausdrucken</button></p>';
   ['reqName','reqPhone','reqNid','reqDesc'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('reqType').value = '';
 });
+
+window.printKebeleRequest = function(){
+  const r = window.__lastReq;
+  if(!r) return;
+  printDocument({
+    title: 'Antragsbestätigung — Kebele',
+    subtitle: 'Kebele-Verwaltung',
+    refLabel: 'Referenznummer',
+    refValue: r.requestNumber,
+    fields: [
+      { label: 'Antragsteller', value: r.full_name },
+      { label: 'Telefonnummer', value: r.phone },
+      { label: 'Nationale ID', value: r.national_id },
+      { label: 'Art des Antrags', value: r.request_type },
+      { label: 'Standort', value: r.location },
+      { label: 'Beschreibung', value: r.description },
+      { label: 'Status', value: 'Ausstehend' }
+    ],
+    note: 'Bewahren Sie diese Bestätigung auf. Bearbeitung in der Regel innerhalb von 48 Stunden.'
+  });
+};
 </script>
 
 </body>

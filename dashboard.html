@@ -278,6 +278,7 @@ body.lang-de span.so{display:none!important;}body.lang-de span.de{display:inline
 import { supabase } from '../src/supabase-config.js';
 import { initLangSwitcher, t } from '../src/i18n.js';
 import { wireLocationCascade, readLocation } from '../src/location-picker.js';
+import { printDocument } from '../src/print-document.js';
 
 let profile = null;
 let cases = [];
@@ -475,6 +476,9 @@ window.openCase = async function openCase(id){
       <div class="detail-item full"><div class="k">${t({so:'Faahfaahin', en:'Description', am:'መግለጫ', de:'Beschreibung'})}</div><div class="v" style="font-weight:400;">${escapeHtml(activeCase.description) || '—'}</div></div>
       ${activeCase.verdict ? `<div class="detail-item full"><div class="k">${t({so:'Xukunka / Fiiro', en:'Verdict / Note', am:'ፍርድ / ማስታወሻ', de:'Urteil / Notiz'})}</div><div class="v" style="font-weight:400;">${escapeHtml(activeCase.verdict)}</div></div>` : ''}
     </div>
+    <div class="formfoot" style="margin-bottom:18px;">
+      <button class="btn ghost small" onclick="printCase()">🖨️ ${t({so:'Daabac', en:'Print', am:'አትም', de:'Ausdrucken'})}</button>
+    </div>
     ${actionsHtml}
     <h4 style="font-size:.85rem;margin-bottom:12px;">${t({so:'Taariikhda Kiiska', en:'Timeline', am:'ታሪክ', de:'Verlauf'})}</h4>
     <div class="timeline">
@@ -488,6 +492,27 @@ window.openCase = async function openCase(id){
     </div>
   `;
   openModal('detailModal');
+};
+
+window.printCase = function printCase(){
+  printDocument({
+    title: t({so:'Diiwaanka Kiiska', en:'Case Record', am:'የጉዳይ መዝገብ', de:'Fallakte'}),
+    subtitle: t({so:'Nidaamka Xeerarka Soomaalida', en:'Somali Justice System', am:'የሶማሌ ፍትህ ስርዓት', de:'Nidaamka Xeerarka Soomaalida'}),
+    refLabel: t({so:'Lambarka Kiiska', en:'Case Number', am:'የጉዳይ ቁጥር', de:'Fallnummer'}),
+    refValue: activeCase.case_number,
+    fields: [
+      { label: t({so:'Shakisan', en:'Suspect', am:'ተጠርጣሪ', de:'Verdächtiger'}), value: activeCase.suspect_name },
+      { label: t({so:'Aqoonsiga Qaranka', en:'National ID', am:'ብሔራዊ መታወቂያ', de:'Nationale ID'}), value: activeCase.national_id },
+      { label: t({so:'Dambiga', en:'Crime', am:'ወንጀል', de:'Tatbestand'}), value: activeCase.crime_type },
+      { label: t({so:'Taariikhda', en:'Date', am:'ቀን', de:'Datum'}), value: activeCase.incident_date },
+      { label: 'Kebele/Zone', value: activeCase.kebele },
+      { label: 'Status', value: statusLabel(activeCase.status) },
+      { label: t({so:'Faahfaahin', en:'Description', am:'መግለጫ', de:'Beschreibung'}), value: activeCase.description },
+      { label: t({so:'Xukunka / Fiiro', en:'Verdict / Note', am:'ፍርድ / ማስታወሻ', de:'Urteil / Notiz'}), value: activeCase.verdict },
+      { label: t({so:'Bearbeitendes Organ', en:'Handling Organ', am:'የሚይዘው አካል', de:'Bearbeitendes Organ'}), value: currentOrganLabel(activeCase.status) }
+    ],
+    note: t({so:'Diiwaan rasmi ah oo laga soo saaray Nidaamka Xeerarka.', en:'Official record generated from the Justice System.', am:'ከፍትህ ስርዓት የተፈጠረ ኦፊሴላዊ መዝገብ።', de:'Offizieller Auszug aus dem Fallakten-System.'})
+  });
 };
 
 window.advanceCase = async function advanceCase(nextStatus){

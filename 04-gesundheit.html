@@ -397,6 +397,7 @@ function setLang(l,btn){
 <script type="module">
 import { supabase } from '../src/supabase-config.js';
 import { wireInstitutionCascade, readInstitution } from '../src/location-picker.js?v=2';
+import { printDocument } from '../src/print-document.js';
 
 const zoneSel = document.getElementById('selZone');
 const woredaSel = document.getElementById('selWoreda');
@@ -454,10 +455,32 @@ document.getElementById('btnSubmitReq').addEventListener('click', async () => {
     return;
   }
 
-  msg.innerHTML = '<p style="color:var(--sand-light);margin-bottom:14px;">✅ Termin angefragt! Referenz: <strong>' + requestNumber + '</strong> — Bestätigung folgt telefonisch.</p>';
+  window.__lastReq = { full_name, phone, national_id, preferred_date, request_type, description, institution: inst.name, requestNumber };
+  msg.innerHTML = '<p style="color:var(--sand-light);margin-bottom:14px;">✅ Termin angefragt! Referenz: <strong>' + requestNumber + '</strong> — Bestätigung folgt telefonisch.<br><button class="sub-btn" style="margin-top:10px;padding:9px 18px;font-size:.85rem;width:auto;" onclick="printHealthRequest()">🖨️ Bestätigung ausdrucken</button></p>';
   ['reqName','reqPhone','reqNid','reqDate','reqDesc'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('reqType').value = '';
 });
+
+window.printHealthRequest = function(){
+  const r = window.__lastReq;
+  if(!r) return;
+  printDocument({
+    title: 'Terminbestätigung — Gesundheit',
+    subtitle: r.institution,
+    refLabel: 'Referenznummer',
+    refValue: r.requestNumber,
+    fields: [
+      { label: 'Name', value: r.full_name },
+      { label: 'Telefonnummer', value: r.phone },
+      { label: 'Nationale ID', value: r.national_id },
+      { label: 'Gewünschtes Datum', value: r.preferred_date },
+      { label: 'Art des Termins', value: r.request_type },
+      { label: 'Beschreibung', value: r.description },
+      { label: 'Status', value: 'Ausstehend' }
+    ],
+    note: 'Bewahren Sie diese Bestätigung auf. Terminbestätigung folgt telefonisch.'
+  });
+};
 </script>
 
 </body>
