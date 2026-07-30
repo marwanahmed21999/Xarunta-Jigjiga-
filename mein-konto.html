@@ -181,6 +181,7 @@ body.lang-de span.so{display:none!important;}body.lang-de span.de{display:inline
           <button class="lb" id="btn2-am">አማ</button>
           <button class="lb" id="btn2-de">DE</button>
         </div>
+        <button class="logout-btn" id="btnBell" style="position:relative;">🔔<span id="bellBadge" style="display:none;position:absolute;top:-5px;right:-5px;background:var(--red);color:#fff;border-radius:10px;font-size:.62rem;padding:1px 5px;font-weight:700;">0</span></button>
         <div class="who-name">
           <div class="n" id="whoName">—</div>
           <div class="o"><span class="so">Muwaadin</span><span class="en">Citizen</span><span class="am">ዜጋ</span><span class="de">Bürger</span></div>
@@ -235,11 +236,22 @@ body.lang-de span.so{display:none!important;}body.lang-de span.de{display:inline
   </div>
 </div>
 
+<!-- NOTIFICATIONS MODAL -->
+<div class="ov" id="notifModal">
+  <div class="modal">
+    <div class="modal-top">
+      <div><h3>🔔 <span class="so">Ogeysiisyada</span><span class="en">Notifications</span><span class="am">ማሳወቂያዎች</span><span class="de">Benachrichtigungen</span></h3><p><span class="so">Isbeddellada xaaladda codsiyadaada</span><span class="en">Status changes for your requests</span><span class="am">የጥያቄዎችዎ ሁኔታ ለውጦች</span><span class="de">Statusänderungen deiner Anträge</span></p></div>
+      <button class="modal-close" onclick="document.getElementById('notifModal').classList.remove('open')">✕</button>
+    </div>
+    <div class="modal-body" id="notifBody">—</div>
+  </div>
+</div>
+
 <script type="module">
 import { supabase } from './src/supabase-config.js';
 import { initLangSwitcher, t } from './src/i18n.js';
 import { printDocument } from './src/print-document.js';
-import { signUp, signIn, signOut, currentCitizen, myServiceRequests, myPayments, accessLogFor } from './src/citizen-auth.js';
+import { signUp, signIn, signOut, currentCitizen, myServiceRequests, myPayments, accessLogFor, myNotifications, markNotificationsRead } from './src/citizen-auth.js';
 
 const ORGAN_LABEL = {
   staff:{so:'Shaqaale', en:'Staff Member', am:'ሰራተኛ', de:'Mitarbeiter'},
@@ -336,6 +348,61 @@ document.getElementById('btnRegister').addEventListener('click', async () => {
 document.getElementById('btnLogout').addEventListener('click', async () => {
   await signOut();
   window.location.reload();
+});
+
+let notifications = [];
+
+const KIND_LABEL = {
+  service_request: {so:'Codsi', en:'Request', am:'ጥያቄ', de:'Antrag'},
+  payment: {so:'Lacag-bixin', en:'Payment', am:'ክፍያ', de:'Zahlung'}
+};
+
+function notifRefLabel(n){
+  if(n.kind === 'service_request'){
+    const r = requests.find(x => x.id === n.record_id);
+    return r ? r.request_number : '—';
+  }
+  const p = payments.find(x => x.id === n.record_id);
+  return p ? p.reference : '—';
+}
+
+function renderNotifBadge(){
+  const unread = notifications.filter(n => !n.is_read).length;
+  const badge = document.getElementById('bellBadge');
+  if(unread > 0){ badge.style.display = ''; badge.textContent = unread; }
+  else { badge.style.display = 'none'; }
+}
+
+function renderNotifModal(){
+  const body = document.getElementById('notifBody');
+  if(notifications.length === 0){
+    body.innerHTML = '<p style="color:var(--gray);font-size:.85rem;">' + t({so:'Wali ogeysiis ma jiro.', en:'No notifications yet.', am:'እስካሁን ማሳወቂያ የለም።', de:'Noch keine Benachrichtigungen.'}) + '</p>';
+    return;
+  }
+  body.innerHTML = notifications.map(n => `
+    <div style="padding:12px 0;border-top:1px solid var(--border);${n.is_read ? '' : 'background:var(--blue-pale);'}">
+      <div style="font-size:.85rem;font-weight:600;">${t(KIND_LABEL[n.kind])} <span class="mono">${notifRefLabel(n)}</span></div>
+      <div style="font-size:.82rem;color:var(--ink);margin-top:2px;">${statusLabel(n.old_status)} → <strong>${statusLabel(n.new_status)}</strong></div>
+      <div style="font-size:.7rem;color:var(--gray);margin-top:3px;">${new Date(n.created_at).toLocaleString('de-DE')}</div>
+    </div>
+  `).join('');
+}
+
+async function loadNotifications(){
+  notifications = await myNotifications();
+  renderNotifBadge();
+  if(document.getElementById('notifModal').classList.contains('open')) renderNotifModal();
+}
+
+document.getElementById('btnBell').addEventListener('click', async () => {
+  renderNotifModal();
+  document.getElementById('notifModal').classList.add('open');
+  const unreadIds = notifications.filter(n => !n.is_read).map(n => n.id);
+  if(unreadIds.length > 0){
+    await markNotificationsRead(unreadIds);
+    notifications.forEach(n => n.is_read = true);
+    renderNotifBadge();
+  }
 });
 
 function renderRequests(){
@@ -445,6 +512,12 @@ async function boot(){
   payments = await myPayments();
   renderRequests();
   renderPayments();
+  await loadNotifications();
+
+  supabase
+    .channel('notif-realtime')
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'notifications', filter: 'account_id=eq.' + citizen.user.id }, () => { loadNotifications(); })
+    .subscribe();
 }
 
 boot();

@@ -87,4 +87,15 @@ async function accessLogFor(tableName, recordId) {
   return error ? [] : data;
 }
 
-export { signUp, signIn, signOut, currentCitizen, attachServiceRequest, attachPayment, myServiceRequests, myPayments, accessLogFor };
+// Echte Benachrichtigungen: informieren den Bürger, sobald sich der Status
+// eines Antrags/einer Zahlung ändert. In-App (kein SMS/E-Mail-Versand, dafür fehlt eine echte Anbindung).
+async function myNotifications() {
+  const { data, error } = await supabase.from('notifications').select('*').order('created_at', { ascending: false });
+  return error ? [] : data;
+}
+async function markNotificationsRead(ids) {
+  if (!ids || ids.length === 0) return;
+  await supabase.from('notifications').update({ is_read: true }).in('id', ids);
+}
+
+export { signUp, signIn, signOut, currentCitizen, attachServiceRequest, attachPayment, myServiceRequests, myPayments, accessLogFor, myNotifications, markNotificationsRead };
