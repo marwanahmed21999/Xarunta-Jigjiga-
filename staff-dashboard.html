@@ -62,6 +62,7 @@ tbody tr:hover{background:var(--blue-pale);}
 .pill.in_progress{background:var(--blue-pale);color:var(--blue);}
 .pill.completed{background:var(--green-pale);color:var(--green);}
 .pill.rejected{background:var(--red-pale);color:var(--red);}
+.pill.needs_info{background:#fff3cd;color:#8a6408;}
 .pill.confirmed{background:var(--green-pale);color:var(--green);}
 .pill.failed{background:var(--red-pale);color:var(--red);}
 
@@ -192,6 +193,7 @@ body.lang-de span.so{display:none!important;}body.lang-de span.de{display:inline
 <script type="module">
 import { supabase } from './src/supabase-config.js';
 import { initLangSwitcher, t } from './src/i18n.js';
+import { requestDocuments } from './src/citizen-auth.js';
 
 let profile = null;
 let allRequests = [];
@@ -203,6 +205,7 @@ const STATUS_LABEL = {
   in_progress:{so:'La Shaqaynayo', en:'In Progress', am:'በሂደት ላይ', de:'In Bearbeitung'},
   completed:{so:'La Dhammeeyay', en:'Completed', am:'ተጠናቅቋል', de:'Erledigt'},
   rejected:{so:'La Diiday', en:'Rejected', am:'ውድቅ ተደርጓል', de:'Abgelehnt'},
+  needs_info:{so:'Waxaa loo baahan yahay Dukumeenti', en:'Documents Needed', am:'ሰነዶች ያስፈልጋሉ', de:'Unterlagen erforderlich'},
   confirmed:{so:'La Xaqiijiyay', en:'Confirmed', am:'ተረጋግጧል', de:'Bestätigt'},
   failed:{so:'Ku Guuldareystay', en:'Failed', am:'አልተሳካም', de:'Fehlgeschlagen'}
 };
@@ -235,6 +238,7 @@ function statusFilterOptionsHtml(){
   return `<option value="">${t({so:'Dhammaan Xaaladaha',en:'All Statuses',am:'ሁሉም ሁኔታዎች',de:'Alle Status'})}</option>
     <option value="pending">${statusLabel('pending')}</option>
     <option value="in_progress">${statusLabel('in_progress')}</option>
+    <option value="needs_info">${statusLabel('needs_info')}</option>
     <option value="completed">${statusLabel('completed')}</option>
     <option value="rejected">${statusLabel('rejected')}</option>`;
 }
@@ -361,18 +365,26 @@ window.openReq = async function(id){
   document.getElementById('dSub').textContent = serviceLabel(activeReq.service) + ' · ' + activeReq.request_type;
 
   const { data: events } = await supabase.from('service_events').select('*').eq('request_id', id).order('created_at', { ascending:true });
+  const docs = await requestDocuments(id);
 
   let actionsHtml = '';
   if(activeReq.status !== 'completed' && activeReq.status !== 'rejected'){
     actionsHtml = `<div class="actions-box">
-      <textarea id="reqNote" placeholder="${t({so:'Fiiro (ikhtiyaari)…', en:'Note (optional)…', am:'ማስታወሻ (አማራጭ)…', de:'Notiz (optional)…'})}"></textarea>
+      <textarea id="reqNote" placeholder="${t({so:'Fiiro (ikhtiyaari, waajib haddii aad dukumeenti codsanayso)…', en:'Note (optional, required when requesting documents)…', am:'ማስታወሻ (አማራጭ፣ ሰነድ ሲጠየቅ ግዴታ ነው)…', de:'Notiz (optional, bei Nachforderung Pflicht)…'})}"></textarea>
       <div class="btn-row">
         ${activeReq.status === 'pending' ? '<button class="btn" onclick="updateReq(\'in_progress\')">' + t({so:'La Shaqee', en:'Take In Progress', am:'ወደ ሂደት ውሰድ', de:'In Bearbeitung nehmen'}) + '</button>' : ''}
+        <button class="btn" onclick="updateReq('needs_info')">${t({so:'Dukumeenti Codso', en:'Request Documents', am:'ሰነድ ጠይቅ', de:'Unterlagen nachfordern'})}</button>
         <button class="btn" onclick="updateReq('completed')">${t({so:'U Calaamadee La Dhammeeyay', en:'Mark as Completed', am:'እንደተጠናቀቀ ምልክት አድርግ', de:'Als erledigt markieren'})}</button>
         <button class="btn red" onclick="updateReq('rejected')">${t({so:'Diid', en:'Reject', am:'ውድቅ አድርግ', de:'Ablehnen'})}</button>
       </div>
     </div>`;
   }
+
+  const docsHtml = `
+    <h4 style="font-size:.85rem;margin:16px 0 8px;">${t({so:'Dukumeentiyada', en:'Documents', am:'ሰነዶች', de:'Hochgeladene Dokumente'})}</h4>
+    ${docs.length === 0 ? '<p style="color:var(--gray);font-size:.83rem;">' + t({so:'Wax dukumeenti ah lama soo gudbin', en:'No documents uploaded', am:'ምንም ሰነድ አልተላከም', de:'Keine Dokumente hochgeladen'}) + '</p>' :
+      '<ul style="font-size:.83rem;padding-left:18px;">' + docs.map(d => `<li><a href="${d.url}" target="_blank">${esc(d.file_name)}</a> <span style="color:var(--gray);">(${new Date(d.created_at).toLocaleDateString('de-DE')})</span></li>`).join('') + '</ul>'}
+  `;
 
   document.getElementById('detailBody').innerHTML = `
     <div class="detail-grid">
@@ -385,7 +397,8 @@ window.openReq = async function(id){
       <div class="detail-item full"><div class="k">${t({so:'Faahfaahin', en:'Details', am:'ዝርዝሮች', de:'Details'})}</div><div class="v" style="font-weight:400;">${esc(activeReq.details && activeReq.details.description) || '—'}</div></div>
     </div>
     ${actionsHtml}
-    <h4 style="font-size:.85rem;margin-bottom:10px;">${t({so:'Taariikhda', en:'Timeline', am:'ታሪክ', de:'Verlauf'})}</h4>
+    ${docsHtml}
+    <h4 style="font-size:.85rem;margin:16px 0 10px;">${t({so:'Taariikhda', en:'Timeline', am:'ታሪክ', de:'Verlauf'})}</h4>
     <div class="timeline">${(events||[]).map(e => `
       <div class="tl-item"><div class="a">${esc(formatEventAction(e.action))}</div>${e.note?'<div class="n">'+esc(e.note)+'</div>':''}<div class="t">${new Date(e.created_at).toLocaleString('de-DE')}</div></div>`).join('') || '<p style="color:var(--gray);font-size:.83rem;">' + t({so:'Wax taariikh ah lama helin', en:'No history', am:'ምንም ታሪክ የለም', de:'Kein Verlauf'}) + '</p>'}</div>
   `;
@@ -394,8 +407,13 @@ window.openReq = async function(id){
 
 window.updateReq = async function(status){
   const note = document.getElementById('reqNote');
+  const noteVal = note ? note.value.trim() : '';
+  if(status === 'needs_info' && !noteVal){
+    alert(t({so:'Fadlan sharax dukumeentiyada loo baahan yahay.', en:'Please specify which documents are needed.', am:'እባክዎ የትኞቹ ሰነዶች እንደሚያስፈልጉ ይግለጹ።', de:'Bitte angeben, welche Unterlagen fehlen.'}));
+    return;
+  }
   const payload = { status };
-  if(note && note.value.trim()) payload.note = note.value.trim();
+  if(noteVal) payload.note = noteVal;
   const { error } = await supabase.from('service_requests').update(payload).eq('id', activeReq.id);
   if(error){ alert('❌ Fehler: ' + error.message); return; }
   document.getElementById('detailModal').classList.remove('open');

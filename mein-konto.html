@@ -67,6 +67,7 @@ tbody tr:hover{background:var(--blue-pale);}
 .pill.confirmed{background:var(--green-pale);color:var(--green);}
 .pill.rejected{background:var(--red-pale);color:var(--red);}
 .pill.failed{background:var(--red-pale);color:var(--red);}
+.pill.needs_info{background:#fff3cd;color:#8a6408;}
 
 .authwrap{max-width:420px;margin:60px auto;padding:0 20px;}
 .card{background:#fff;border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);padding:30px 28px;}
@@ -251,7 +252,7 @@ body.lang-de span.so{display:none!important;}body.lang-de span.de{display:inline
 import { supabase } from './src/supabase-config.js';
 import { initLangSwitcher, t } from './src/i18n.js';
 import { printDocument } from './src/print-document.js';
-import { signUp, signIn, signOut, currentCitizen, myServiceRequests, myPayments, accessLogFor, myNotifications, markNotificationsRead } from './src/citizen-auth.js';
+import { signUp, signIn, signOut, currentCitizen, myServiceRequests, myPayments, accessLogFor, myNotifications, markNotificationsRead, requestTimeline, requestDocuments, uploadRequestDocument } from './src/citizen-auth.js';
 
 const ORGAN_LABEL = {
   staff:{so:'Shaqaale', en:'Staff Member', am:'ሰራተኛ', de:'Mitarbeiter'},
@@ -269,11 +270,42 @@ function renderAccessLog(entries){
     </div>`).join('') + '</div>';
 }
 
+function formatEventAction(action){
+  if(action === 'created'){
+    return t({so:'Codsi la sameeyay', en:'Request created', am:'ጥያቄ ተፈጥሯል', de:'Antrag eingereicht'});
+  }
+  if(action && action.startsWith('transition:')){
+    const [, from, to] = action.split(':');
+    return t({so:'Xaalad: ', en:'Status: ', am:'ሁኔታ: ', de:'Status: '}) + statusLabel(from) + ' → ' + statusLabel(to);
+  }
+  return action || '';
+}
+
+function renderTimeline(events){
+  if(!events || events.length === 0){
+    return '<p style="color:var(--gray);font-size:.8rem;">' + t({so:'Wax taariikh ah lama helin', en:'No history', am:'ምንም ታሪክ የለም', de:'Kein Verlauf'}) + '</p>';
+  }
+  return events.map(e => `
+    <div style="font-size:.83rem;padding:8px 0;border-top:1px solid var(--border);">
+      <div style="font-weight:600;">${formatEventAction(e.action)}</div>
+      ${e.note ? '<div style="margin-top:2px;">' + e.note.replace(/[&<>"\']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])) + '</div>' : ''}
+      <div style="font-size:.68rem;color:var(--gray);margin-top:2px;">${new Date(e.created_at).toLocaleString('de-DE')}</div>
+    </div>`).join('');
+}
+
+function renderDocs(docs){
+  if(!docs || docs.length === 0){
+    return '<p style="color:var(--gray);font-size:.8rem;">' + t({so:'Wax dukumeenti ah lama soo gudbin', en:'No documents uploaded', am:'ምንም ሰነድ አልተላከም', de:'Keine Dokumente hochgeladen'}) + '</p>';
+  }
+  return '<ul style="font-size:.83rem;padding-left:18px;">' + docs.map(d => `<li><a href="${d.url}" target="_blank">${d.file_name}</a> <span style="color:var(--gray);">(${new Date(d.created_at).toLocaleDateString('de-DE')})</span></li>`).join('') + '</ul>';
+}
+
 const STATUS_LABEL = {
   pending:{so:'Sugaya', en:'Pending', am:'በመጠባበቅ ላይ', de:'Ausstehend'},
   in_progress:{so:'La Shaqaynayo', en:'In Progress', am:'በሂደት ላይ', de:'In Bearbeitung'},
   completed:{so:'La Dhammeeyay', en:'Completed', am:'ተጠናቅቋል', de:'Erledigt'},
   rejected:{so:'La Diiday', en:'Rejected', am:'ውድቅ ተደርጓል', de:'Abgelehnt'},
+  needs_info:{so:'Waxaa loo baahan yahay Dukumeenti', en:'Documents Needed', am:'ሰነዶች ያስፈልጋሉ', de:'Unterlagen erforderlich'},
   confirmed:{so:'La Xaqiijiyay', en:'Confirmed', am:'ተረጋግጧል', de:'Bestätigt'},
   failed:{so:'Guuldareystay', en:'Failed', am:'አልተሳካም', de:'Fehlgeschlagen'}
 };
@@ -434,19 +466,50 @@ window.showRequest = async function(i){
   const r = requests[i];
   document.getElementById('dTitle').textContent = r.request_number;
   document.getElementById('dSub').textContent = r.request_type + ' · ' + statusLabel(r.status);
+
+  const needsInfoNotice = r.status === 'needs_info'
+    ? '<div class="msg" style="background:#fff3cd;color:#8a6408;">📋 ' + t({so:'Waxaa laga rabaa inaad soo gudbiso dukumeenti dheeraad ah — eeg taariikhda hoose.', en:'Additional documents have been requested — see the history below.', am:'ተጨማሪ ሰነዶች ተጠይቀዋል — ከታች ያለውን ታሪክ ይመልከቱ።', de:'Es wurden zusätzliche Unterlagen angefordert — siehe Verlauf unten.'}) + '</div>'
+    : '';
+
   document.getElementById('detailBody').innerHTML = `
     <div class="detail-grid">
       <div class="detail-item"><div class="k">${t({so:'Adeegga',en:'Service',am:'አገልግሎት',de:'Dienst'})}</div><div class="v">${r.service}</div></div>
       <div class="detail-item"><div class="k">Kebele</div><div class="v">${r.kebele || '—'}</div></div>
       <div class="detail-item full"><div class="k">${t({so:'Faahfaahin',en:'Description',am:'መግለጫ',de:'Beschreibung'})}</div><div class="v">${(r.details && r.details.description) || '—'}</div></div>
     </div>
-    <button class="btn gold" onclick='printReq(${i})'>🖨️ ${t({so:'Daabac',en:'Print',am:'አትም',de:'Drucken'})}</button>
+    ${needsInfoNotice}
+    <button class="btn gold" onclick='printReq(${i})'>🖨️ ${t({so:'Rasiidka Codsiga',en:'Submission Receipt',am:'የማመልከቻ ደረሰኝ',de:'Einreichungsbestätigung'})}</button>
+    ${r.status === 'completed' ? '<button class="btn gold" style="margin-left:8px;" onclick=\'printBescheid(' + i + ')\'>📜 ' + t({so:'Go\'aanka Rasmiga ah', en:'Official Decision', am:'ኦፊሴላዊ ውሳኔ', de:'Offizieller Bescheid'}) + '</button>' : ''}
+
+    <div class="sec-title" style="font-size:.95rem;margin:20px 0 4px;">📎 <span class="so">Dukumeentiyada</span><span class="en">Documents</span><span class="am">ሰነዶች</span><span class="de">Dokumente</span></div>
+    <div id="docsBox">…</div>
+    <div class="fg" style="margin-top:10px;"><input type="file" id="docUpload" multiple accept=".pdf,.jpg,.jpeg,.png"></div>
+    <button class="btn ghost small" id="btnUploadDoc">⬆️ ${t({so:'Soo Gudbi',en:'Upload',am:'ስቀል',de:'Hochladen'})}</button>
+
+    <div class="sec-title" style="font-size:.95rem;margin:20px 0 4px;">🕓 <span class="so">Taariikhda</span><span class="en">Timeline</span><span class="am">ታሪክ</span><span class="de">Verlauf</span></div>
+    <div id="timelineBox">…</div>
+
     <div class="sec-title" style="font-size:.95rem;margin:20px 0 4px;">🔍 <span class="so">Kuwa Wax ka Eegay</span><span class="en">Access Log</span><span class="am">የመዳረሻ ምዝግብ</span><span class="de">Zugriffsprotokoll</span></div>
     <div id="accessLogBox">…</div>
   `;
   document.getElementById('detailModal').classList.add('open');
-  const log = await accessLogFor('service_requests', r.id);
+
+  document.getElementById('btnUploadDoc').addEventListener('click', async () => {
+    const files = document.getElementById('docUpload').files;
+    for(const file of files){ await uploadRequestDocument(r.id, file); }
+    document.getElementById('docsBox').innerHTML = renderDocs(await requestDocuments(r.id));
+    document.getElementById('docUpload').value = '';
+  });
+
+  const [log, events, docs] = await Promise.all([
+    accessLogFor('service_requests', r.id),
+    requestTimeline(r.id),
+    requestDocuments(r.id)
+  ]);
   document.getElementById('accessLogBox').innerHTML = renderAccessLog(log);
+  document.getElementById('timelineBox').innerHTML = renderTimeline(events);
+  document.getElementById('docsBox').innerHTML = renderDocs(docs);
+  window.__activeEvents = events;
 };
 window.printReq = function(i){
   const r = requests[i];
@@ -461,6 +524,24 @@ window.printReq = function(i){
       { label: 'Status', value: statusLabel(r.status) },
       { label: 'Eingereicht am', value: new Date(r.created_at).toLocaleString('de-DE') }
     ]
+  });
+};
+window.printBescheid = function(i){
+  const r = requests[i];
+  const events = window.__activeEvents || [];
+  const decisionEvent = [...events].reverse().find(e => e.action && e.action.startsWith('transition:') && e.action.endsWith(':completed'));
+  const decisionText = decisionEvent && decisionEvent.note ? decisionEvent.note : 'Der Antrag wurde genehmigt. Es liegen keine öffentlich-rechtlichen Hindernisse entgegen.';
+  printDocument({
+    title: 'Bescheid',
+    subtitle: r.service + ' — ' + r.request_type,
+    refLabel: 'Aktenzeichen',
+    refValue: r.request_number,
+    fields: [
+      { label: 'Entscheidung', value: decisionText },
+      { label: 'Ausstellungsdatum', value: new Date().toLocaleDateString('de-DE') },
+      { label: 'Standort', value: r.kebele }
+    ],
+    note: 'Rechtsbehelfsbelehrung: Gegen diesen Bescheid kann innerhalb eines Monats nach Zustellung Widerspruch bei der zuständigen Behörde eingelegt werden.'
   });
 };
 window.showPayment = async function(i){

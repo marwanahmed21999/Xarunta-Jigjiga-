@@ -345,6 +345,7 @@ body.lang-am span.so{display:none!important;}body.lang-am span.am{display:inline
         </select>
       </div>
       <div class="fg full"><label>Beschreibung</label><textarea rows="3" id="reqDesc" placeholder="Beschreiben Sie Ihr Anliegen..."></textarea></div>
+      <div class="fg full"><label>Unterlagen (optional)</label><input type="file" id="reqFiles" multiple accept=".pdf,.jpg,.jpeg,.png"><small style="display:block;margin-top:6px;color:rgba(255,255,255,.45);">Nur sichtbar, wenn du in „Mein Konto" eingeloggt bist.</small></div>
       <div class="fg full" style="position:absolute;left:-9999px;" aria-hidden="true"><label>Firma</label><input type="text" id="reqHoneypot" tabindex="-1" autocomplete="off"></div>
     </div>
     <button class="sub-btn" id="btnSubmitReq">📅 Termin bestätigen</button>
@@ -398,7 +399,7 @@ function setLang(l,btn){
 import { supabase } from './src/supabase-config.js';
 import { wireInstitutionCascade, readInstitution } from './src/location-picker.js?v=2';
 import { printDocument } from './src/print-document.js';
-import { attachServiceRequest } from './src/citizen-auth.js';
+import { attachServiceRequest, requestIdByNumber, uploadRequestDocument } from './src/citizen-auth.js';
 
 const zoneSel = document.getElementById('selZone');
 const woredaSel = document.getElementById('selWoreda');
@@ -458,9 +459,17 @@ document.getElementById('btnSubmitReq').addEventListener('click', async () => {
 
   await attachServiceRequest(requestNumber);
 
+  const files = document.getElementById('reqFiles').files;
+  if (files.length > 0) {
+    const requestId = await requestIdByNumber(requestNumber);
+    if (requestId) {
+      for (const file of files) { await uploadRequestDocument(requestId, file); }
+    }
+  }
+
   window.__lastReq = { full_name, phone, national_id, preferred_date, request_type, description, institution: inst.name, requestNumber };
   msg.innerHTML = '<p style="color:var(--sand-light);margin-bottom:14px;">✅ Termin angefragt! Referenz: <strong>' + requestNumber + '</strong> — Bestätigung folgt telefonisch.<br><button class="sub-btn" style="margin-top:10px;padding:9px 18px;font-size:.85rem;width:auto;" onclick="printHealthRequest()">🖨️ Bestätigung ausdrucken</button> <a href="mein-konto.html" style="color:var(--sand-light);font-size:.85rem;margin-left:10px;">📁 Im eigenen Konto verfolgen</a></p>';
-  ['reqName','reqPhone','reqNid','reqDate','reqDesc'].forEach(id => document.getElementById(id).value = '');
+  ['reqName','reqPhone','reqNid','reqDate','reqDesc','reqFiles'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('reqType').value = '';
 });
 

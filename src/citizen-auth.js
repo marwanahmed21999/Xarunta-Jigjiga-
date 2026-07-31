@@ -98,4 +98,43 @@ async function markNotificationsRead(ids) {
   await supabase.from('notifications').update({ is_read: true }).in('id', ids);
 }
 
-export { signUp, signIn, signOut, currentCitizen, attachServiceRequest, attachPayment, myServiceRequests, myPayments, accessLogFor, myNotifications, markNotificationsRead };
+// Verlauf eines Antrags (Statuswechsel + Rückfragen der Mitarbeiter) — für den Bürger selbst sichtbar
+async function requestTimeline(requestId) {
+  const { data, error } = await supabase.from('service_events').select('*').eq('request_id', requestId).order('created_at', { ascending: true });
+  return error ? [] : data;
+}
+
+// Zum Nachreichen von Unterlagen (z.B. Lageplan bei einer Baugenehmigung) nach Einreichung nötig,
+// um die tatsächliche Zeilen-ID des Antrags zu kennen (die RPC gibt nur die Referenznummer zurück).
+async function requestIdByNumber(requestNumber) {
+  const { data } = await supabase.from('service_requests').select('id').eq('request_number', requestNumber).maybeSingle();
+  return data ? data.id : null;
+}
+
+async function uploadRequestDocument(requestId, file) {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) return { success: false, error: 'Bitte einloggen, um Dokumente hochzuladen.' };
+
+  const path = session.user.id + '/' + requestId + '/' + Date.now() + '-' + file.name;
+  const { error: uploadError } = await supabase.storage.from('request-documents').upload(path, file);
+  if (uploadError) return { success: false, error: uploadError.message };
+
+  const { error: rowError } = await supabase.from('request_documents').insert({
+    request_id: requestId, account_id: session.user.id, file_path: path, file_name: file.name
+  });
+  if (rowError) return { success: false, error: rowError.message };
+
+  return { success: true };
+}
+
+async function requestDocuments(requestId) {
+  const { data, error } = await supabase.from('request_documents').select('*').eq('request_id', requestId).order('created_at', { ascending: false });
+  if (error || !data) return [];
+
+  return Promise.all(data.map(async (doc) => {
+    const { data: signed } = await supabase.storage.from('request-documents').createSignedUrl(doc.file_path, 3600);
+    return { ...doc, url: signed ? signed.signedUrl : null };
+  }));
+}
+
+export { signUp, signIn, signOut, currentCitizen, attachServiceRequest, attachPayment, myServiceRequests, myPayments, accessLogFor, myNotifications, markNotificationsRead, requestTimeline, requestIdByNumber, uploadRequestDocument, requestDocuments };
