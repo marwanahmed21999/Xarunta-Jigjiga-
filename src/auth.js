@@ -129,4 +129,34 @@ function checkAccess(organ, resource) {
   return rights.canRead.includes(resource) || rights.canWrite.includes('*');
 }
 
-export { login, logout, checkAccess, ACCESS_RIGHTS, verifyMfaAndCompleteLogin, mfaStatus, mfaEnroll, mfaConfirmEnroll, mfaUnenroll };
+// --- Beweismittel/Dokumente zu einem Fall (nur für das Organ, das den Fall gerade bearbeitet) ---
+
+async function uploadCaseDocument(caseId, file, organ) {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) return { success: false, error: 'Bitte einloggen.' };
+
+  const path = caseId + '/' + Date.now() + '-' + file.name;
+  const { error: uploadError } = await supabase.storage.from('case-documents').upload(path, file);
+  if (uploadError) return { success: false, error: uploadError.message };
+
+  const { error: rowError } = await supabase.from('case_documents').insert({
+    case_id: caseId, uploaded_by: session.user.id, organ, file_path: path, file_name: file.name
+  });
+  if (rowError) return { success: false, error: rowError.message };
+
+  await supabase.from('case_events').insert({ case_id: caseId, organ, action: 'document_uploaded', note: file.name });
+
+  return { success: true };
+}
+
+async function caseDocuments(caseId) {
+  const { data, error } = await supabase.from('case_documents').select('*').eq('case_id', caseId).order('created_at', { ascending: false });
+  if (error || !data) return [];
+
+  return Promise.all(data.map(async (doc) => {
+    const { data: signed } = await supabase.storage.from('case-documents').createSignedUrl(doc.file_path, 3600);
+    return { ...doc, url: signed ? signed.signedUrl : null };
+  }));
+}
+
+export { login, logout, checkAccess, ACCESS_RIGHTS, verifyMfaAndCompleteLogin, mfaStatus, mfaEnroll, mfaConfirmEnroll, mfaUnenroll, uploadCaseDocument, caseDocuments };

@@ -293,7 +293,7 @@ import { supabase } from './src/supabase-config.js';
 import { initLangSwitcher, t } from './src/i18n.js';
 import { wireLocationCascade, readLocation } from './src/location-picker.js';
 import { printDocument } from './src/print-document.js';
-import { mfaStatus, mfaEnroll, mfaConfirmEnroll, mfaUnenroll } from './src/auth.js';
+import { mfaStatus, mfaEnroll, mfaConfirmEnroll, mfaUnenroll, uploadCaseDocument, caseDocuments } from './src/auth.js';
 
 let profile = null;
 let cases = [];
@@ -325,6 +325,9 @@ function formatEventAction(action){
   if(action && action.startsWith('transition:')){
     const [, from, to] = action.split(':');
     return t({so:'Xaalad: ', en:'Status: ', am:'ሁኔታ: ', de:'Status: '}) + statusLabel(from) + ' → ' + statusLabel(to);
+  }
+  if(action === 'document_uploaded'){
+    return t({so:'Dukumeenti la soo gudbiyay', en:'Document uploaded', am:'ሰነድ ተስቀሏል', de:'Dokument hochgeladen'});
   }
   return action || '';
 }
@@ -461,7 +464,10 @@ window.openCase = async function openCase(id){
   document.getElementById('dTitle').textContent = activeCase.case_number;
   document.getElementById('dSub').textContent = activeCase.suspect_name + ' · ' + activeCase.crime_type;
 
-  const { data: events } = await supabase.from('case_events').select('*').eq('case_id', id).order('created_at', { ascending:true });
+  const [{ data: events }, docs] = await Promise.all([
+    supabase.from('case_events').select('*').eq('case_id', id).order('created_at', { ascending:true }),
+    caseDocuments(id)
+  ]);
 
   const canAct = profile.organ === 'admin' || profile.organ === STAGE_OWNER[activeCase.status];
   let actionsHtml = '';
@@ -502,6 +508,16 @@ window.openCase = async function openCase(id){
       <button class="btn ghost small" onclick="printCase()">🖨️ ${t({so:'Daabac', en:'Print', am:'አትም', de:'Ausdrucken'})}</button>
     </div>
     ${actionsHtml}
+
+    <h4 style="font-size:.85rem;margin-bottom:10px;">📎 ${t({so:'Caddaynta / Dukumeentiyada', en:'Evidence / Documents', am:'ማስረጃ / ሰነዶች', de:'Beweismittel / Dokumente'})}</h4>
+    <div id="caseDocsBox" style="margin-bottom:10px;">${docs.length === 0
+      ? '<p style="color:var(--gray);font-size:.83rem;">' + t({so:'Wax caddayn ah lama soo gudbin', en:'No evidence uploaded', am:'ምንም ማስረጃ አልተላከም', de:'Keine Beweismittel hochgeladen'}) + '</p>'
+      : '<ul style="font-size:.83rem;padding-left:18px;">' + docs.map(d => `<li><a href="${d.url}" target="_blank">${escapeHtml(d.file_name)}</a> <span style="color:var(--gray);">— ${organLabel(d.organ)} (${new Date(d.created_at).toLocaleDateString('de-DE')})</span></li>`).join('') + '</ul>'}</div>
+    ${canAct ? `
+      <div class="fg" style="margin-bottom:10px;"><input type="file" id="caseDocUpload" multiple accept=".pdf,.jpg,.jpeg,.png"></div>
+      <button class="btn ghost small" id="btnUploadCaseDoc" style="margin-bottom:18px;">⬆️ ${t({so:'Soo Gudbi',en:'Upload',am:'ስቀል',de:'Hochladen'})}</button>
+    ` : ''}
+
     <h4 style="font-size:.85rem;margin-bottom:12px;">${t({so:'Taariikhda Kiiska', en:'Timeline', am:'ታሪክ', de:'Verlauf'})}</h4>
     <div class="timeline">
       ${(events||[]).map(e => `
@@ -513,6 +529,13 @@ window.openCase = async function openCase(id){
         </div>`).join('') || '<p style="color:var(--gray);font-size:.83rem;">' + t({so:'Wax taariikh ah lama helin', en:'No history', am:'ምንም ታሪክ የለም', de:'Kein Verlauf'}) + '</p>'}
     </div>
   `;
+  if(canAct){
+    document.getElementById('btnUploadCaseDoc').addEventListener('click', async () => {
+      const files = document.getElementById('caseDocUpload').files;
+      for(const file of files){ await uploadCaseDocument(activeCase.id, file, profile.organ); }
+      openCase(activeCase.id);
+    });
+  }
   openModal('detailModal');
 };
 
