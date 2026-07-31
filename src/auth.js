@@ -151,10 +151,12 @@ async function uploadCaseDocument(caseId, file, organ) {
 
 async function caseDocuments(caseId) {
   const { data, error } = await supabase.from('case_documents').select('*').eq('case_id', caseId).order('created_at', { ascending: false });
-  if (error || !data) return [];
+  if (error) { console.error('caseDocuments select error:', error.message); return []; }
+  if (!data) return [];
 
   return Promise.all(data.map(async (doc) => {
-    const { data: signed } = await supabase.storage.from('case-documents').createSignedUrl(doc.file_path, 3600);
+    const { data: signed, error: signError } = await supabase.storage.from('case-documents').createSignedUrl(doc.file_path, 3600);
+    if (signError) console.error('caseDocuments signed URL error:', signError.message);
     return { ...doc, url: signed ? signed.signedUrl : null };
   }));
 }
