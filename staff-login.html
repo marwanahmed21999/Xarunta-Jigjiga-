@@ -65,8 +65,8 @@ body.lang-de span.so{display:none!important;}body.lang-de span.de{display:inline
 </div>
 
 <script type="module">
-import { login } from '../src/auth.js';
-import { initLangSwitcher, t } from '../src/i18n.js';
+import { login } from './src/auth.js';
+import { initLangSwitcher, t } from './src/i18n.js';
 
 ['so','en','am','de'].forEach(l => {
   document.getElementById('btn-' + l).addEventListener('click', (e) => window.setLang(l, e.target));
