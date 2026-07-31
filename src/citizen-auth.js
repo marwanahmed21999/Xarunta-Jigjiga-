@@ -137,4 +137,41 @@ async function requestDocuments(requestId) {
   }));
 }
 
-export { signUp, signIn, signOut, currentCitizen, attachServiceRequest, attachPayment, myServiceRequests, myPayments, accessLogFor, myNotifications, markNotificationsRead, requestTimeline, requestIdByNumber, uploadRequestDocument, requestDocuments };
+// Verlauf einer Zahlung (Statuswechsel + Rückfragen) — für den Bürger selbst sichtbar
+async function paymentTimeline(paymentId) {
+  const { data, error } = await supabase.from('payment_events').select('*').eq('payment_id', paymentId).order('created_at', { ascending: true });
+  return error ? [] : data;
+}
+
+async function paymentIdByReference(reference) {
+  const { data } = await supabase.from('payments').select('id').eq('reference', reference).maybeSingle();
+  return data ? data.id : null;
+}
+
+async function uploadPaymentDocument(paymentId, file) {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) return { success: false, error: 'Bitte einloggen, um Belege hochzuladen.' };
+
+  const path = session.user.id + '/payment-' + paymentId + '/' + Date.now() + '-' + file.name;
+  const { error: uploadError } = await supabase.storage.from('request-documents').upload(path, file);
+  if (uploadError) return { success: false, error: uploadError.message };
+
+  const { error: rowError } = await supabase.from('payment_documents').insert({
+    payment_id: paymentId, account_id: session.user.id, file_path: path, file_name: file.name
+  });
+  if (rowError) return { success: false, error: rowError.message };
+
+  return { success: true };
+}
+
+async function paymentDocuments(paymentId) {
+  const { data, error } = await supabase.from('payment_documents').select('*').eq('payment_id', paymentId).order('created_at', { ascending: false });
+  if (error || !data) return [];
+
+  return Promise.all(data.map(async (doc) => {
+    const { data: signed } = await supabase.storage.from('request-documents').createSignedUrl(doc.file_path, 3600);
+    return { ...doc, url: signed ? signed.signedUrl : null };
+  }));
+}
+
+export { signUp, signIn, signOut, currentCitizen, attachServiceRequest, attachPayment, myServiceRequests, myPayments, accessLogFor, myNotifications, markNotificationsRead, requestTimeline, requestIdByNumber, uploadRequestDocument, requestDocuments, paymentTimeline, paymentIdByReference, uploadPaymentDocument, paymentDocuments };

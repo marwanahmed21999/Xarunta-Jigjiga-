@@ -356,6 +356,7 @@ body.lang-am span.so{display:none!important;}body.lang-am span.am{display:inline
           <option>M-Pesa</option><option>Coopy Birr</option>
         </select>
       </div>
+      <div class="fg full"><label>Beleg (optional)</label><input type="file" id="payFiles" multiple accept=".pdf,.jpg,.jpeg,.png"><small style="display:block;margin-top:6px;color:rgba(255,255,255,.45);">Zahlungsbestätigung/Screenshot. Nur sichtbar, wenn du in „Mein Konto" eingeloggt bist.</small></div>
       <div class="fg full" style="position:absolute;left:-9999px;" aria-hidden="true"><label>Firma</label><input type="text" id="payHoneypot" tabindex="-1" autocomplete="off"></div>
     </div>
     <button class="sub-btn" id="btnSubmitPay">🔒 Sicher zahlen</button>
@@ -409,7 +410,7 @@ function setLang(l,btn){
 import { supabase } from './src/supabase-config.js';
 import { wireLocationCascade, readLocation } from './src/location-picker.js';
 import { printDocument } from './src/print-document.js';
-import { attachPayment } from './src/citizen-auth.js';
+import { attachPayment, paymentIdByReference, uploadPaymentDocument } from './src/citizen-auth.js';
 
 wireLocationCascade({
   zoneSel: document.getElementById('payZone'),
@@ -475,9 +476,17 @@ document.getElementById('btnSubmitPay').addEventListener('click', async () => {
 
   await attachPayment(reference);
 
+  const files = document.getElementById('payFiles').files;
+  if (files.length > 0) {
+    const paymentId = await paymentIdByReference(reference);
+    if (paymentId) {
+      for (const file of files) { await uploadPaymentDocument(paymentId, file); }
+    }
+  }
+
   window.__lastPay = { citizen_name, phone, citizen_id, service, amount, payment_method, location: loc.full, reference };
   msg.innerHTML = '<p style="color:var(--sand-light);margin-bottom:14px;">✅ Zahlung eingeleitet! Referenz: <strong>' + reference + '</strong> — Bestätigung folgt per SMS.<br><small style="color:rgba(255,255,255,.5);">Hinweis: echte Telebirr/CBE-Anbindung folgt noch, Zahlung wird derzeit vom Personal manuell bestätigt.</small><br><button class="sub-btn" style="margin-top:10px;padding:9px 18px;font-size:.85rem;width:auto;" onclick="printPaymentReceipt()">🖨️ Beleg ausdrucken</button> <a href="mein-konto.html" style="color:var(--sand-light);font-size:.85rem;margin-left:10px;">📁 Im eigenen Konto verfolgen</a></p>';
-  ['payName','payPhone','payNid','payAmount'].forEach(id => document.getElementById(id).value = '');
+  ['payName','payPhone','payNid','payAmount','payFiles'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('payKebele').value = '';
   document.getElementById('payService').value = '';
   document.getElementById('payMethod').value = '';

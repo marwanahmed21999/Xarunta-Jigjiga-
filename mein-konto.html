@@ -252,7 +252,7 @@ body.lang-de span.so{display:none!important;}body.lang-de span.de{display:inline
 import { supabase } from './src/supabase-config.js';
 import { initLangSwitcher, t } from './src/i18n.js';
 import { printDocument } from './src/print-document.js';
-import { signUp, signIn, signOut, currentCitizen, myServiceRequests, myPayments, accessLogFor, myNotifications, markNotificationsRead, requestTimeline, requestDocuments, uploadRequestDocument } from './src/citizen-auth.js';
+import { signUp, signIn, signOut, currentCitizen, myServiceRequests, myPayments, accessLogFor, myNotifications, markNotificationsRead, requestTimeline, requestDocuments, uploadRequestDocument, paymentTimeline, paymentDocuments, uploadPaymentDocument } from './src/citizen-auth.js';
 
 const ORGAN_LABEL = {
   staff:{so:'Shaqaale', en:'Staff Member', am:'ሰራተኛ', de:'Mitarbeiter'},
@@ -548,18 +548,47 @@ window.showPayment = async function(i){
   const p = payments[i];
   document.getElementById('dTitle').textContent = p.reference;
   document.getElementById('dSub').textContent = p.service + ' · ' + statusLabel(p.status);
+
+  const needsInfoNotice = p.status === 'needs_info'
+    ? '<div class="msg" style="background:#fff3cd;color:#8a6408;">📋 ' + t({so:'Waxaa laga rabaa inaad soo gudbiso beleg dheeraad ah — eeg taariikhda hoose.', en:'A receipt/proof has been requested — see the history below.', am:'ደረሰኝ/ማስረጃ ተጠይቋል — ከታች ያለውን ታሪክ ይመልከቱ።', de:'Es wurde ein zusätzlicher Beleg angefordert — siehe Verlauf unten.'}) + '</div>'
+    : '';
+
   document.getElementById('detailBody').innerHTML = `
     <div class="detail-grid">
       <div class="detail-item"><div class="k">${t({so:'Qadarka',en:'Amount',am:'መጠን',de:'Betrag'})}</div><div class="v">${p.amount} ETB</div></div>
       <div class="detail-item"><div class="k">${t({so:'Habka Bixinta',en:'Payment Method',am:'የክፍያ ዘዴ',de:'Zahlungsmethode'})}</div><div class="v">${p.payment_method || '—'}</div></div>
     </div>
+    ${needsInfoNotice}
     <button class="btn gold" onclick='printPay(${i})'>🖨️ ${t({so:'Daabac',en:'Print',am:'አትም',de:'Drucken'})}</button>
+
+    <div class="sec-title" style="font-size:.95rem;margin:20px 0 4px;">📎 <span class="so">Dukumeentiyada</span><span class="en">Documents</span><span class="am">ሰነዶች</span><span class="de">Belege</span></div>
+    <div id="payDocsBox">…</div>
+    <div class="fg" style="margin-top:10px;"><input type="file" id="payDocUpload" multiple accept=".pdf,.jpg,.jpeg,.png"></div>
+    <button class="btn ghost small" id="btnUploadPayDoc">⬆️ ${t({so:'Soo Gudbi',en:'Upload',am:'ስቀል',de:'Hochladen'})}</button>
+
+    <div class="sec-title" style="font-size:.95rem;margin:20px 0 4px;">🕓 <span class="so">Taariikhda</span><span class="en">Timeline</span><span class="am">ታሪክ</span><span class="de">Verlauf</span></div>
+    <div id="payTimelineBox">…</div>
+
     <div class="sec-title" style="font-size:.95rem;margin:20px 0 4px;">🔍 <span class="so">Kuwa Wax ka Eegay</span><span class="en">Access Log</span><span class="am">የመዳረሻ ምዝግብ</span><span class="de">Zugriffsprotokoll</span></div>
     <div id="accessLogBox">…</div>
   `;
   document.getElementById('detailModal').classList.add('open');
-  const log = await accessLogFor('payments', p.id);
+
+  document.getElementById('btnUploadPayDoc').addEventListener('click', async () => {
+    const files = document.getElementById('payDocUpload').files;
+    for(const file of files){ await uploadPaymentDocument(p.id, file); }
+    document.getElementById('payDocsBox').innerHTML = renderDocs(await paymentDocuments(p.id));
+    document.getElementById('payDocUpload').value = '';
+  });
+
+  const [log, events, docs] = await Promise.all([
+    accessLogFor('payments', p.id),
+    paymentTimeline(p.id),
+    paymentDocuments(p.id)
+  ]);
   document.getElementById('accessLogBox').innerHTML = renderAccessLog(log);
+  document.getElementById('payTimelineBox').innerHTML = renderTimeline(events);
+  document.getElementById('payDocsBox').innerHTML = renderDocs(docs);
 };
 window.printPay = function(i){
   const p = payments[i];

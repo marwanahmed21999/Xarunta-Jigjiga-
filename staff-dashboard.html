@@ -193,7 +193,7 @@ body.lang-de span.so{display:none!important;}body.lang-de span.de{display:inline
 <script type="module">
 import { supabase } from './src/supabase-config.js';
 import { initLangSwitcher, t } from './src/i18n.js';
-import { requestDocuments } from './src/citizen-auth.js';
+import { requestDocuments, paymentTimeline, paymentDocuments } from './src/citizen-auth.js';
 
 let profile = null;
 let allRequests = [];
@@ -424,7 +424,7 @@ async function loadPayments(){
   const { data, error } = await supabase.from('payments').select('*').order('created_at', { ascending:false });
   if(error){ console.error(error); return; }
   allPayments = data || [];
-  const order = ['pending','confirmed','failed'];
+  const order = ['pending','needs_info','confirmed','failed'];
   document.getElementById('stats-govpay').innerHTML = order.map(s => {
     const n = allPayments.filter(p => p.status === s).length;
     return '<div class="stat"><span class="n">'+n+'</span><span class="l">'+statusLabel(s)+'</span></div>';
@@ -448,13 +448,25 @@ window.openPay = async function(id){
   supabase.rpc('log_access', { p_table: 'payments', p_record_id: id });
   document.getElementById('dTitle').textContent = pay.reference;
   document.getElementById('dSub').textContent = pay.service + ' · ' + pay.amount + ' ETB';
+  const [events, docs] = await Promise.all([ paymentTimeline(id), paymentDocuments(id) ]);
+
   let actionsHtml = '';
-  if(pay.status === 'pending'){
-    actionsHtml = `<div class="actions-box"><div class="btn-row">
+  if(pay.status === 'pending' || pay.status === 'needs_info'){
+    actionsHtml = `<div class="actions-box">
+      <textarea id="payNote" placeholder="${t({so:'Fiiro (ikhtiyaari, waajib haddii aad beleg codsanayso)…', en:'Note (optional, required when requesting a receipt)…', am:'ማስታወሻ (አማራጭ፣ ደረሰኝ ሲጠየቅ ግዴታ ነው)…', de:'Notiz (optional, bei Belegnachforderung Pflicht)…'})}"></textarea>
+      <div class="btn-row">
       <button class="btn" onclick="updatePay('${pay.id}','confirmed')">${t({so:'U Xaqiiji In La Bixiyay', en:'Confirm as Paid', am:'እንደተከፈለ አረጋግጥ', de:'Als bezahlt bestätigen'})}</button>
+      <button class="btn" onclick="updatePay('${pay.id}','needs_info')">${t({so:'Beleg Codso', en:'Request Receipt', am:'ደረሰኝ ጠይቅ', de:'Beleg nachfordern'})}</button>
       <button class="btn red" onclick="updatePay('${pay.id}','failed')">${t({so:'U Calaamadee Ku Guuldareystay', en:'Mark as Failed', am:'እንዳልተሳካ ምልክት አድርግ', de:'Als fehlgeschlagen markieren'})}</button>
     </div></div>`;
   }
+
+  const docsHtml = `
+    <h4 style="font-size:.85rem;margin:16px 0 8px;">${t({so:'Dukumeentiyada', en:'Documents', am:'ሰነዶች', de:'Hochgeladene Belege'})}</h4>
+    ${docs.length === 0 ? '<p style="color:var(--gray);font-size:.83rem;">' + t({so:'Wax dukumeenti ah lama soo gudbin', en:'No documents uploaded', am:'ምንም ሰነድ አልተላከም', de:'Keine Belege hochgeladen'}) + '</p>' :
+      '<ul style="font-size:.83rem;padding-left:18px;">' + docs.map(d => `<li><a href="${d.url}" target="_blank">${esc(d.file_name)}</a> <span style="color:var(--gray);">(${new Date(d.created_at).toLocaleDateString('de-DE')})</span></li>`).join('') + '</ul>'}
+  `;
+
   document.getElementById('detailBody').innerHTML = `
     <div class="detail-grid">
       <div class="detail-item"><div class="k">${t({so:'Muwaadinka', en:'Citizen', am:'ዜጋ', de:'Bürger'})}</div><div class="v">${esc(pay.citizen_name)}</div></div>
@@ -462,12 +474,24 @@ window.openPay = async function(id){
       <div class="detail-item"><div class="k">Kebele</div><div class="v">${esc(pay.kebele)||'—'}</div></div>
       <div class="detail-item"><div class="k">${t({so:'Habka', en:'Method', am:'ዘዴ', de:'Methode'})}</div><div class="v">${esc(pay.payment_method)}</div></div>
     </div>${actionsHtml}
+    ${docsHtml}
+    <h4 style="font-size:.85rem;margin:16px 0 10px;">${t({so:'Taariikhda', en:'Timeline', am:'ታሪክ', de:'Verlauf'})}</h4>
+    <div class="timeline">${(events||[]).map(e => `
+      <div class="tl-item"><div class="a">${esc(formatEventAction(e.action))}</div>${e.note?'<div class="n">'+esc(e.note)+'</div>':''}<div class="t">${new Date(e.created_at).toLocaleString('de-DE')}</div></div>`).join('') || '<p style="color:var(--gray);font-size:.83rem;">' + t({so:'Wax taariikh ah lama helin', en:'No history', am:'ምንም ታሪክ የለም', de:'Kein Verlauf'}) + '</p>'}</div>
   `;
   document.getElementById('detailModal').classList.add('open');
 };
 
 window.updatePay = async function(id, status){
-  const { error } = await supabase.from('payments').update({ status }).eq('id', id);
+  const note = document.getElementById('payNote');
+  const noteVal = note ? note.value.trim() : '';
+  if(status === 'needs_info' && !noteVal){
+    alert(t({so:'Fadlan sharax waxa loo baahan yahay.', en:'Please specify what is needed.', am:'እባክዎ የሚያስፈልገውን ይግለጹ።', de:'Bitte angeben, was benötigt wird.'}));
+    return;
+  }
+  const payload = { status };
+  if(noteVal) payload.note = noteVal;
+  const { error } = await supabase.from('payments').update(payload).eq('id', id);
   if(error){ alert('❌ Fehler: ' + error.message); return; }
   document.getElementById('detailModal').classList.remove('open');
   await loadPayments();
